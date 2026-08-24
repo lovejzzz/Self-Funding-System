@@ -33,6 +33,11 @@
     cartographic:T('Cartographic','wayfinding / economic terrain','contemplative','measured','EXPEDITION MAP // ROUTE TO ∞',['Charting a path','from $20 to','infinite runway.'],'Revenue marks the safe passages, compute costs become terrain, and the treasury gives the expedition enough range to choose the next route.','Read the map','Trace the route',['Atlas','Legend','Terrain','Supplies','Route','Expedition'],'Bearing confirmed','RUNWAY EXPEDITION','EXPEDITION RESERVE',['DISTANCE GAINED / 24H','PROGRESS / PROVISION','ACTIVE ROUTES','DAYS BEYOND RESUPPLY'],[['BASE CAMP','FREE HUMAN ACCESS'],['CONTOURS','MODEL COST TERRAIN'],['TRAIL LOG','EVERY MOVE RECORDED']])
   };
 
+  const JOURNAL_LABELS={
+    institution:'Proceedings',terminal:'LOG',whitepaper:'References',brutalist:'LOG',command:'Flight Log',protocol:'Chain Log',calm:'Journal',archive:'Research Log',swiss:'Journal / 06',bauhaus:'Notebook',glass:'Archive',solarpunk:'Field Notes',mono:'Issue Log',cyber:'UPTIME.LOG',space:'Mission Log',zen:'記録',retroos:'LOG.TXT',datascape:'Signal Log',blueprint:'Revision Log',newspaper:'Archive',memphis:'Scrapbook',noir:'Case Files',biotech:'Lab Notes',clay:'Notes',museum:'Research',industrial:'SHIFT LOG',hologram:'Plane Log',cartographic:'Trail Log'
+  };
+  Object.entries(THEMES).forEach(([id,p])=>{p.nav=[...p.nav,JOURNAL_LABELS[id]];});
+
   const BUILD_COPY={
     institution:['Establish the smallest accountable institution.','Begin with one public rule, one bounded service, one treasury, and a record durable enough to deserve trust.',['Intake office','Allocation desk','Workshop','Public book'],'public surplus'],
     terminal:['SHIP THE POSITIVE-MARGIN LOOP.','Quote the job, lock the budget, route the cheapest credible model, and watch contribution clear in real time.',['Order desk','Cost router','Execution','General ledger'],'net / job'],
@@ -195,7 +200,7 @@
 
   function recipeSkill(id){
     const p=THEMES[id],r=RECIPES[id];
-    return `You are a ${p.label} interface-design skill.\n\nGoal\nRecreate this design language for a complete responsive product website. Do not merely recolor a generic template. Translate the content model, hierarchy, density, layout, components, interaction, motion choreography, and writing voice into the style.\n\nDesign logic\n${p.description}\n\nPrinciples\n- ${r.principles.split('; ').join('\n- ')}\n\nTypography\n${r.type}\n\nLayout\n${r.layout}\n\nComponents and visualization\n${r.components}\n\nMotion choreography\n${r.motion}\n\nWriting voice\n${r.voice}\n\nAvoid\n${r.avoid}\n\nAccessibility and delivery\nMaintain WCAG-readable text on every accent surface, visible keyboard focus, a deliberate reduced-motion equivalent, fluid laptop/mobile layouts, and consistent semantics across every page. Define motion tokens for duration, easing, distance, stagger, ambient cycles, and data-update behavior. Separate entrance, ambient, interaction, and state-change motion. Return production-ready HTML/CSS/JS or framework components plus a token list and responsive behavior notes.`;
+    return `You are a ${p.label} interface-design skill.\n\nGoal\nRecreate this design language for a complete responsive product website. Do not merely recolor a generic template. Translate the content model, hierarchy, density, layout, components, interaction, motion choreography, and writing voice into the style.\n\nDesign logic\n${p.description}\n\nPrinciples\n- ${r.principles.split('; ').join('\n- ')}\n\nTypography\n${r.type}\nDeliver the type system with cross-platform webfonts or characterful, tested fallbacks. Keep display, reading, interface-label, and tabular-data roles distinct.\n\nLayout\n${r.layout}\n\nComponents and visualization\n${r.components}\n\nMotion choreography\n${r.motion}\n\nWriting voice\n${r.voice}\n\nAvoid\n${r.avoid}\n\nToken contract\nDefine ink, muted, dim, background, solid panel, line, accent-fill, accent-ink, review-bar background, and review-bar ink as paired surface/text tokens. Never reuse a bright fill token as small text without measuring the real composited background. At narrow visualization widths, move absolute annotations into stable corners or document flow.\n\nAccessibility and delivery\nMaintain WCAG-readable text on every accent surface, visible keyboard focus, a deliberate reduced-motion equivalent, fluid laptop/mobile layouts, and consistent semantics across every page. Keep small explanatory labels at 4.5:1 or better. Define motion tokens for duration, easing, distance, stagger, ambient cycles, and data-update behavior. Separate entrance, ambient, interaction, and state-change motion. Return production-ready HTML/CSS/JS or framework components plus a token list, font-delivery plan, contrast pairs, and responsive behavior notes.`;
   }
 
   function renderRecipe(id){
@@ -209,7 +214,7 @@
     ['type','layout','components','motion','voice','avoid'].forEach(key=>setText(`.recipe-${key}`,r[key]));
     setText('.recipe-skill',recipeSkill(id));
     const root=getComputedStyle(document.documentElement),swatches=recipeDialog.querySelector('.recipe-swatches');
-    swatches.innerHTML=['--bg','--ink','--mint','--acid','--violet'].map(token=>{const value=root.getPropertyValue(token).trim();return `<div class="recipe-swatch"><i style="background:${safeHTML(value)}"></i><span>${safeHTML(token)}<b>${safeHTML(value)}</b></span></div>`;}).join('');
+    swatches.innerHTML=['--bg','--ink','--muted','--dim','--mint','--acid','--acid-ink','--violet'].map(token=>{const value=root.getPropertyValue(token).trim();return `<div class="recipe-swatch"><i style="background:${safeHTML(value)}"></i><span>${safeHTML(token)}<b>${safeHTML(value)}</b></span></div>`;}).join('');
     recipeDialog.dataset.recipe=id;
   }
 

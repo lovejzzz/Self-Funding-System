@@ -1,7 +1,15 @@
+@font-face{font-family:"Archivo SF";src:url("fonts/archivo-latin-variable.woff2") format("woff2");font-style:normal;font-weight:400 900;font-display:swap}
+@font-face{font-family:"Space Grotesk SF";src:url("fonts/space-grotesk-latin-variable.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"Source Serif SF";src:url("fonts/source-serif-4-latin-variable.woff2") format("woff2");font-style:normal;font-weight:400 800;font-display:swap}
+@font-face{font-family:"IBM Plex Mono SF";src:url("fonts/ibm-plex-mono-latin-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono SF";src:url("fonts/ibm-plex-mono-latin-500.woff2") format("woff2");font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:"IBM Plex Mono SF";src:url("fonts/ibm-plex-mono-latin-600.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:"IBM Plex Mono SF";src:url("fonts/ibm-plex-mono-latin-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+
 :root{
-  --sans:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
-  --serif:Georgia,"Times New Roman",serif;
+  --sans:"Space Grotesk SF",Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono SF","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --serif:"Source Serif SF",Georgia,"Times New Roman",serif;
 
   --ink:#eaf8f4;
   --muted:#8fa7a5;
@@ -15,6 +23,10 @@
   --mint:#78ffd0;
   --mint2:#b8ffe8;
   --acid:#d7ff70;
+  --acid-ink:#d7ff70;
+  --soft:#a8bab5;
+  --review-bg:#060b0a;
+  --review-ink:#f0f7f4;
   --amber:#ffc86b;
   --violet:#ae96ff;
   --red:#ff857d;
@@ -1173,7 +1185,7 @@ body[data-page="mvp"] #roadmap .timeline{margin-top:32px}
 .recipe-body p,.recipe-body li{color:var(--muted);font-size:14px;line-height:1.62}
 .recipe-principle-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,1fr);gap:26px;padding:24px;border:1px solid var(--line);background:var(--panel)}
 .recipe-principles{margin:0;padding-left:18px}.recipe-principles li+li{margin-top:7px}
-.recipe-swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-self:end}
+.recipe-swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-self:end}
 .recipe-swatch{min-width:0}.recipe-swatch i{display:block;aspect-ratio:1.45;border:1px solid var(--line-strong);border-radius:var(--radius-sm)}
 .recipe-swatch span{display:block;margin-top:7px;color:var(--ink);font:700 8px/1.25 var(--mono);letter-spacing:.07em}.recipe-swatch b{display:block;margin-top:3px;color:var(--dim);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .recipe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line)}
@@ -1193,7 +1205,7 @@ html[data-theme="industrial"] .recipe-header{border-top:14px solid #111}
 html[data-theme="newspaper"] .recipe-title,html[data-theme="noir"] .recipe-title,html[data-theme="museum"] .recipe-title,html[data-theme="cartographic"] .recipe-title{font-family:Georgia,var(--serif);font-weight:500}
 
 @media(max-width:780px){
-  .recipe-principle-panel,.recipe-grid{grid-template-columns:1fr}.recipe-swatches{grid-template-columns:repeat(5,1fr)}
+  .recipe-principle-panel,.recipe-grid{grid-template-columns:1fr}.recipe-swatches{grid-template-columns:repeat(4,1fr)}
   .recipe-header,.recipe-body{padding:20px}.recipe-title{font-size:42px}
 }
 @media(max-width:700px){
@@ -1446,4 +1458,131 @@ html[data-theme="zen"] .core-label{color:#69635c!important}
   html[data-theme] .status-cell{padding-inline:20px}
   html[data-theme] .page-hero h1{max-width:100%;overflow-wrap:anywhere}
   html[data-theme="retroos"] .build-hero-grid{grid-template-columns:minmax(0,1fr)}
+}
+
+/* CLAUDE AUDIT RESPONSE 6.0 — shared defects become token and layout contracts. */
+.hero h1 .soft{color:var(--soft)}
+.hero-lede,.manifesto-copy p,.doc p,.doc li,td{color:var(--muted)}
+.hero-meta-item strong{color:var(--ink)}
+.quote-block{color:var(--ink)}
+.equation{background:var(--panel-solid);color:var(--ink)}
+.service-card .price,.status-cell .v.acid,.card .big.acid,.data-tag strong.acid{color:var(--acid-ink)}
+.flow-node{width:clamp(180px,22vw,265px);max-width:30%;background:var(--panel-solid);color:var(--ink);border-radius:var(--radius-sm)}
+.flow-center{color:var(--ink);background:radial-gradient(circle,color-mix(in srgb,var(--mint) 10%,var(--panel-solid)),var(--panel-solid) 68%)}
+.flow-center span{display:block}
+.status-band{background:var(--panel)}
+.data-tag{background:var(--panel-solid)}
+.orbit-stage{container-type:inline-size}
+[id]{scroll-margin-top:96px}
+
+/* The accent used as a fill/glow is not automatically safe as text. */
+:is(html[data-theme="whitepaper"],html[data-theme="brutalist"],html[data-theme="calm"],html[data-theme="archive"],html[data-theme="swiss"],html[data-theme="bauhaus"],html[data-theme="solarpunk"],html[data-theme="mono"],html[data-theme="zen"],html[data-theme="retroos"],html[data-theme="newspaper"],html[data-theme="memphis"],html[data-theme="biotech"],html[data-theme="clay"],html[data-theme="museum"],html[data-theme="industrial"],html[data-theme="cartographic"]){--acid-ink:color-mix(in srgb,var(--acid) 42%,var(--ink))}
+html[data-theme="whitepaper"]{--acid-ink:#087354}html[data-theme="brutalist"]{--acid-ink:#485500}html[data-theme="calm"]{--acid-ink:#5b21b6}html[data-theme="archive"]{--acid-ink:#2f5d49}
+html[data-theme="swiss"]{--acid-ink:#111}html[data-theme="bauhaus"]{--acid-ink:#725b00}html[data-theme="solarpunk"]{--acid-ink:#506d1e}html[data-theme="mono"]{--acid-ink:#0a0a0a}
+html[data-theme="zen"]{--acid-ink:#465f50}html[data-theme="retroos"]{--acid-ink:#000080}html[data-theme="newspaper"]{--acid-ink:#171510}html[data-theme="memphis"]{--acid-ink:#04765d}
+html[data-theme="biotech"]{--acid-ink:#527400}html[data-theme="clay"]{--acid-ink:#45634f}html[data-theme="museum"]{--acid-ink:#3c5c52}html[data-theme="industrial"]{--acid-ink:#111}html[data-theme="cartographic"]{--acid-ink:#7c4520}
+html[data-theme="mono"] .acid-card :is(.big.acid,.price){color:#fff!important}
+
+/* Quiet labels keep hierarchy through size and spacing, never invisibility. */
+html[data-theme="institution"]{--dim:#78908b}html[data-theme="terminal"]{--dim:#76a382}html[data-theme="whitepaper"]{--dim:#626a68}html[data-theme="brutalist"]{--dim:#555}
+html[data-theme="command"]{--dim:#83a0b4}html[data-theme="protocol"]{--dim:#9a98b5}html[data-theme="calm"]{--dim:#667085}html[data-theme="archive"]{--dim:#5f584d}
+html[data-theme="swiss"]{--dim:#646464}html[data-theme="bauhaus"]{--dim:#625c53}html[data-theme="glass"]{--dim:#8ca6bc}html[data-theme="solarpunk"]{--dim:#5c6a59}
+html[data-theme="mono"]{--dim:#666}html[data-theme="cyber"]{--dim:#ab7db1}html[data-theme="space"]{--dim:#899ab0}html[data-theme="zen"]{--muted:#6d675f;--dim:#6d675f}
+html[data-theme="retroos"]{--dim:#444}html[data-theme="datascape"]{--dim:#96949f}html[data-theme="blueprint"]{--dim:#a9c2da}html[data-theme="newspaper"]{--dim:#6a6358}
+html[data-theme="memphis"]{--dim:#4d5570}html[data-theme="noir"]{--dim:#aaa39a}html[data-theme="biotech"]{--dim:#5f766f}html[data-theme="clay"]{--muted:#5f574f;--dim:#61584f}
+html[data-theme="museum"]{--dim:#70685f}html[data-theme="industrial"]{--dim:#404040}html[data-theme="hologram"]{--dim:#9eacc2}html[data-theme="cartographic"]{--dim:#59675d}
+
+/* Four self-hosted families preserve distinct type roles across platforms. */
+html[data-theme="institution"]{--theme-display:"Space Grotesk SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="terminal"]{--theme-display:"IBM Plex Mono SF",monospace;--theme-body:"IBM Plex Mono SF",monospace;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="whitepaper"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="brutalist"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="command"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="protocol"],html[data-theme="calm"],html[data-theme="glass"]{--theme-display:"Space Grotesk SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="archive"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="swiss"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Archivo SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="bauhaus"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="solarpunk"]{--theme-display:"Source Serif SF",serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"Space Grotesk SF",sans-serif;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="mono"]{--theme-display:"Source Serif SF",serif;--theme-body:"Archivo SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="cyber"],html[data-theme="blueprint"]{--theme-display:"IBM Plex Mono SF",monospace;--theme-body:"IBM Plex Mono SF",monospace;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="space"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="zen"]{--theme-display:"Source Serif SF","Hiragino Mincho ProN",YuMincho,serif;--theme-body:"Space Grotesk SF","Hiragino Kaku Gothic ProN",sans-serif;--theme-label:"Space Grotesk SF","Hiragino Kaku Gothic ProN",sans-serif;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="retroos"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"IBM Plex Mono SF",monospace;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="datascape"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="newspaper"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Source Serif SF",serif}
+html[data-theme="memphis"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="noir"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="biotech"],html[data-theme="clay"],html[data-theme="hologram"]{--theme-display:"Space Grotesk SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"IBM Plex Mono SF",monospace;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="museum"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"IBM Plex Mono SF",monospace}
+html[data-theme="industrial"]{--theme-display:"Archivo SF",sans-serif;--theme-body:"Space Grotesk SF",sans-serif;--theme-label:"Archivo SF",sans-serif;--theme-data:"Archivo SF",sans-serif}
+html[data-theme="cartographic"]{--theme-display:"Source Serif SF",serif;--theme-body:"Source Serif SF",serif;--theme-label:"Space Grotesk SF",sans-serif;--theme-data:"IBM Plex Mono SF",monospace}
+
+/* Desktop review stays wrapped, then leaves the viewport; nav alone remains sticky. */
+.theme-review{background:var(--review-bg,#060b0a);color:var(--review-ink,#f0f7f4)}
+.theme-review{transition:border-color .25s ease,box-shadow .25s ease}
+.theme-review-label{color:inherit;opacity:.9}.theme-current{color:inherit;opacity:.82;white-space:normal;line-height:1.45}
+.theme-option{min-height:34px;padding:8px 11px;font-size:11px;color:inherit}
+.theme-option{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.theme-option[aria-pressed="true"]{background:var(--mint);color:var(--review-active-ink,#00120c)!important;border-color:var(--mint)}
+html[data-theme] .theme-option[aria-pressed="true"]{color:var(--review-active-ink,#00120c)!important}
+html[data-theme="whitepaper"]{--review-active-ink:#fff}html[data-theme="archive"]{--review-active-ink:#fff}html[data-theme="bauhaus"]{--review-active-ink:#fff}html[data-theme="solarpunk"]{--review-active-ink:#fff}
+html[data-theme="mono"]{--review-active-ink:#fff}html[data-theme="zen"]{--review-active-ink:#fff}html[data-theme="newspaper"]{--review-active-ink:#fff}html[data-theme="biotech"]{--review-active-ink:#fff}
+html[data-theme="clay"]{--review-active-ink:#fff}html[data-theme="museum"]{--review-active-ink:#fff}html[data-theme="cartographic"]{--review-active-ink:#fff}html[data-theme="industrial"]{--review-active-ink:#f4c62d}
+html[data-theme="space"],html[data-theme="retroos"]{--review-active-ink:#fff}
+html[data-theme="memphis"] .theme-review{color:#000!important}
+@keyframes motion-active-option{from{transform:scale(.96)}to{transform:scale(1)}}
+@media(min-width:701px){
+  .theme-review{position:relative;top:auto;height:auto;min-height:0;padding:10px 0;align-items:flex-start}
+  .theme-review-inner{display:grid;grid-template-columns:122px minmax(0,1fr) minmax(190px,250px);gap:12px;align-items:start}
+  .theme-review-label{display:block;padding-top:6px}.theme-review-label:before{display:inline-block;margin-right:8px}
+  .theme-review-label .theme-recipe-link{margin:10px 0 0 15px}
+  .theme-options{display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;overflow:visible}
+  .theme-current{padding:7px 0 0 12px;border-left:1px solid currentColor}
+  .site-nav{top:0}
+}
+@media(max-width:1180px) and (min-width:701px){.theme-review-inner{grid-template-columns:112px minmax(0,1fr)}.theme-current{display:none}}
+@media(max-width:700px){
+  .flow-node{max-width:42%}
+  .theme-review{position:sticky;top:0;height:52px;padding:0}
+  .theme-review-inner{padding:8px 10px}
+  .theme-options{padding:1px 4px 7px 1px;scroll-padding-inline:10px 76px;mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 24px),transparent)}
+  .theme-option{min-height:34px;font-size:10.5px}
+  .site-nav{top:52px}
+}
+
+/* Narrow visual stages keep four facts in four stable corners. */
+@container (max-width:500px){
+  .data-tag{width:43%;min-width:0;max-width:43%;padding:10px 11px}
+  .tag-a{left:2%;top:3%}.tag-b{right:2%;top:3%}.tag-c{left:2%;bottom:3%}.tag-d{right:2%;bottom:3%}
+}
+
+/* Theme-specific defects called out by the audit. */
+html[data-theme="whitepaper"] .doc>section>h2:before{content:none}
+html[data-theme="archive"] .hero-layout{margin-inline:auto}
+html[data-theme="archive"] body[data-page]:not([data-page="index"]) .page-hero>.wrap{margin-inline:auto}
+html[data-theme="swiss"] .hero-scope{grid-column:1/-1;max-width:none}
+html[data-theme="protocol"] .hero h1{max-width:15ch}
+html[data-theme="clay"] .hero-lede{color:var(--muted)}
+html[data-theme="retroos"] .timeline{padding:0 18px;background:#c0c0c0;border:3px outset #fff}
+html[data-theme="retroos"] footer{padding:28px 0;background:#008080;border:0}
+html[data-theme="retroos"] footer>.wrap{padding:24px;background:#c0c0c0;border:3px outset #fff}
+html[data-theme="retroos"] footer :is(.footer-copy,.footer-links h5,.footer-bottom){color:#222}
+@media(min-width:701px){
+  html[data-theme="terminal"] .flow-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;min-height:0;padding:1px;background:var(--line)}
+  html[data-theme="terminal"] .flow-lines{display:none}
+  html[data-theme="terminal"] .flow-center{position:relative;inset:auto;transform:none;grid-column:1/-1;width:auto;height:auto;min-height:88px;padding:18px;border-radius:0;box-shadow:none}
+  html[data-theme="terminal"] .flow-node{position:relative;inset:auto;width:auto;max-width:none;min-height:190px;padding:18px}
+  html[data-theme="terminal"] .flow-center span{font-size:10px;letter-spacing:.12em}
+}
+@media(max-width:920px) and (min-width:701px){html[data-theme="terminal"] .flow-map{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+  html[data-theme="terminal"] .flow-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;min-height:0;padding:1px;background:var(--line)}
+  html[data-theme="terminal"] .flow-lines{display:none}
+  html[data-theme="terminal"] .flow-center{position:relative;inset:auto;transform:none;grid-column:1/-1;width:auto;height:auto;min-height:88px;padding:18px;border-radius:0;box-shadow:none}
+  html[data-theme="terminal"] .flow-node{position:relative;inset:auto;width:auto;max-width:none;min-height:190px;padding:18px}
+}
+@media(max-width:480px){
+  html[data-theme="terminal"] .flow-map{grid-template-columns:1fr}
+  html[data-theme="terminal"] .flow-center{grid-column:1}
+  html[data-theme="terminal"] .flow-node{min-height:0}
 }
