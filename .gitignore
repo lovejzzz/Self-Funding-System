@@ -1,3 +1,5 @@
 .DS_Store
+node_modules/
 *.log
 research/tmp/
+research/experiments/fixture-runner-v0.1/capture-private/

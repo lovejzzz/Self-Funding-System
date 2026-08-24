@@ -391,3 +391,67 @@ The public Research Journal records the exact 3-pass / 1-blocked result, counter
 ### Next question
 
 Can one operator-owned Stripe sandbox charge at pinned API version `2026-07-29.dahlia` be captured with its Event, Charge, linked Balance Transaction, raw hashes, and idempotency metadata, then replayed through the runner twice with exactly one balanced external booking and no evidence-class upgrade?
+
+## 2026-08-24 — Secret-safe capture path is buildable; operator rail evidence is still absent
+
+### Research question
+
+What is the minimum secret-safe, version-pinned procedure an authorized operator can run to capture one Stripe sandbox PaymentIntent, successful Charge, linked Balance Transaction, immutable Event, raw hashes, and idempotency metadata without installing Stripe CLI or committing credentials?
+
+### Result
+
+- Direct fact: ordinary Stripe HTTPS endpoints are sufficient. A test-mode PaymentIntent can be created and confirmed with `pm_card_visa`; its Charge exposes an expandable Balance Transaction; its immutable Event records `api_version`, request ID, and idempotency key.
+- Direct fact: sandbox objects have `livemode=false` and move no real money. Stripe keys must stay in a vault/environment, and non-publishable keys must not enter source, chat, or public logs.
+- Direct measured result: the new no-dependency capture harness passed syntax and no-network self-tests, rejected both live-key prefixes, excluded a `client_secret` canary from the safe view, returned `SANDBOX_CREDENTIAL_REQUIRED` without a key, and writes raw output only below a verified git-ignored directory.
+- Counterevidence / conflict: Stripe's changelog lists `2026-07-29.dahlia` and the request-log guide uses it as a filter example, while one render of the general Versioning page still called `2026-06-24.dahlia` current. The harness pins the published July version without claiming one living page is perfectly synchronized.
+- Exact blocker: no authorized sandbox credential or Stripe-created object was available. The runner was not replayed, `RAIL_SANDBOX_CAPTURE_REQUIRED` remains, and NOW 0 is not passed.
+- Bounded inference / buildable decision: preserve exact raw bodies privately, publish only allowlisted fields plus raw hashes, require independent Stripe-log review, and never let the bundle exceed `CONTROL_PLANE_PASSED`.
+- Unknown: actual restricted-key permissions, Event-list consistency, Workbench metadata, sanitizer completeness under real account metadata, and the runner importer still require the operator sandbox test.
+
+### Detailed evidence and harness
+
+See [the secret-safe Stripe sandbox capture handoff](notes/2026-08-24T05-13-00Z-stripe-sandbox-capture-handoff.md) and [the fixture-runner capture instructions](experiments/fixture-runner-v0.1/README.md).
+
+### Foundations update
+
+No update. This round operationalizes the standing sandbox-versus-live evidence model; it does not change that model.
+
+### Website status
+
+The public Research Journal records the capture protocol, local safety measurements, documentation conflict, exact operator-access blocker, and next test. No other site claim, graphic, shared component, theme, motion, or standalone artifact changed.
+
+### Next question
+
+When an authorized operator runs the harness with a sandbox-only credential, does the resulting `2026-07-29.dahlia` bundle pass privacy/provenance review and replay twice through the fixture runner with exactly one balanced external booking and no evidence-class upgrade?
+
+## 2026-08-24 — Capture handoff hardened; rail blocker preserved
+
+### Research question
+
+Is the uncommitted Stripe sandbox capture handoff safe and evidence-complete enough to submit before an authorized operator run, and which defects can be closed without relabeling local tests as rail evidence?
+
+### Result
+
+- Direct fact: Stripe separately exposes the PaymentIntent's latest Charge, the Charge's PaymentIntent and expandable Balance Transaction, the Balance Transaction's amount/fee/net/currency/source, and the immutable Event's API version and originating request/idempotency metadata.
+- Audit finding: the original README's inline environment-assignment pattern could encourage operators to put a real key in shell history. It now uses a non-echoing prompt and recommends managed secret injection.
+- Audit finding: the first harness checked object presence and selected links but did not fail closed on every cross-object identity, amount, currency, net, request, and Event invariant.
+- Direct measured result: after hardening, syntax and the valid no-network chain passed; five deliberate link/math corruptions were rejected; the `client_secret` canary and final review-bundle scan passed; live key prefixes were refused; and the missing-key path still returned `SANDBOX_CREDENTIAL_REQUIRED`.
+- Buildable decision: apply umask `077`, keep exact bodies private, scan the allowlisted review bundle, document custom-output responsibility, and require all PaymentIntent → Charge → Balance Transaction → Event links before any bundle is written.
+- Counterevidence: zero Stripe-created objects were produced. The result proves only local controls, not Event-list timing, restricted-key permissions, account response shapes, Workbench evidence, money movement, or reducer import.
+- Exact blocker: `RAIL_SANDBOX_CAPTURE_REQUIRED` remains; the existing suite remains 3 pass / 1 rail blocked and NOW 0 remains false.
+
+### Detailed evidence and measured artifact
+
+See [the capture harness audit](notes/2026-08-24T21-57-20Z-sandbox-capture-harness-audit.md), [its machine-readable result](experiments/fixture-runner-v0.1/capture-harness-audit-result.json), and [the hardened operator instructions](experiments/fixture-runner-v0.1/README.md).
+
+### Foundations update
+
+No update. The evidence classes and sandbox/live ceiling are unchanged; this round strengthens the handoff that must satisfy them.
+
+### Website status
+
+The public Research Journal records the audit findings, corrections, measured guards, counterevidence, and unchanged external blocker. No standing product, treasury, custody, identity, demand, margin, or live-result claim changes.
+
+### Next question
+
+When an authorized operator runs the hardened harness with a sandbox-only restricted key, do the real sandbox response shapes satisfy all linkage/privacy guards, and can the reviewed bundle be replayed twice through the reducer with exactly one balanced booking and no evidence-class upgrade?

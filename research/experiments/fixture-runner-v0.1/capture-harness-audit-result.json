@@ -1,0 +1,30 @@
+{
+  "run_at": "2026-08-24T21:57:20Z",
+  "scope": "no-network capture harness audit",
+  "commands": [
+    "node --check research/experiments/fixture-runner-v0.1/capture-sandbox-charge.mjs",
+    "node research/experiments/fixture-runner-v0.1/capture-sandbox-charge.mjs --self-test",
+    "env -u SELF_FUNDING_STRIPE_SANDBOX_KEY node research/experiments/fixture-runner-v0.1/capture-sandbox-charge.mjs",
+    "node research/experiments/fixture-runner-v0.1/runner.mjs research/experiments/fixture-runner-v0.1/manifest.json"
+  ],
+  "result": {
+    "syntax": "PASS",
+    "live_key_refusal": true,
+    "client_secret_redaction": true,
+    "capture_chain_validation": true,
+    "mismatch_guards_rejected": 5,
+    "review_bundle_scan": true,
+    "network_calls": 0,
+    "missing_credential_result": "SANDBOX_CREDENTIAL_REQUIRED",
+    "fixture_runner_passed": 3,
+    "fixture_runner_blocked": 1,
+    "complete_prelive_suite": false
+  },
+  "fixed_findings": [
+    "Removed the key literal from the operator command example",
+    "Added a private process umask and documented custom-output responsibility",
+    "Added PaymentIntent, Charge, Balance Transaction, Event, amount, currency, net, request, and idempotency linkage checks",
+    "Added a forbidden-fragment scan for the allowlisted review bundle"
+  ],
+  "external_blocker": "No authorized Stripe sandbox credential or Stripe-created object was available; RAIL_SANDBOX_CAPTURE_REQUIRED remains"
+}
