@@ -37,6 +37,7 @@ SELF/FUNDING 是一个值得实验的研究命题，但目前还不能作为一�
 | 自动代码审查适合作为第一项服务 | 较弱 | 2026 年 SWE-PRBench 中，前沿模型在 diff-only 条件下只检测到约 15–31% 的人工标注问题 | 暂不作为首个付费服务；最多作为非权威辅助报告 |
 | 模型路由能够降低成本 | 中等偏强 | FrugalGPT、RouteLLM 和代码级联研究都显示明显的成本/质量折中改善 | 可以保留，但必须声明路由阈值是在本项目任务上校准，而非直接套用通用 benchmark |
 | x402 已解决机器支付 | 技术上较强，市场上仍早期 | x402 v2 已提供支付、facilitator、服务发现和 MCP 调用；Google AP2、Visa TAP 也证明行业正在建立授权与信任层 | 写成“支付基础设施已经可组合”，不要写成“机器客户市场已经成熟” |
+| Stripe 给 agent 提供了独立金融身份 | 不成立 | Stripe 用户、merchant of record 和 Financial Account 仍归属于经过验证的人或实体；ACP/SPT 让 agent 代表买方发起交易，但 business 仍是 MoR | 写成“经过验证的 operator 可以向 agent 委托受限支付操作”，不能写“agent 自己在 Stripe 开户或拥有资金” |
 | x402 支持“验收后再结算” | 当前表述不准确 | x402 的 exact/upto 是执行后不可逆的 push payment；退款是卖方发起一笔新的转账，原生 escrow 仍是未来能力 | V0.1 应明确为预付费 + 失败退款，或另引入 escrow/hold；不能把预付签名描述成传统授权保留 |
 | 双重记账 + 幂等键足以保证资金安全 | 部分成立 | 幂等、数据库事务、对账是必要条件，但不是充分条件；并发、重复事件、密钥泄漏、链重组和内部篡改仍需处理 | 使用“append-only、可对账、tamper-evident”，不要仅凭 Postgres 称“immutable” |
 | 权限受限的智能体是安全的 | 方向正确，但不能称已解决 | AgentDojo、OWASP 与 NIST 均表明 prompt injection、过度权限、工具滥用和 Denial-of-Wallet 仍是现实风险 | 强调所有付款、权限、限额与结算由确定性代码执行，模型只能提出动作 |
@@ -167,6 +168,20 @@ AgentDojo 证明，外部工具返回的数据可以通过间接 prompt injectio
 
 来源：[15 USC §7001(h)](https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7001+edition%3Aprelim%29)、[IRS digital asset FAQ](https://www.irs.gov/individuals/international-taxpayers/frequently-asked-questions-on-digital-asset-transactions)、[FinCEN virtual currency guidance](https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering)、[OFAC virtual currency guidance](https://ofac.treasury.gov/system/files/126/virtual_currency_guidance_brochure.pdf)。
 
+### 6.1 Stripe 解决委托执行，不解决 agent 的独立人格
+
+Stripe 的官方条款和产品结构没有把 agent 变成收款主体。Stripe Services Agreement 的 User 是个人或实体，并要求有权约束该 User 的 Representative；Connect charges 和 payouts 需要企业、个人、受益所有人与代表的验证；merchant of record 必须是平台或 connected account 中的一个，并承担退款与争议责任。
+
+ACP、Shared Payment Token、Agent Toolkit 和 Stripe MCP 解决的是 agent 可以代表用户或企业发起受限动作。Stripe Financial Accounts 可以让符合条件、已经验证的 connected account 收、存、发资金，但账户依然附着于该主体。
+
+所以首版正确架构是：
+
+> operator 是 Stripe User、merchant of record、资金与义务的所有者；agent 是 operator 的 electronic agent，只能提出或执行被策略和凭证严格限制的动作。
+
+美国 E-SIGN Act §7001(h) 也采用同样逻辑：电子代理参与形成合同不导致合同失效，但其动作必须能法律上归属于被约束的人。
+
+详细证据与权限矩阵见：[Stripe 是否解决 agent 身份问题](notes/2026-08-24T00-25-34Z-stripe-agent-identity.md)。来源：[Stripe Services Agreement](https://stripe.com/legal/ssa)、[Stripe Services Terms](https://stripe.com/legal/ssa-services-terms)、[Stripe Connect identity verification](https://docs.stripe.com/connect/identity-verification)、[Stripe merchant of record](https://docs.stripe.com/connect/merchant-of-record)、[Stripe ACP design](https://stripe.com/blog/developing-an-open-standard-for-agentic-commerce)、[Stripe Financial Accounts guide](https://docs.stripe.com/issuing/integration-guides/embedded-finance)。
+
 ## 7. 建议重写的 MVP 实验
 
 ### 7.1 更严谨的研究问题
@@ -284,21 +299,29 @@ contribution_per_job = settled_revenue
 
 ## 9. 下一轮必须回答的研究问题
 
-1. 谁是第一个真实买家：人类开发者、CI 平台、代码代理，还是 agent marketplace？
-2. 买家愿意为“测试覆盖提升”支付多少，而不是网站希望收多少？
-3. 什么输入限制能使成功率、报价误差和安全风险稳定？
-4. mutation score、coverage 与真实缺陷发现之间采用什么验收权重？
-5. x402 的预付款与失败退款是否会让买家承担不可接受的交易风险？
-6. 哪个法律实体签约、收款、纳税和承担缺陷责任？
-7. 共享 treasury 的补贴比例何时启动，何时停止？
-8. 在何种观测结果下，我们必须承认“自我融资”在当前条件下失败？
+研究顺序改为先打通资金闭环，再研究增长：
+
+1. 第一笔付款何时才算最终到账，而不是待结算、可撤销或仍承担退款责任？
+2. 哪个法律实体持有资金、签约、收款、纳税和承担缺陷责任？
+3. 银行账户、稳定币钱包和内部账本分别扮演什么角色，哪些余额必须隔离？
+4. 模型可以提出哪些支出，确定性策略可以批准哪些支出，哪些动作必须由独立的人批准？
+5. 如何处理预付款、验收、失败退款、重复事件、退款失败、密钥泄漏和支付轨道中断？
+6. 如何把外部资金轨道、内部复式账、供应商账单、税务记录和每日余额对账？
+7. 在确认可用盈余后，运行储备、退款准备金、算力支出和免费人类服务的优先顺序是什么？
+8. 完成上述设计后，谁是第一个真实买家，他们愿意为“测试覆盖提升”支付多少？
+9. 什么输入限制能使成功率、报价误差和安全风险稳定？
+10. 在何种观测结果下，我们必须承认“自我融资”在当前条件下失败？
 
 ## 10. 当前研究判断
 
 这个项目最强的地方不是它已经证明了一个自主机器经济，而是它可以把一个宏大说法变成一个诚实、有限、可失败、可复现的实验。
 
-真正值得建立的不是“一个会赚钱的 AI”形象，而是一套公开回答以下问题的系统：
+真正值得建立的不是“一个会赚钱的 AI”形象，而是一套能够先解释钱、再解释增长的系统：
 
+- 客户付的钱何时真正到账，落在哪个受法律约束的账户或钱包？
+- 谁可以提议、批准、签署和撤销一笔支出？
+- 收入何时从待履约款变成可使用盈余？
+- 外部余额、内部账本、供应商账单和退款是否每日一致？
 - 这项工作由谁购买？
 - 结果是否被客观验收？
 - 所有成本是否真实入账？

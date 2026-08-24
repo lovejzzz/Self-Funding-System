@@ -31,5 +31,53 @@ No research-driven content rewrite has yet been applied. The current site is the
 
 ### Next question
 
-Identify and compare the first plausible paying customer segments for a machine-verifiable test-improvement service, including evidence of willingness to pay and current alternatives.
+Determine the smallest legally accountable money lifecycle for the first paid job: how payment becomes final, where it is held, who can authorize each category of spending, and how the internal ledger is reconciled to the external rail.
 
+## 2026-08-23 — Research priority reset: follow the money after payment
+
+### Product direction
+
+The primary research program is now the money lifecycle itself. Customer demand remains necessary, but it is not the next question. The project must first make the path from customer payment to custody, reservation, provider spend, refund, surplus allocation, and reconciliation explicit.
+
+### Required distinction
+
+- A displayed balance is not proof of settled funds.
+- A ledger entry is not the same thing as money held on an external rail.
+- An agent choosing a task is not authorization to move funds.
+- Revenue is not available surplus until delivery, refund exposure, provider costs, taxes, and required reserves are accounted for.
+- Treasury growth is an outcome to measure, not the financial control system.
+
+### Website status
+
+The Home, Architecture, and Economics pages were reframed around receipt, custody, authority, spending, refund, and reconciliation. The standalone homepage and Visual Review were regenerated. Illustrative capital, allocation rules, and financial control targets are explicitly labeled rather than presented as observed results. Theme persistence and all 28 theme definitions remain intact. Static structure, internal links, script syntax, synchronized standalone output, and responsive overflow safeguards were checked; screenshot-based browser inspection was blocked by the local-file browser security policy and is not claimed as completed in this entry.
+
+### Next question
+
+For a US-based operator running the first $20 experiment, what is the smallest viable custody and spending design across a bank or stablecoin rail, including legal ownership, signing authority, prepayment/refund handling, account segregation, reconciliation, and emergency controls?
+
+## 2026-08-24 — Stripe enables delegated payments, not agent personhood
+
+### Research question
+
+Does Stripe solve the problem that an AI agent has no human or legal identity and therefore cannot receive money in its own name?
+
+### Result
+
+- Direct fact: Stripe's contract, verification, and merchant-of-record structure still requires an identifiable person, business, governmental body, or nonprofit plus a human representative where applicable.
+- Direct fact: Stripe can receive, hold, and settle funds owed to that verified User, while software performs authorized API activity on the User's behalf.
+- Direct fact: Connect selects whether the platform or connected account is merchant of record; it does not remove the merchant of record.
+- Direct fact: ACP and Shared Payment Tokens primarily support buyer agents initiating purchases with bounded credentials while the business remains merchant of record.
+- Bounded inference: SELF/FUNDING can operate through a verified human/company operator and give the agent narrow operational permissions, but must not describe the Stripe account or funds as legally owned by the agent.
+- Unknown: the best operator entity, Stripe's approval of the exact business, and the production permission model require concrete onboarding, prototyping, and professional review.
+
+### Detailed evidence
+
+See [Stripe agent identity research note](notes/2026-08-24T00-25-34Z-stripe-agent-identity.md).
+
+### Website status
+
+Architecture now explicitly distinguishes the operator and merchant of record from the agent, policy service, Stripe, and customer. The site no longer implies that Stripe grants an agent independent financial identity.
+
+### Next question
+
+With the operator as the sole merchant of record, define the minimum Stripe money state machine across PaymentIntent status, Stripe pending/available balance, payout, refund, dispute, reserve, internal revenue recognition, and unrestricted surplus.

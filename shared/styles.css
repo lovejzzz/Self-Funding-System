@@ -124,6 +124,7 @@ footer{border-top:1px solid rgba(255,255,255,.045);padding:56px 0 34px}.footer-g
 
 /* Contemporary shared discipline: fluid type, intentional density, legible controls. */
 .hero h1{max-width:14ch;text-wrap:balance}.hero-lede,.page-hero>div>p,.build-hero-grid>div>p{text-wrap:pretty}
+.hero-scope{max-width:760px;margin:20px 0 0;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--mint);background:color-mix(in srgb,var(--panel) 72%,transparent);color:var(--muted);font:600 11px/1.55 var(--mono);letter-spacing:.035em}.hero-scope strong{display:block;margin-bottom:4px;color:var(--mint);font-size:9px;letter-spacing:.14em}
 .theme-current{line-height:1.25}.theme-option{white-space:nowrap}
 html[data-density="dense"] .section{padding-block:clamp(54px,6vw,82px)}
 html[data-density="dense"] .grid{gap:12px}

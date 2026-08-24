@@ -253,7 +253,7 @@
       const actions=[...document.querySelectorAll('.hero-actions .btn')];
       if(actions[0])actions[0].innerHTML=`${safeHTML(p.actions[0])} <span>↗</span>`;
       if(actions[1])actions[1].textContent=p.actions[1];
-      setText('.core-label',p.core);
+      setText('.core-label',`ILLUSTRATIVE // ${p.core}`);
       [...document.querySelectorAll('.data-tag span')].forEach((el,i)=>{if(p.tags[i])el.textContent=p.tags[i];});
       [...document.querySelectorAll('.hero-meta-item')].forEach((el,i)=>{if(!p.meta[i])return;const strong=el.querySelector('strong'),span=el.querySelector('span');if(strong)strong.textContent=p.meta[i][0];if(span)span.textContent=p.meta[i][1];});
     }
