@@ -81,3 +81,30 @@ Architecture now explicitly distinguishes the operator and merchant of record fr
 ### Next question
 
 With the operator as the sole merchant of record, define the minimum Stripe money state machine across PaymentIntent status, Stripe pending/available balance, payout, refund, dispute, reserve, internal revenue recognition, and unrestricted surplus.
+
+## 2026-08-24 — Two horizons: execute now, specify the missing future
+
+### Product direction
+
+The project must do both of the following without conflating them:
+
+- **Horizon A / NOW:** find and build a path that can complete a real, accountable money loop with institutions available today.
+- **Horizon B / FRONTIER:** identify the smallest missing primitives that would allow progressively more agent-native identity, custody, contracting, spending, liability, governance, and recovery.
+
+### Current executable path
+
+The working hypothesis is now concrete: one verified operator is the sole merchant of record; one narrowly verified service accepts one real payment through Stripe; the agent has no legal identity or unrestricted credentials; deterministic policy limits every action; failure exercises a real refund; the internal journal reconciles to Stripe and the operator's payout account.
+
+### Future requirements program
+
+The long-term vision does not depend on pretending current law or payment products already recognize an independent agent. It asks what would have to become true: durable machine-attributable identity, explicit legal wrappers, policy-native custody, machine-readable mandates, reliable liability and insurance, dispute and insolvency procedures, attestable software execution, and governance with human recourse.
+
+Each future requirement must include an evidence threshold and a bridge experiment that can be run under today's operator model.
+
+### Website status
+
+Thesis and Experiment now show the present implementation path and future missing primitives as separate tracks. Existing targets were downgraded where they had no observed basis, and the first experiment now prioritizes payment control and reconciliation before monthly treasury growth.
+
+### Next question
+
+Horizon A: with the operator as sole merchant of record, define and implement the minimum Stripe money state machine from PaymentIntent through refund/dispute/payout and internal unrestricted surplus. After two Horizon A rounds, conduct a Horizon B scan of the requirements for machine-attributable commercial identity.

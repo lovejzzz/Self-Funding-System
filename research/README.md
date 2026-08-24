@@ -13,6 +13,29 @@ The project's first-order question is not merely whether software can produce re
 
 Until these questions are supported by research and a tested design, revenue growth, treasury allocation percentages, and self-funding runway remain downstream hypotheses.
 
+## Two horizons, one program
+
+Research must maintain two explicit queues without allowing either to replace the other.
+
+### Horizon A — make it work now
+
+Find the smallest path that can operate under institutions and products that exist today. The current reference path is a verified operator acting as the sole merchant of record, a narrow machine-verifiable service, one payment rail, bounded agent permissions, a working refund, full-cost accounting, and reconciliation to the external rail.
+
+Every Horizon A round must end with one of: a buildable decision; a concrete experiment; a measured result; or an exact blocker with the next cheapest test. “More research is needed” is not a sufficient output by itself.
+
+### Horizon B — identify what would make the full vision possible
+
+Work backward from a genuinely agent-native economic system. Investigate the missing primitives for durable identity and attribution, policy-native custody, delegated contracting, taxation, insurance and liability, dispute resolution, insolvency, security attestation, governance, and recovery.
+
+Every Horizon B round must state:
+
+1. what is impossible or unsafe today;
+2. which missing legal, institutional, technical, or market primitive would change that;
+3. what observable evidence would prove the primitive exists;
+4. which bridge experiment can be run now without pretending the future condition already exists.
+
+Maintain a bias toward execution: at least two Horizon A questions should be advanced for each Horizon B scan unless a newly discovered blocker makes a future primitive immediately decisive.
+
 The journal is evidence-first and append-only. Each round addresses one bounded question and distinguishes:
 
 1. Direct fact supported by a source.
