@@ -234,3 +234,66 @@ Architecture and Economics now distinguish real custody containers, Stripe's ret
 ### Next question
 
 For this topology, define the minimum Stripe credential and approval matrix for balance read, refund, payout settings, top-up, bank-account changes, emergency stop, rotation, and independent close, and identify which controls can be verified before a live charge.
+
+## 2026-08-24 — Stripe runtime authority splits into read, refund, and human-only change planes
+
+### Research question
+
+For V0.1's US Stripe card-payment topology, what is the minimum credential and approval matrix for balance reads, refunds, payout settings, top-ups, bank-account changes, emergency stop, rotation, and independent close—and which controls can be verified before a live charge?
+
+### Result
+
+- Direct fact: Stripe restricted API keys can be set per resource to `Read`, `Write`, or `None`; Stripe recommends them over unrestricted keys, especially for AI agents, and documents a sandbox/request-log workflow for deriving least privilege.
+- Direct fact: Stripe's human roles do not supply the desired separation by default. Analyst combines refund and payout, Developer can access an almost-all-API secret key, and Administrator combines refund, payout, key, own-bank, and payout-schedule changes. Refund Analyst and View Only are materially narrower; Top-up Specialist is isolated to top-ups plus balance/payout views.
+- Direct fact: key expiry stops further API calls; rotation supports a migration grace period and request-log checks. Stripe team security supports enforced 2FA and exportable security history.
+- Counterevidence / negative result: the documented Connect Risk Analyst pause applies to connected accounts, not the standard operator account assumed by V0.1. The reviewed primary sources did not establish a Stripe-wide one-click stop or native two-person pre-execution approval for the operator's refunds, payouts, bank changes, or key rotation.
+- Bounded inference / buildable decision: runtime receives only `stripe-reconcile-rk`, an isolated `stripe-refund-rk`, and an endpoint-specific webhook verification secret. Top-up, payout settings, own-bank changes, team/key management, and rotation remain human-only; an uncombined View Only role performs independent close.
+- Exact gate: before a live charge, prove all positive and negative RAK permissions, refund idempotency and mismatch rejection, webhook signature/duplicate/secret-roll behavior, test-key expiry, local emergency stop, role boundaries, security-history capture, and a zero-difference sandbox close.
+- Unknown: live feature eligibility, exact account permission labels, real prefunding/bank verification, payout limits, native enterprise approval controls, and recovery/support behavior require account evidence. These are product design constraints for a US operator, not legal, accounting, tax, security, or financial advice.
+
+### Detailed evidence
+
+See [Stripe credential and approval matrix for V0.1](notes/2026-08-24T02-44-43Z-stripe-credential-approval-matrix.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially refines the standing authority and recovery model: it replaces the abstract three-power claim with concrete Stripe RAKs, human roles, negative permission tests, and a compositional emergency stop.
+
+### Website status
+
+Architecture now names the actual Stripe runtime and human-only change planes. The public Research Journal records this round, sources, counterevidence, unknowns, and the next reconciliation question. No shared navigation, theme, CSS, JavaScript, motion, or standalone artifact changed.
+
+### Next question
+
+What is the minimum external reconciliation schema and daily-close procedure that can match Stripe payment, balance-transaction, refund, dispute, and payout objects to the internal double-entry journal, provider bills, and the operator's bank posting—and which exact mismatches must freeze new work or discretionary spending?
+
+## 2026-08-24 — Machine identity exists; institution-recognized economic identity does not
+
+### Research question
+
+Is the ideal state an agent with its own independent identity and bank card, and what exactly separates today's operator-owned system from a persistent agent that can receive, save, spend, recover, and bear responsibility?
+
+### Result
+
+- Direct fact: machine identity primitives are real. W3C DID permits non-human subjects and autonomous-software controllers; Verifiable Credentials provide tamper-evident issuer-holder-verifier claims. These establish identifier/key control and credential exchange, not legal personhood or institutional acceptance.
+- Direct fact: AP2 v0.2 supports autonomous, Agent-Key-signed closed mandates, but trust still descends from a user-signed open mandate or Agent Provider trust list. Its Trusted Surface must remain non-agentic, deterministic verification is required, and commerce APIs, agent-to-agent delegation, and parts of dispute retrieval remain outside the current scope.
+- Direct fact: current US electronic-agent law preserves a transaction when the agent's action is legally attributable to the person bound. FinCEN CDD still requires a legal-entity customer's natural-person beneficial owners and at least one natural-person control prong. Stripe likewise binds service and linked bank-account responsibility to an identifiable User that is the named account holder.
+- Direct fact: financial and provider products expose bounded execution, not independent entry. Coinbase's Agentic Wallet lets an agent pay x402 services but reserves onramp, arbitrary transfer, and limit changes to the user. OpenAI exposes service accounts, cost/usage reads, alerts, spend limits, and Billing-UI auto-recharge, while the current public reference still does not list a general credit-purchase operation.
+- Bounded inference: the safest near-term target is not a free-spending card. It is persistent agent identity plus an operator-owned legal wrapper, dedicated subledger/accounts, revocable mandates, action-specific credentials, deterministic policy, isolated signers, recovery quorum, and independent close.
+- Project status: SELF/FUNDING has an evidence-backed control architecture but has not completed one real `payment → delivery/refund → full-cost close → API fuel → next accepted output` loop. This—not model intelligence—is the largest project-specific gap.
+
+### Detailed evidence
+
+See [agent-native identity, account, and responsibility gap map](notes/2026-08-24T02-52-25Z-agent-native-identity-gap-map.md).
+
+### Foundations update
+
+Updated `research/foundations.md` to separate six layers that had been conflated: persistent machine identity, delegated transaction authority, legal attribution, financial account ownership, policy-bounded custody, and observed economic closure. Each frontier claim now has an evidence threshold and a bridge experiment.
+
+### Website status
+
+The public Research Journal adds a six-layer gap graphic and this cited round. It now shows which primitives already exist, which require institution adoption or legal change, and which depend only on SELF/FUNDING completing its own controlled experiments. No theme, navigation, motion, or standalone artifact changed.
+
+### Next question
+
+Horizon A: finish the external reconciliation schema and daily close, then seek explicit operator approval for one minimum-value real economic loop. Horizon B: implement an `agent_identity + root_mandate + credential_lineage + revocation + recovery_quorum` prototype and prove identity continuity plus bounded autonomous authorization in a no-money or testnet AP2-style experiment.

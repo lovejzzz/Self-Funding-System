@@ -207,6 +207,26 @@ ASC 606 对采用 US GAAP 的主体要求在服务交付前把 customer prepayme
 
 完整 source ledger、状态转移、authority matrix、fallback 与 falsification gates 见：[首笔 Stripe job 的 balance separation](notes/2026-08-24T02-12-52Z-stripe-balance-separation.md)。来源：[Stripe balances](https://docs.stripe.com/payments/balances)、[Stripe add funds](https://docs.stripe.com/get-started/account/add-funds)、[Stripe minimum balances](https://docs.stripe.com/payouts/minimum-balances-for-automatic-payouts)、[Stripe refunds](https://docs.stripe.com/refunds)、[FASB ASU 2014-09 / ASC 606](https://asc.fasb.org/layoutComponents/getPdf?fileName=GUID-922C9F73-BD0D-42C8-805D-1105C5CF9692.pdf&isSitesBucket=false)、[IRS Publication 583](https://www.irs.gov/publications/p583)。
 
+### 6.2.2 V0.1 的 Stripe runtime 只持有读权限与受限退款权限；高影响变更保留给人
+
+Stripe 当前支持按 resource 设置 `Read`、`Write` 或 `None` 的 restricted API key（RAK），且明确建议在 AI agent 场景用 RAK 代替 unrestricted secret key。首版因此不把 `sk_live_`、Dashboard session、top-up、payout、bank-account、API-key 或 team-management 权限交给 agent。最小 machine credential 是：一把只读 reconciliation RAK、一把只对已测试 refund path 开放写入的 refund RAK，以及一把只验证 inbound event 的 endpoint-specific webhook secret。退款仍按 `proposal → deterministic policy → isolated signer → Stripe → signed event/read-back → independent close` 执行；job sandbox、模型与 read worker 都不能接触 refund signer。
+
+Dashboard role 不能自动形成 maker-checker：Stripe 的 Analyst 同时能 refund 与 payout，Developer 接触几乎全权限 secret key，Administrator 同时能操作 refund、payout、key、bank 和 payout schedule；multiple roles 又会叠加权限。因此 Refund Analyst 只处理退款例外，Administrator 在 phishing-resistant 2FA 下进行 key、own-bank 和 payout-schedule 变更，View Only reviewer 独立读取 payments、balances、payouts、logs、reports 与 security history。refund/dispute prefunding 的首次真实注资由人以 Top-up Specialist 或账户实际支持的 Dashboard flow 完成；公开 Top-ups API 的存在不能证明它等同于该账户的 live prefunding rail。
+
+本轮也没有找到 standard merchant account 的 Stripe-wide one-click emergency stop。Connect Risk Analyst 的 pause payments/payouts 只作用于 connected account，不作用于这里假设的 operator account。因此 emergency stop 必须是组合控制：先在本地停止新任务、provider spend 与自动退款签名，再由人 expire/rotate 受影响的 RAK 或 webhook secret，导出 request/security history，完成外部对账与 negative-permission test 后才恢复。sandbox 可以验证 allow/deny、idempotency、signature、rotation 与 recovery；不能证明 live bank 验证、account feature、limits、settlement 或真实 refund-prefunding path。
+
+完整 evidence ledger、authority matrix、控制状态转移与 pre-live gate 见：[V0.1 Stripe credential and approval matrix](notes/2026-08-24T02-44-43Z-stripe-credential-approval-matrix.md)。来源：[Stripe restricted API keys](https://docs.stripe.com/keys/restricted-api-keys)、[Stripe API keys](https://docs.stripe.com/keys)、[Stripe user roles](https://docs.stripe.com/get-started/account/teams/roles?locale=en-GB)、[Stripe team security](https://docs.stripe.com/get-started/account/orgs/team)、[Stripe webhooks](https://docs.stripe.com/webhooks)、[Stripe idempotent requests](https://docs.stripe.com/api/idempotent_requests)。
+
+### 6.2.3 机器身份和经济身份必须分层：DID 或 agent key 不是银行账户、法律人格或独立 treasury
+
+理想目标应拆成六层：`persistent machine identity → delegated transaction authority → legal attribution → financial account ownership → policy-bounded custody → observed economic closure`。前两层已经有相当成熟的技术 primitive：W3C DID 允许 digital subject 和 autonomous-software controller，Verifiable Credentials 能表达 issuer 对 subject 的防篡改 claim；AP2 autonomous flow 能由 Agent Key 签署 closed mandate。但是这些技术只证明 key/credential/mandate 的连续性和授权链，不迫使 bank、PSP、provider、court、tax authority 或 insurer 把 agent 当作独立 customer 或 liable principal。
+
+当前制度证据仍把商业行为归到可识别主体。15 U.S.C. §7001(h) 要求 electronic-agent action legally attributable to the person to be bound；FinCEN CDD 对 legal entity customer 识别自然人 beneficial owner 和至少一名自然人 control person；Stripe 要求 User 是关联 User Bank Account 的 named account holder；OpenAI 把购买、payment method 和 account activity 责任放在 Customer Account。Coinbase Agentic Wallet 的权限分离也说明当前设计方向：agent 可以在 limits 内支付 x402 service，但只有用户能 onramp、任意 transfer 或提高 limits。
+
+因此首版目标不是“给模型一张独立无限额银行卡”，而是建立一个持续的 agent identity bundle：`agent_id/DID、agent key lineage、software/policy version、operator legal-entity ID、root mandate、revocation state、recovery quorum`。agent 持有专属 economic record、provider project、subledger 和 action-specific credential；operator/entity 仍持有法律账户；deterministic policy 执行不可由 agent 提高的 amount、payee、purpose、expiry、reserve 和 daily/provider cap；isolated signer 精确执行；external rail 和 independent close 决定经济事实。
+
+完整 gap matrix、evidence thresholds、identity-continuity drill、AP2-style sandbox 与真实闭环 gate 见：[Agent-native identity gap map](notes/2026-08-24T02-52-25Z-agent-native-identity-gap-map.md)。来源：[W3C DID Core](https://www.w3.org/TR/did-core/)、[W3C Verifiable Credentials 2.0](https://www.w3.org/TR/vc-data-model/)、[AP2 v0.2](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/specification.md)、[15 U.S.C. §7001](https://www.govinfo.gov/link/uscode/15/7001)、[FinCEN CDD FAQs](https://www.fincen.gov/resources/statutes-and-regulations/cdd-rule-faqs)、[Stripe Services Agreement](https://stripe.com/legal/ssa)、[OpenAI Services Agreement](https://openai.com/policies/services-agreement/)、[Coinbase Agentic Wallet MCP](https://docs.cdp.coinbase.com/agentic-wallet/mcp/mcp-tools/overview)。
+
 ### 6.3 “agent 自己充值 API”可以在经济控制意义上实现，但主流账户仍属于 operator
 
 首版必须区分三种不同能力：
