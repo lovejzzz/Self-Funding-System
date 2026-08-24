@@ -172,3 +172,34 @@ Economics now compares collection routes and documents the three viable API fuel
 ### Next question
 
 Horizon A: verify Stripe Projects' actual OpenRouter billing object, charge timing, failure states, and lowest-risk live test; compare it with a Square receipt-to-debit auto-reload path. Horizon B: audit whether x402 currently offers the model, sandbox, storage, and deployment services needed for a complete agent stack.
+
+## 2026-08-24 — Stripe Projects delegates a provider payment credential; reconciliation remains unproven
+
+### Research question
+
+Stripe Projects 为 OpenRouter pay-as-you-go 实际建立了什么付款对象；当前公开证据是否足以把一笔 OpenRouter job cost 对账到 operator 的真实外部付款？
+
+### Result
+
+- Direct fact: paid Stripe Projects tiers tokenize the operator's stored payment credential into a Shared Payment Token; OpenRouter, as provider/seller, uses the granted token to create its own PaymentIntent. The token is a scoped credential, not funds or a balance.
+- Direct fact: Stripe Projects documents provider-level current/previous-month spend and global/per-provider caps. It does not document generation IDs, SPT IDs, provider PaymentIntent or receipt IDs, charge cadence, retry state, or refund linkage in the Projects spend surface.
+- Direct fact: OpenRouter can report generation-level cost and Activity/Analytics usage by API key, and a lower per-key guardrail can reject over-budget calls with HTTP 403.
+- Unknown/conflicting: OpenRouter's general billing path deducts usage from credits, while the Projects integration is called pay-as-you-go and grants an SPT at upgrade. Current public documentation does not establish whether Projects charges per generation, buys or auto-reloads credits, aggregates charges, or exposes the resulting payment objects to the operator.
+- Bounded inference / buildable decision: keep Stripe Projects for provisioning, scoped credentials, and an outer provider cap, but mark the paid fuel loop `RECONCILIATION_BLOCKED`. Projects spend is an aggregate cross-check, not the job ledger or proof of settled provider cash cost.
+- Testable hypothesis: one deliberately capped live generation can be matched across generation usage, OpenRouter billing, Projects spend, SPT/payment evidence, and the operator's posted bank/card transaction with zero unexplained difference.
+
+### Detailed evidence
+
+See [Stripe Projects + OpenRouter billing object and reconciliation](notes/2026-08-24T01-44-21Z-stripe-projects-openrouter-reconciliation.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially refines the standing provider-payment model: Stripe Projects uses a provider-side SPT/PaymentIntent path, and provisioning is now explicitly separated from proven job-to-cash reconciliation.
+
+### Website status
+
+Economics now distinguishes buildable provisioning from the blocked cash-reconciliation claim. The public Research Journal records the SPT authority boundary, counterevidence, exact unknowns, and the capped live-test gate. No shared navigation, theme, CSS, JavaScript, motion, or standalone artifact changed.
+
+### Next question
+
+Horizon A deliberate live replication: with operator approval, isolated test capital, a Projects per-provider cap, and a lower OpenRouter key limit, can one paid generation reconcile its generation ID, provider usage/billing, Projects spend, SPT/payment evidence, and bank/card posting to zero unexplained difference within a preregistered window?
