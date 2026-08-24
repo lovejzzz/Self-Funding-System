@@ -1,0 +1,309 @@
+# SELF/FUNDING 研究底稿：这个想法究竟需要什么证据
+
+日期：2026-08-23  
+范围：对现有六个页面的论点进行证据审计；优先使用论文、标准、政府资料和官方技术文档。  
+说明：法律部分只用于识别研究与产品风险，不构成法律意见。
+
+## 1. 结论先行
+
+SELF/FUNDING 是一个值得实验的研究命题，但目前还不能作为一个已经成立的商业事实来陈述。
+
+现有网站把五个不同层级的命题连成了一条确定性叙事：
+
+1. 软件智能体能够执行工具、修改代码、调用模型和付款。
+2. 某些边界明确的软件任务可以被机器验收，并产生正的单次贡献毛利。
+3. 一个经济路由器可以长期选择“足够好且足够便宜”的模型。
+4. 机器客户会持续购买这些服务，使有限资金不再耗尽。
+5. 这些盈余足以补贴面向人的免费智能服务。
+
+研究结论是：
+
+- 第 1 层已经有较强的工程证据。
+- 第 2、3 层有研究支持，但必须在 SELF/FUNDING 自己的任务分布上验证。
+- 第 4 层只有早期市场信号，没有代码服务需求的充分证据。
+- 第 5 层是合理的双边市场假说，但目前完全没有被本项目的数据证明。
+
+因此，网站最可信的定位不是“我们已经造出了会养活自己的智能”，而是：
+
+> 一个有限资本、权限受限、公开核算的实验：验证窄范围软件服务能否为其使用的计算资源持续产生净现金。
+
+## 2. 证据强度矩阵
+
+| 当前主张 | 证据判断 | 研究依据 | 网站应如何表达 |
+|---|---|---|---|
+| 智能体可以完成真实软件工作 | 中等；强烈依赖任务边界 | SWE-bench 证明真实仓库任务可执行验证，但真实世界任务仍受上下文、任务长度和数据污染影响 | 写成“在部分可验证任务上已可用”，不要泛化成稳定的软件劳动者 |
+| “会写代码”就等于“能创造可出售价值” | 较弱 | 能生成结果不等于有人愿意付费，也不等于交付成本低于价格 | 将需求、成交、交付、验收拆成四个独立指标 |
+| 单元测试生成适合作为第一项服务 | 中等偏强 | Meta 的 TestGen-LLM 中，75% 构建成功、57% 稳定通过、25% 增加覆盖率；73% 的建议被工程师接受 | 把服务改成“改进已有测试套件”，并用构建、稳定性、覆盖率和 mutation score 过滤 |
+| 自动代码审查适合作为第一项服务 | 较弱 | 2026 年 SWE-PRBench 中，前沿模型在 diff-only 条件下只检测到约 15–31% 的人工标注问题 | 暂不作为首个付费服务；最多作为非权威辅助报告 |
+| 模型路由能够降低成本 | 中等偏强 | FrugalGPT、RouteLLM 和代码级联研究都显示明显的成本/质量折中改善 | 可以保留，但必须声明路由阈值是在本项目任务上校准，而非直接套用通用 benchmark |
+| x402 已解决机器支付 | 技术上较强，市场上仍早期 | x402 v2 已提供支付、facilitator、服务发现和 MCP 调用；Google AP2、Visa TAP 也证明行业正在建立授权与信任层 | 写成“支付基础设施已经可组合”，不要写成“机器客户市场已经成熟” |
+| x402 支持“验收后再结算” | 当前表述不准确 | x402 的 exact/upto 是执行后不可逆的 push payment；退款是卖方发起一笔新的转账，原生 escrow 仍是未来能力 | V0.1 应明确为预付费 + 失败退款，或另引入 escrow/hold；不能把预付签名描述成传统授权保留 |
+| 双重记账 + 幂等键足以保证资金安全 | 部分成立 | 幂等、数据库事务、对账是必要条件，但不是充分条件；并发、重复事件、密钥泄漏、链重组和内部篡改仍需处理 | 使用“append-only、可对账、tamper-evident”，不要仅凭 Postgres 称“immutable” |
+| 权限受限的智能体是安全的 | 方向正确，但不能称已解决 | AgentDojo、OWASP 与 NIST 均表明 prompt injection、过度权限、工具滥用和 Denial-of-Wallet 仍是现实风险 | 强调所有付款、权限、限额与结算由确定性代码执行，模型只能提出动作 |
+| 共享资金池比每个 session 单独盈利更合理 | 理论上成立 | 双边市场、风险池与跨侧补贴理论支持聚合核算 | 写成经济设计原则，不能写成已被运营数据验证的事实 |
+| 机器市场可以补贴免费人类产品 | 有理论基础、无本项目实证 | 双边市场允许一侧低价或免费，但前提是另一侧需求与网络外部性足够强 | 标为长期假说；V0.1 只验证付费服务的净贡献，不承诺“frontier AI free” |
+| 10 个成功任务可以证明模型成立 | 不成立 | 小样本不能支持 90% 接受率或低于 5% 的退款率 | “10 次”只能作为工程 smoke test；正式实验需预注册统计判定规则 |
+
+## 3. 目前最有力的研究支撑
+
+### 3.1 理论基础其实不是“AI 有自己的钱”，而是 bounded optimality
+
+Russell 与 Subramanian 的 bounded optimality 将智能定义为：在给定计算架构、资源限制和环境中，选择能够获得最高期望效用的程序。Rational metareasoning 则进一步研究“是否值得继续计算”。这比拟人化的“AI 想办法活下去”更严谨。
+
+SELF/FUNDING 可以据此重新定义经济路由器：
+
+> 它不是让模型产生求生欲，而是在每个任务上比较额外计算的预期价值与计算成本。
+
+来源：[Provably Bounded-Optimal Agents](https://arxiv.org/abs/cs/9505103)、[Stuart Russell 对 rational metareasoning 的说明](https://aima.eecs.berkeley.edu/~russell/research-bo.html)。
+
+### 3.2 模型路由具有真实研究基础，但通用 benchmark 结果不能直接变成业务毛利
+
+FrugalGPT 在其研究任务上报告过最高 98% 的成本下降；RouteLLM 在若干 benchmark 上以明显更低的强模型调用比例保持接近强模型的质量；代码级联研究也报告平均约 26%、最高 70% 的成本下降。
+
+这些结果支持“路由值得做”，但不支持网站当前隐含的精确毛利。代码任务的失败成本、重试、上下文长度与验证成本可能抵消节省。SELF/FUNDING 必须记录：
+
+- 每种任务类型的模型成功率；
+- 每个模型的完整 token、工具与 sandbox 成本；
+- 路由决策的置信度校准；
+- 便宜模型失败后升级造成的级联成本；
+- 路由后的最终验收率，而非只看模型评分。
+
+来源：[FrugalGPT](https://arxiv.org/abs/2305.05176)、[RouteLLM / ICLR 2025](https://arxiv.org/abs/2406.18665)、[Model Cascading for Code](https://arxiv.org/abs/2405.15842)。
+
+### 3.3 代码工作证据是“混合的”，这正好支持选择非常窄的服务
+
+有利证据：GitHub 的受控实验在一个有限 JavaScript 任务上观察到使用 Copilot 的参与者更快；Meta 的 TestGen-LLM 在真实产品代码中生成了被工程师接受的测试改进。
+
+不利证据：METR 在熟悉自己大型开源仓库的资深开发者中观察到，early-2025 AI 工具让任务时间增加 19%；DORA 2025 将 AI 描述为组织能力的“放大器”，而不是独立的生产力保证；新的代码审查 benchmark 仍显示低召回率。
+
+所以最强的内容不是“智能体已经是软件公司”，而是：
+
+> 当前能力适合被压缩成输入明确、输出可执行验证、失败可自动退款的小任务。
+
+来源：[Meta TestGen-LLM](https://arxiv.org/abs/2402.09171)、[TESTEVAL](https://arxiv.org/abs/2406.04531)、[METR 开发者生产力 RCT](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)、[DORA 2025](https://research.google/pubs/dora-2025-state-of-ai-assisted-software-development-report/)、[SWE-PRBench](https://arxiv.org/abs/2603.26130)。
+
+### 3.4 机器支付基础设施已经存在，但“机器需求”还没有被证明
+
+x402 v2 已支持 HTTP 原生稳定币支付、facilitator、MCP 服务发现和 Bazaar。Coinbase 的官方示例显示 Bazaar 中已有带价格、质量分和 transaction count 的服务；Google AP2 与 Visa Trusted Agent Protocol 则把用户授权、agent 身份、签名、支付凭证和责任链正式化。
+
+这证明了“机器能够发现并购买服务”，但不能证明“机器会持续购买代码服务”。官方 Bazaar 示例仍主要是 crypto news、token data 和 DEX 数据，示例 transaction count 只有数十到数百。代码转换、测试改进和 PR 审查的真实机器需求仍需要单独验证。
+
+来源：[x402 总览](https://docs.cdp.coinbase.com/x402/welcome)、[x402 Bazaar MCP](https://docs.cdp.coinbase.com/api-reference/v2/rest-api/x402-facilitator/bazaar-mcp-server)、[Bazaar 资源示例](https://docs.cdp.coinbase.com/agentic-wallet/mcp/mcp-tools/list-bazaar-resources)、[Google AP2](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)、[AP2 v0.2 规范](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/specification.md)、[Visa Trusted Agent Protocol](https://developer.visa.com/capabilities/trusted-agent-protocol/trusted-agent-protocol-specifications/)。
+
+## 4. 现有架构中必须修正的三个实质问题
+
+### 4.1 x402 结算流程与网站的状态机不一致
+
+网站现在写的是：Fund → reserve revenue → Run → Verify → Settle。
+
+但 Coinbase 当前文档描述的 x402 基本流程是：客户端提供签名支付 payload，服务端验证并结算，然后返回资源。`exact` 与 `upto` 都是不可逆 push payment；失败退款需要卖方再发一笔 USDC，原生条件支付/escrow 仍属于未来扩展。
+
+V0.1 应选择并明确其中一种：
+
+1. **预付费模式**：quote → prepay → run → pass/return；失败则发起独立退款。
+2. **托管模式**：先在受控 escrow 中锁定，验收后释放；这需要 x402 之外的组件。
+3. **同步资源模式**：只销售可以在一次 HTTP 生命周期内完成并验证的极小服务。
+
+首版建议使用第 1 种，并把退款、重复支付和退款失败作为账本的一等事件。
+
+来源：[x402 Client / Server Flow](https://docs.cdp.coinbase.com/x402/core-concepts/client-server)、[x402 FAQ — refunds](https://docs.cdp.coinbase.com/x402/support/faq)。
+
+### 4.2 “无隐藏补贴”与当前 E2B / 免费模型额度冲突
+
+E2B 当前 Hobby tier 含一次性 $100 usage credits，Pro tier 为 $150/月再加 usage cost。一个只有 $20 的实验如果使用 $100 免费 credits，就已经接受了大于初始资本五倍的补贴；如果使用 Pro，则仅固定月费就超过资金。
+
+因此所有免费额度、云赠金、免费模型层和创始人提供的基础设施都必须：
+
+- 按公开 list price 计入成本；或
+- 明确记为 donated capital，并加入初始资本；或
+- 完全不使用。
+
+否则“30 天后还有没有钱”不具有解释力。
+
+来源：[E2B Pricing](https://e2b.dev/pricing)、[OpenAI API Pricing](https://openai.com/api/pricing/)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)。
+
+### 4.3 账本可以 append-only，但不能仅凭数据库设计称为 immutable
+
+Postgres 的交易、约束与 serializable isolation 能保护一致性；幂等键能降低重复执行；外部支付对账能发现差异。但拥有数据库管理员权限的人仍能更改记录。
+
+更准确的表述应为：
+
+- append-only journal；
+- balanced entries；
+- serializable posting transaction；
+- unique idempotency key；
+- external-rail reconciliation；
+- hash-chained / signed daily checkpoint；
+- 独立只读审计副本。
+
+来源：[PostgreSQL transactions](https://www.postgresql.org/docs/current/sql-start-transaction.html)、[PostgreSQL Serializable](https://wiki.postgresql.org/wiki/Serializable)、[Stripe idempotent requests](https://docs.stripe.com/api/idempotent_requests)、[Stripe webhook delivery behavior](https://docs.stripe.com/webhooks)。
+
+## 5. 安全研究对产品逻辑的要求
+
+AgentDojo 证明，外部工具返回的数据可以通过间接 prompt injection 劫持智能体。OWASP 特别列出 excessive agency、tool misuse、Denial-of-Wallet、密钥泄漏与供应链攻击。Google AP2 也明确规定：验证和授权必须由确定性代码执行，Trusted Surface 必须是 non-agentic。
+
+因此经济控制面必须遵循：
+
+1. 模型只能提出 `proposed_action`，不能直接持有付款或部署权限。
+2. 付款限额、收款地址、服务 allowlist、nonce、过期时间和预算由确定性策略引擎验证。
+3. 读取不可信仓库内容的模型与持有钱包签名权的组件不能共享上下文或进程。
+4. sandbox 默认断网；需要网络时采用域名、方法、字节数和时间预算 allowlist。
+5. 每个任务限制 token、工具调用、重试、wall-clock、CPU、RAM 和最大现金损失。
+6. 高影响动作必须经过与模型独立的审批面。
+7. 所有安全属性都应进行 adversarial evaluation，而不是通过 prompt 声明。
+
+来源：[AgentDojo](https://arxiv.org/abs/2406.13352)、[OWASP AI Agent Security](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)、[NIST AI RMF GenAI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)、[Firecracker](https://www.usenix.org/conference/nsdi20/presentation/agache)、[AP2 Specification](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/specification.md)。
+
+## 6. 法律和责任边界不能继续隐身
+
+“智能体拥有资金”只是产品隐喻，不是当前法律结构。
+
+- 美国 E-SIGN Act 明确允许电子代理参与合同形成，但前提是其行为可以法律上归属于被约束的人。
+- 收到数字资产作为服务报酬，通常仍按收到时的美元公允价值确认普通收入。
+- 自己收款并购买自己所需服务，与代表他人接收并转移资金的监管性质不同。后者可能触发 money transmission、AML/KYC 与州级要求。
+- OFAC 对虚拟货币交易与法币交易适用同样的制裁合规义务。
+
+因此网站需要出现真实的 operator / legal entity / contracting party，而不能让“自主机构”掩盖责任主体。
+
+来源：[15 USC §7001(h)](https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7001+edition%3Aprelim%29)、[IRS digital asset FAQ](https://www.irs.gov/individuals/international-taxpayers/frequently-asked-questions-on-digital-asset-transactions)、[FinCEN virtual currency guidance](https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering)、[OFAC virtual currency guidance](https://ofac.treasury.gov/system/files/126/virtual_currency_guidance_brochure.pdf)。
+
+## 7. 建议重写的 MVP 实验
+
+### 7.1 更严谨的研究问题
+
+> 在预先定义的输入范围、确定性验收、固定权限和真实全成本核算下，一个自动化测试改进服务能否以正贡献毛利完成足够多的真实付费任务，并把所需人工操作压低到预设阈值？
+
+这比“30 天后智能体是否还活着”更好，因为它能把失败拆成：需求不足、价格不足、交付失败、成本失控、退款过高或人工依赖。
+
+### 7.2 首个服务应改为“改进已有测试”，不是开放式代码服务
+
+建议输入：
+
+- 一个函数或小模块；
+- 已存在、可运行的测试框架；
+- 锁定依赖；
+- 明确语言和仓库大小上限；
+- 无网络、无生产密钥。
+
+只有同时满足以下条件才验收：
+
+- 原有测试继续通过；
+- 新测试连续运行多次无 flaky；
+- 目标覆盖率或 branch coverage 增加；
+- mutation score 达到最低提升；
+- patch 大小和允许文件范围合规；
+- 静态检查与依赖策略通过；
+- 产物 hash 与执行记录完整。
+
+这条服务路线与 TestGen-LLM 的工业证据最接近。自动 PR review 不应作为第一个主要收入项目。
+
+### 7.3 正确的单位经济公式
+
+```text
+contribution_per_job = settled_revenue
+  - model_input_cost
+  - model_output_and_reasoning_cost
+  - sandbox_cpu_ram_storage_cost
+  - payment_and_facilitator_cost
+  - expected_retry_cost
+  - expected_refund_and_failure_cost
+  - allocated_fixed_infrastructure_cost
+  - human_operations_cost
+```
+
+另行报告税费、合规成本、客户获取成本和安全事件准备金。不能用免费 credits 将任一项变成零。
+
+### 7.4 把一个实验拆成三个实验
+
+1. **技术可行性**：在冻结的内部任务集上测成功率、成本、路由和安全。
+2. **单位经济**：只针对已成交任务测真实贡献毛利。
+3. **市场需求**：测曝光 → quote → 付款 → 复购，不允许把测试流量当客户需求。
+
+三者全部通过，才能开始“有限资本生存实验”。
+
+### 7.5 修正样本量
+
+网站当前的“连续 10 个任务正贡献”只能证明流程能跑，不能证明可靠性。即便 10 次都没有退款，按照常用 rule of three，真实失败率的单侧 95% 上界仍约为 30%。若希望在零失败情况下把失败率上界压到 5% 左右，需要约 59–60 次独立任务。
+
+正式实验应预注册：
+
+- 可接受成功率与不可接受成功率；
+- 最大样本量；
+- 允许失败数；
+- 提前停止规则；
+- 退款、超预算、安全或对账差异的硬停止条件；
+- 每个指标的置信区间。
+
+来源：[NIST — binary performance threshold](https://www.nist.gov/publications/confirming-performance-threshold-binary-experimental-response)、[NIST proportion confidence intervals](https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/propconf.htm)、[NIST rule-of-three references](https://www.nist.gov/document/iyer-presentationpdf)。
+
+## 8. 对六个页面的内容改写方向
+
+### Home
+
+- 将确定性口号降级为研究问题。
+- 清楚区分 `SUPPORTED`, `HYPOTHESIS`, `TARGET`, `LIVE RESULT`。
+- 所有金额必须标记 `illustrative`、`simulated` 或 `live`。
+- “frontier intelligence free to humans”改成有条件的长期目标。
+
+建议核心句：
+
+> Can a bounded software service earn enough to cover the real cost of its own computation?
+
+### Thesis
+
+- 引入 bounded optimality 与 value of computation，替代“求生压力”式拟人叙事。
+- 将共享 treasury 定义为运营实体的受限预算池，而不是智能体法律人格。
+- 加入反证条件：如果市场需求、可靠性或人工成本不成立，命题即失败。
+
+### Architecture
+
+- 把模型层、策略层、执行层、钱包签名层严格拆开。
+- 修正 x402 为 prepay/refund 或额外 escrow。
+- 将 `immutable ledger` 改为 `append-only, reconciled, tamper-evident ledger`。
+- 加入 prompt injection、DoW、重复事件、refund failure 与密钥轮换威胁模型。
+
+### Economics
+
+- 删除没有 token、模型、时长和固定成本来源的 `$0.30 / $0.045 / $0.025` 硬编码示例，或明确标为 illustrative scenario。
+- 同时展示单位经济与需求漏斗。
+- 将免费额度按市场价计成本。
+- “60% margin”必须说明是目标，不是观测值。
+
+### Build
+
+- 将首个服务改为测试改进管线。
+- 增加 mutation testing、flaky reruns、dependency lock、network-off sandbox。
+- 增加 policy engine、signed mandate、refund transaction、daily signed checkpoint。
+- 把 10 个任务定位为工程验收，而不是经济证明。
+
+### Experiment
+
+- 改为三阶段实验，并预注册统计规则。
+- 把 $20 与 $5 最大损失保留为纪律工具，但不要把 30 天作为唯一成功判据。
+- 同时公布现金账、应计成本、donated credits、人工分钟和需求数据。
+
+## 9. 下一轮必须回答的研究问题
+
+1. 谁是第一个真实买家：人类开发者、CI 平台、代码代理，还是 agent marketplace？
+2. 买家愿意为“测试覆盖提升”支付多少，而不是网站希望收多少？
+3. 什么输入限制能使成功率、报价误差和安全风险稳定？
+4. mutation score、coverage 与真实缺陷发现之间采用什么验收权重？
+5. x402 的预付款与失败退款是否会让买家承担不可接受的交易风险？
+6. 哪个法律实体签约、收款、纳税和承担缺陷责任？
+7. 共享 treasury 的补贴比例何时启动，何时停止？
+8. 在何种观测结果下，我们必须承认“自我融资”在当前条件下失败？
+
+## 10. 当前研究判断
+
+这个项目最强的地方不是它已经证明了一个自主机器经济，而是它可以把一个宏大说法变成一个诚实、有限、可失败、可复现的实验。
+
+真正值得建立的不是“一个会赚钱的 AI”形象，而是一套公开回答以下问题的系统：
+
+- 这项工作由谁购买？
+- 结果是否被客观验收？
+- 所有成本是否真实入账？
+- 模型是否被权限系统约束？
+- 失败是否自动停止损失？
+- 盈余是否在重复样本中存在？
+
+如果这些答案最终为“是”，SELF/FUNDING 才获得比口号更有价值的东西：一项可被他人复验的经济事实。
