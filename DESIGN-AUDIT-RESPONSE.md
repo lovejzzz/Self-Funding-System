@@ -1,4 +1,4 @@
-# 28-Style Design Audit Response
+# 38-Style Design Audit Response
 
 Date: 2026-08-24  
 External review: [Claude audit artifact](https://claude.ai/code/artifact/2c5b6149-938b-44ba-a6e5-a22323d77c9c)
@@ -10,7 +10,7 @@ The external audit was treated as a set of hypotheses and checked against the ru
 - Added separate tokens for accent fills and accent text. A bright or branded accent may no longer be assumed to be readable as text.
 - Raised low-emphasis text contrast without flattening hierarchy.
 - Replaced hard-coded hero, quote, status, data-tag, and flow-node colors with theme-aware surfaces and ink.
-- Self-hosted four font families and assigned deliberate display, body, label, and data roles across all 28 styles.
+- Self-hosted four font families and assigned deliberate display, body, label, and data roles across all 38 styles.
 - Kept the desktop selector wrapped, as required by the product brief, but removed it from the persistent sticky stack. On mobile it becomes one compact horizontal row with a separate Recipe control.
 - Increased chip size and corrected active, hover, focus, and animated transition contrast.
 - Added narrow-stage placement rules for hero data labels and responsive flow diagrams.
@@ -36,7 +36,13 @@ The external audit was treated as a set of hypotheses and checked against the ru
 - Theme persistence verified across normal pages and standalone previews.
 - All 28 recipe panels verified to contain ten displayed color roles and a complete company-scale design-system skill.
 
-The desktop selector was intentionally not collapsed into a dropdown or single-row scroller because the visual-review brief explicitly requires all 28 directions to remain visible and wrapped on laptop/desktop.
+The desktop selector was intentionally not collapsed into a dropdown or single-row scroller because the visual-review brief explicitly requires all 38 directions to remain visible and wrapped on laptop/desktop.
+
+## Systems 29–38
+
+- Added Bento Product, Risograph, Kinetic Type, Spatial OS, Quiet Luxury, Civic Digital, Parametric, Web Vernacular, Aero Optimism, and Manga Systems.
+- Each system owns a distinct editorial model, page composition, typography stack, treasury behavior, component grammar, inner-page treatment, motion choreography, and governance gate.
+- The new systems were verified with the same shared persistence, recipe, contrast, overflow, and runtime contracts as systems 01–28, then reviewed together as homepage and Architecture contact sheets at 1280px.
 
 ## Round-two corrections
 
@@ -44,5 +50,5 @@ The desktop selector was intentionally not collapsed into a dropdown or single-r
 - Corrected the Monochrome Architecture inverse metric, Neo-Brutalist center labels, and light-theme micro-labels so their text follows the component surface rather than the page accent color.
 - Added a separate `accent-ink` contract for Neo-Brutalist, Memphis, Calm Futurism, Clay, and Swiss Grid; adjusted Bauhaus, Solarpunk, Swiss, Memphis, Biotech, Cartographic, and Terminal hairline contrast pairs.
 - Mobile theme persistence now horizontally centers the active chip without changing the page's vertical position.
-- Expanded all 28 recipes from art-direction summaries into company-scale design-system specifications. Every system now defines a numeric type scale, grid, spacing scale, surface/elevation logic, imagery and iconography, data visualization, financial notation, motion, accessibility, internationalization, component-state inventory, required deliverables, ownership, versioning, migration, and release gates.
+- Expanded all 38 recipes from art-direction summaries into company-scale design-system specifications. Every system now defines a numeric type scale, grid, spacing scale, surface/elevation logic, imagery and iconography, data visualization, financial notation, motion, accessibility, internationalization, component-state inventory, required deliverables, ownership, versioning, migration, and release gates.
 - Each copied design-system skill includes the selected theme's live token values and requires paired surface/text tokens, six viewport regression fixtures, WCAG 2.2 AA, and human review of every text/background relationship.
