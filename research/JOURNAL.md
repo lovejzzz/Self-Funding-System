@@ -297,3 +297,35 @@ The public Research Journal adds a six-layer gap graphic and this cited round. I
 ### Next question
 
 Horizon A: finish the external reconciliation schema and daily close, then seek explicit operator approval for one minimum-value real economic loop. Horizon B: implement an `agent_identity + root_mandate + credential_lineage + revocation + recovery_quorum` prototype and prove identity continuity plus bounded autonomous authorization in a no-money or testnet AP2-style experiment.
+
+## 2026-08-24 — Stripe close needs two passes and three explicit freeze lanes
+
+### Research question
+
+For V0.1's first US Stripe card job, what minimum external reconciliation schema and two-pass daily-close procedure can match Stripe payment, balance-transaction, refund, dispute, and payout movements, internal double entry, OpenRouter provider cost, and the operator's bank posting—and which exact mismatches freeze new work, discretionary spend, or all mutations?
+
+### Result
+
+- Direct fact: Stripe's Balance Transaction object is the external cash-movement anchor across gross, fee, net, availability, balance type, reporting category, and source. Refund, dispute, payout, and payout-failure objects expose separate movement or reversal links that must be preserved.
+- Direct fact: Stripe says webhook delivery can be unordered, retried, and duplicated. Canonical API objects and itemized reports—not Event arrival order—must drive external close.
+- Direct fact: standard automatic payouts support transaction-membership reconciliation; manual payouts do not inherit that mapping. Stripe's complete daily report data is normally available the following day, so an evidence-complete close cannot be guaranteed in real time or unconditionally under 24 hours.
+- Counterevidence / negative result: OpenRouter generation usage establishes accrued cost in credits but not cash settlement; no reviewed primary source established that every bank feed exposes a Stripe payout ID. Bank trace/reference support must be observed, with exact-match and independent-review fallback.
+- Bounded inference / buildable decision: run a `PROVISIONAL` canonical-API pass after interval end, then an `EVIDENCE_COMPLETE` itemized-report, automatic-payout, bank, and provider-document pass. Only an independent reviewer can mark `REVIEWED_CLOSED`; provisional evidence never releases surplus.
+- Exact controls: normal timing exposure freezes affected surplus; any unmatched cent, stale report beyond the 36-hour experiment target, unexpected fee/adjustment, missing bank payout, provider-cost mismatch, or unsupported payout freezes new work and discretionary spend; unbalanced/duplicate booking, unexpected payout destination, unexplained negative external balance, or credential/evidence compromise stops all runtime mutations.
+- Unknown: actual Stripe report access/latency, bank export identifiers, trace support, account cutoff/timezone, and OpenRouter billing linkage require sandbox and live-account evidence. Accounting, tax, reserve, consumer, and record-retention conclusions require US professional review. These are product-design constraints, not legal, accounting, tax, security, or financial advice.
+
+### Detailed evidence
+
+See [Stripe two-pass daily close for V0.1](notes/2026-08-24T03-14-27Z-stripe-two-pass-daily-close.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially replaces the standing “daily reconciliation under 24 hours” shorthand with a source-backed two-pass close, minimum external schema, standard-automatic-payout decision, provider cash boundary, and tiered exception controls.
+
+### Website status
+
+Architecture, Economics, MVP, and Build now distinguish provisional freshness from evidence-complete close, show the 36-hour stale-evidence target as a target rather than an observed rail promise, name the exact freeze tiers, and include the minimum reconciliation records. The public Research Journal records this round and its primary sources. No shared navigation, theme, CSS, JavaScript, motion, or standalone artifact changed.
+
+### Next question
+
+Can a sandbox implementation of this schema ingest a preregistered fixture set—successful charge, duplicate/reordered webhook, Stripe fee, refund success/failure, dispute withdrawal/reinstatement, automatic payout/failure, manual-payout rejection, provider-cost mismatch, and unexpected destination—and produce the exact close state and freeze tier with zero duplicate or unbalanced entries?
