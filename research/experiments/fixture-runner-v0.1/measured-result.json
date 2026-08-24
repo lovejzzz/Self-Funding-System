@@ -1,0 +1,27 @@
+{
+  "run_at": "2026-08-24T04:42:09Z",
+  "command": "node research/experiments/fixture-runner-v0.1/runner.mjs research/experiments/fixture-runner-v0.1/manifest.json",
+  "summary": {
+    "manifest_version": "0.1.0",
+    "stripe_api_version": "2026-07-29.dahlia",
+    "fixture_count": 4,
+    "passed": 3,
+    "blocked": 1,
+    "guard_tests_passed": 3,
+    "complete_prelive_suite": false
+  },
+  "blocked_fixture": {
+    "fixture_id": "rail-automatic-payout-capability-probe",
+    "blocker": "RAIL_SANDBOX_CAPTURE_REQUIRED"
+  },
+  "passed_fixtures": [
+    "transport-duplicate-and-reordered-events",
+    "policy-provider-cost-mismatch",
+    "policy-unexpected-payout-destination"
+  ],
+  "passed_guards": [
+    "reject pre-live live-close upgrade",
+    "reject authenticated-payload hash mismatch",
+    "reject idempotency-key payload conflict"
+  ]
+}

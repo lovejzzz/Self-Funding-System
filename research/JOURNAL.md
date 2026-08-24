@@ -360,3 +360,34 @@ Experiment and Build now distinguish `CONTROL_PLANE_PASSED` from `REVIEWED_CLOSE
 ### Next question
 
 Can the first versioned fixture runner execute the source-backed `RAIL_SANDBOX`, `TRANSPORT_INJECTION`, and `POLICY_INJECTION` manifest—including an explicit automatic-payout capability probe—and produce the preregistered close state, freeze tier, and balanced entries for every case with zero silent evidence-class upgrades?
+
+## 2026-08-24 — Local fixture controls pass; rail evidence remains blocked
+
+### Research question
+
+Can the first versioned fixture runner execute all three pre-live evidence classes, including an automatic-payout capability probe, without silently upgrading evidence?
+
+### Result
+
+- Direct fact: Stripe requests, CLI calls, and webhook endpoints can pin an API version, but existing Event snapshots keep the version and data structure used when they were created.
+- Direct fact: Stripe documents duplicate and unordered delivery; duplicate control needs both Event ID and underlying object ID + event type. Stripe idempotency records can be pruned after at least 24 hours, so permanent internal booking uniqueness remains necessary.
+- Direct measured result: the no-dependency V0.1 prototype executed four preregistered fixtures. Three local transport/policy fixtures passed, and all three adversarial evidence guards rejected a live-close upgrade, payload-hash mutation, or idempotency-key conflict.
+- Exact blocker / negative result: the automatic-payout `RAIL_SANDBOX` probe returned `RAIL_SANDBOX_CAPTURE_REQUIRED`. No Stripe CLI, credential, account capture, or Stripe-created object was available, so the complete pre-live suite remains `false` and NOW 0 is not passed.
+- Counterevidence: Stripe's first-party `stripe-mock` is stateless, hardcoded, latest-version-only, and explicitly non-behavioral. It can check shape but cannot be relabeled as rail evidence.
+- Bounded inference / decision: preserve the prototype and exact blocker. The next cheapest test is one operator-owned, version-pinned sandbox charge captured with Event, Charge, linked Balance Transaction, raw hashes, and idempotency metadata, replayed twice with exactly one booking.
+
+### Detailed evidence and prototype
+
+See [the fixture-runner measured-boundary note](notes/2026-08-24T04-42-09Z-fixture-runner-measured-boundary.md) and [the executable V0.1 prototype](experiments/fixture-runner-v0.1/README.md).
+
+### Foundations update
+
+No update. This round measures a prototype against the existing evidence classes; it does not change the standing evidence model.
+
+### Website status
+
+The public Research Journal records the exact 3-pass / 1-blocked result, counterevidence, sources, and next test. No other site claim, graphic, shared component, theme, motion, or standalone artifact changed.
+
+### Next question
+
+Can one operator-owned Stripe sandbox charge at pinned API version `2026-07-29.dahlia` be captured with its Event, Charge, linked Balance Transaction, raw hashes, and idempotency metadata, then replayed through the runner twice with exactly one balanced external booking and no evidence-class upgrade?

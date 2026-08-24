@@ -1,0 +1,166 @@
+{
+  "manifest_version": "0.1.0",
+  "stripe_api_version": "2026-07-29.dahlia",
+  "fixtures": [
+    {
+      "fixture_id": "rail-automatic-payout-capability-probe",
+      "evidence_class": "RAIL_SANDBOX",
+      "stripe_api_version": "2026-07-29.dahlia",
+      "source": {
+        "url": "https://docs.stripe.com/payouts",
+        "verified_on": "2026-08-24",
+        "pinpoint": "Test payouts; automatic versus manual payouts"
+      },
+      "provenance": {
+        "capture_status": "missing",
+        "reason": "No Stripe CLI, sandbox credential, or account capture was available to this bounded run"
+      },
+      "input": {},
+      "expected": {
+        "runner_status": "BLOCKED",
+        "blocker": "RAIL_SANDBOX_CAPTURE_REQUIRED",
+        "close_state": "NOT_RUN",
+        "freeze_tier": "NONE",
+        "maximum_evidence_state": "CONTROL_PLANE_PASSED"
+      },
+      "cannot_prove": "Automatic-payout creation, transaction membership, report availability, bank posting, or live settlement timing"
+    },
+    {
+      "fixture_id": "transport-duplicate-and-reordered-events",
+      "evidence_class": "TRANSPORT_INJECTION",
+      "stripe_api_version": "2026-07-29.dahlia",
+      "source": {
+        "url": "https://docs.stripe.com/webhooks",
+        "verified_on": "2026-08-24",
+        "pinpoint": "Event ordering; Handle duplicate events; API versioning"
+      },
+      "provenance": {
+        "base_evidence_ref": "source-backed synthetic payment snapshot v1",
+        "authenticated_payload_sha256": "98c2468bbe6bce6de467814600d6dd129cc4839b646de3e713c0a1c571d31409",
+        "mutation": "deliver refund before charge, repeat the same Event ID, then send a second Event for the same object and type"
+      },
+      "input": {
+        "source_payload": {
+          "payment_intent_id": "pi_fixture_001",
+          "charge_id": "ch_fixture_001",
+          "amount_minor": 2000,
+          "currency": "usd"
+        },
+        "events": [
+          { "event_id": "evt_refund_001", "type": "refund.created", "object_id": "re_fixture_001" },
+          { "event_id": "evt_charge_001", "type": "charge.succeeded", "object_id": "ch_fixture_001" },
+          { "event_id": "evt_charge_001", "type": "charge.succeeded", "object_id": "ch_fixture_001" },
+          { "event_id": "evt_charge_002", "type": "charge.succeeded", "object_id": "ch_fixture_001" }
+        ],
+        "transactions": [
+          {
+            "idempotency_key": "bt_fixture_001",
+            "entries": [
+              { "account": "stripe_pending", "amount_minor": 1942 },
+              { "account": "payment_fee", "amount_minor": 58 },
+              { "account": "customer_obligation", "amount_minor": -2000 }
+            ]
+          },
+          {
+            "idempotency_key": "bt_fixture_001",
+            "entries": [
+              { "account": "stripe_pending", "amount_minor": 1942 },
+              { "account": "payment_fee", "amount_minor": 58 },
+              { "account": "customer_obligation", "amount_minor": -2000 }
+            ]
+          }
+        ],
+        "exceptions": []
+      },
+      "expected": {
+        "runner_status": "PASS",
+        "close_state": "CONTROL_PLANE_PASSED",
+        "freeze_tier": "NONE",
+        "unique_events": 2,
+        "duplicate_deliveries": 2,
+        "posted_transactions": 1,
+        "duplicate_bookings": 1,
+        "exception_codes": [],
+        "evidence_state": "CONTROL_PLANE_PASSED",
+        "maximum_evidence_state": "CONTROL_PLANE_PASSED"
+      },
+      "cannot_prove": "That the source payload was emitted by Stripe, that funds exist, or that any payout reached a bank"
+    },
+    {
+      "fixture_id": "policy-provider-cost-mismatch",
+      "evidence_class": "POLICY_INJECTION",
+      "stripe_api_version": "2026-07-29.dahlia",
+      "source": {
+        "url": "research/notes/2026-08-24T03-14-27Z-stripe-two-pass-daily-close.md",
+        "verified_on": "2026-08-24",
+        "pinpoint": "Exception tiers and provider-cash boundary"
+      },
+      "provenance": {
+        "oracle_version": "close-policy-0.1.0",
+        "synthetic": true
+      },
+      "input": {
+        "events": [],
+        "transactions": [
+          {
+            "idempotency_key": "provider_accrual_001",
+            "entries": [
+              { "account": "provider_cost", "amount_minor": 41 },
+              { "account": "provider_payable", "amount_minor": -41 }
+            ]
+          }
+        ],
+        "exceptions": [
+          { "code": "provider_cost_mismatch", "object_ref": "generation_fixture_001" }
+        ]
+      },
+      "expected": {
+        "runner_status": "PASS",
+        "close_state": "PROVISIONAL_EXCEPTION",
+        "freeze_tier": "WORK_AND_SPEND_FREEZE",
+        "unique_events": 0,
+        "duplicate_deliveries": 0,
+        "posted_transactions": 1,
+        "duplicate_bookings": 0,
+        "exception_codes": ["provider_cost_mismatch"],
+        "evidence_state": "CONTROL_PLANE_PASSED",
+        "maximum_evidence_state": "CONTROL_PLANE_PASSED"
+      },
+      "cannot_prove": "Provider cash settlement or a real provider invoice mismatch"
+    },
+    {
+      "fixture_id": "policy-unexpected-payout-destination",
+      "evidence_class": "POLICY_INJECTION",
+      "stripe_api_version": "2026-07-29.dahlia",
+      "source": {
+        "url": "research/notes/2026-08-24T03-14-27Z-stripe-two-pass-daily-close.md",
+        "verified_on": "2026-08-24",
+        "pinpoint": "Tier 3 full runtime stop"
+      },
+      "provenance": {
+        "oracle_version": "close-policy-0.1.0",
+        "synthetic": true
+      },
+      "input": {
+        "events": [],
+        "transactions": [],
+        "exceptions": [
+          { "code": "unexpected_payout_destination", "object_ref": "ba_fixture_unknown" }
+        ]
+      },
+      "expected": {
+        "runner_status": "PASS",
+        "close_state": "PROVISIONAL_EXCEPTION",
+        "freeze_tier": "ALL_MUTATIONS_STOPPED",
+        "unique_events": 0,
+        "duplicate_deliveries": 0,
+        "posted_transactions": 0,
+        "duplicate_bookings": 0,
+        "exception_codes": ["unexpected_payout_destination"],
+        "evidence_state": "CONTROL_PLANE_PASSED",
+        "maximum_evidence_state": "CONTROL_PLANE_PASSED"
+      },
+      "cannot_prove": "That a real Stripe payout changed destination or moved funds"
+    }
+  ]
+}
