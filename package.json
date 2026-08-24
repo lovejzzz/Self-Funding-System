@@ -1,0 +1,12 @@
+{
+  "name": "self-funding-system",
+  "private": true,
+  "scripts": {
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "capture:review": "node scripts/capture-review.mjs",
+    "test:design": "npm run build:standalone -- --check && node tests/design-system-regression.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

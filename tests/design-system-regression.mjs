@@ -1,0 +1,104 @@
+import { chromium } from '@playwright/test';
+import { createReadStream, readFileSync, statSync } from 'node:fs';
+import { createServer } from 'node:http';
+import { extname, join, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root=fileURLToPath(new URL('../',import.meta.url));
+const themes=['institution','terminal','whitepaper','brutalist','command','protocol','calm','archive','swiss','bauhaus','glass','solarpunk','mono','cyber','space','zen','retroos','datascape','blueprint','newspaper','memphis','noir','biotech','clay','museum','industrial','hologram','cartographic'];
+const pages=['index.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
+const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
+const probes=['.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.footer-copy','.footer-bottom'];
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
+
+function startServer(){
+  return new Promise(resolve=>{
+    const server=createServer((request,response)=>{
+      const requestPath=decodeURIComponent(new URL(request.url,'http://localhost').pathname);
+      const relative=normalize(requestPath==='/'?'index.html':requestPath.replace(/^\/+/,''));
+      const file=join(root,relative);
+      if(!file.startsWith(root)){response.writeHead(403).end();return;}
+      try{if(!statSync(file).isFile())throw new Error('not a file');response.writeHead(200,{'content-type':mime[extname(file)]||'application/octet-stream'});createReadStream(file).pipe(response);}catch{response.writeHead(404).end('Not found');}
+    });
+    server.listen(0,'127.0.0.1',()=>resolve(server));
+  });
+}
+
+function assertStaticContracts(){
+  const css=readFileSync(join(root,'shared/styles.css'),'utf8');
+  const js=readFileSync(join(root,'shared/site.js'),'utf8');
+  const failures=[];
+  if(/html\[data-theme="calm"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Calm soft text bypasses --soft');
+  if(/html\[data-theme="clay"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Clay soft text bypasses --soft');
+  if(!/html\[data-theme="brutalist"\] th\{color:#fff!important\}/.test(css))failures.push('Brutalist filled table header is not explicitly paired with white ink');
+  const gateBlock=js.slice(js.indexOf('const GOVERNANCE_GATES={'),js.indexOf('const ORDER=',js.indexOf('const GOVERNANCE_GATES={')));
+  if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==28)failures.push('Theme-specific governance gates are incomplete');
+  for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
+  if(failures.length)throw new Error(failures.join('\n'));
+}
+
+async function collectContrastFailures(page,theme,file){
+  return page.evaluate(({probes,theme,file})=>{
+    const parse=value=>{const match=String(value).match(/rgba?\(([^)]+)\)/);if(!match)return null;const values=match[1].split(/[\s,\/]+/).filter(Boolean).map(Number);return values.length>=3?[values[0],values[1],values[2],Number.isFinite(values[3])?values[3]:1]:null;};
+    const blend=(top,bottom)=>{const alpha=top[3]+bottom[3]*(1-top[3]);if(alpha===0)return[255,255,255,1];return[(top[0]*top[3]+bottom[0]*bottom[3]*(1-top[3]))/alpha,(top[1]*top[3]+bottom[1]*bottom[3]*(1-top[3]))/alpha,(top[2]*top[3]+bottom[2]*bottom[3]*(1-top[3]))/alpha,alpha];};
+    const background=element=>{let layers=[],node=element;while(node){const color=parse(getComputedStyle(node).backgroundColor);if(color&&color[3]>0)layers.push(color);node=node.parentElement;}let result=[255,255,255,1];for(const layer of layers.reverse())result=blend(layer,result);return result;};
+    const luminance=rgb=>rgb.slice(0,3).map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:Math.pow((channel+.055)/1.055,2.4);}).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0);
+    const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+    const failures=[];
+    for(const selector of probes){for(const element of document.querySelectorAll(selector)){
+      const rect=element.getBoundingClientRect(),style=getComputedStyle(element),text=element.textContent.trim();
+      if(!text||rect.width<1||rect.height<1||style.visibility==='hidden'||style.display==='none')continue;
+      const foreground=parse(style.color);if(!foreground)continue;
+      const bg=background(element),composited=blend(foreground,bg),value=ratio(composited,bg);
+      const size=parseFloat(style.fontSize),weight=parseInt(style.fontWeight,10)||400,large=size>=24||(size>=18.66&&weight>=700),minimum=large?3:4.5;
+      if(value+0.015<minimum)failures.push({theme,file,selector,text:text.slice(0,48),ratio:Number(value.toFixed(2)),minimum,size,weight});
+    }}
+    return failures;
+  },{probes,theme,file});
+}
+
+assertStaticContracts();
+const server=await startServer();
+const address=server.address();
+const base=`http://127.0.0.1:${address.port}`;
+const browser=await chromium.launch({headless:true});
+const failures=[];
+const runtimeErrors=[];
+
+try{
+  for(const theme of themes){
+    for(const viewport of viewports){
+      const context=await browser.newContext({viewport:{width:viewport.width,height:viewport.height},reducedMotion:'reduce'});
+      await context.addInitScript(selected=>localStorage.setItem('sf-visual-theme',selected),theme);
+      const page=await context.newPage();
+      page.on('console',message=>{if(message.type()==='error')runtimeErrors.push(`${theme}/${viewport.name}: ${message.text()}`);});
+      page.on('pageerror',error=>runtimeErrors.push(`${theme}/${viewport.name}: ${error.message}`));
+      for(const file of pages){
+        const fixture=`${file}@${viewport.name}`;
+        const response=await page.goto(`${base}/${file}`,{waitUntil:'networkidle'});
+        if(!response?.ok())throw new Error(`${theme}/${fixture} returned ${response?.status()}`);
+        const state=await page.evaluate(()=>({theme:document.documentElement.dataset.theme,options:document.querySelectorAll('.theme-option').length,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}));
+        if(state.theme!==theme||state.options!==28||state.overflow>1)failures.push({theme,file:fixture,selector:'document',text:`theme=${state.theme} options=${state.options} overflow=${state.overflow}`,ratio:0,minimum:0});
+        failures.push(...await collectContrastFailures(page,theme,fixture));
+        if(file==='index.html'&&viewport.name==='desktop'){
+          await page.locator('.theme-recipe-link').first().click();
+          const recipe=await page.evaluate(()=>({pairs:document.querySelectorAll('.recipe-pair').length,tokenButton:!!document.querySelector('[data-copy="tokens"]'),governance:document.querySelector('.recipe-governance')?.textContent.length||0,focus:document.activeElement?.classList.contains('recipe-header')}));
+          if(recipe.pairs!==6||!recipe.tokenButton||recipe.governance<80||!recipe.focus)failures.push({theme,file:fixture,selector:'recipe',text:JSON.stringify(recipe),ratio:0,minimum:0});
+          await page.locator('.recipe-close').click();
+        }
+      }
+      await context.close();
+    }
+  }
+}finally{
+  await browser.close();
+  server.close();
+}
+
+if(runtimeErrors.length||failures.length){
+  if(runtimeErrors.length)console.error(`Runtime errors (${runtimeErrors.length})\n${runtimeErrors.join('\n')}`);
+  if(failures.length)console.error(`Design-system failures (${failures.length})\n${JSON.stringify(failures,null,2)}`);
+  process.exit(1);
+}
+
+console.log(`PASS: ${themes.length} themes × ${pages.length} pages × ${viewports.length} desktop/laptop viewports; ${probes.length} contrast probes; 28 recipe dialogs; no overflow or runtime errors.`);

@@ -34,9 +34,13 @@
   --review-bg:#060b0a;
   --review-ink:#f0f7f4;
   --amber:#ffc86b;
+  --amber-ink:var(--amber);
   --violet:#ae96ff;
+  --violet-ink:var(--violet);
   --red:#ff857d;
+  --red-ink:var(--red);
   --blue:#71c7ff;
+  --blue-ink:var(--blue);
   --radius:24px;
   --radius-sm:14px;
   --max:1220px;
@@ -494,7 +498,7 @@ html[data-theme="command"] .card,html[data-theme="command"] .status-band,html[da
 html[data-theme="protocol"]{color-scheme:dark;--ink:#f0efff;--muted:#a5a2bc;--dim:#6e6b84;--bg:#080812;--bg2:#0d0d1a;--panel:#11111f;--panel-solid:#11111f;--line:rgba(139,123,255,.18);--line-strong:rgba(139,123,255,.38);--mint:#4dffb5;--mint2:#a5ffd6;--acid:#8b7bff;--amber:#ffcf66;--violet:#8b7bff;--red:#ff6e8a;--blue:#56b8ff;--radius:12px;--radius-sm:8px;--shadow:0 24px 75px rgba(0,0,0,.35)}
 html[data-theme="protocol"] body{background:radial-gradient(700px 600px at 15% 0,rgba(77,255,181,.07),transparent 70%),radial-gradient(800px 700px at 85% 18%,rgba(139,123,255,.11),transparent 65%),#080812}
 html[data-theme="protocol"] .theme-review{background:#0d0d17;border-color:#24233a}html[data-theme="protocol"] .site-nav{background:rgba(8,8,18,.9);border-color:#24233a}
-html[data-theme="protocol"] .nav-links a,html[data-theme="protocol"] .btn,html[data-theme="protocol"] .theme-option{border-radius:8px}html[data-theme="protocol"] .btn.primary{background:linear-gradient(135deg,var(--mint),#8bffdc);color:#06120d}
+html[data-theme="protocol"] .nav-links a,html[data-theme="protocol"] .btn,html[data-theme="protocol"] .theme-option{border-radius:8px}html[data-theme="protocol"] .btn.primary{background-color:var(--mint);background-image:linear-gradient(135deg,var(--mint),#8bffdc);color:#06120d}
 html[data-theme="protocol"] .hero h1 em{color:var(--mint)}html[data-theme="protocol"] .hero:before{background:linear-gradient(90deg,rgba(8,8,18,.98),rgba(8,8,18,.83) 50%,rgba(8,8,18,.18))}
 html[data-theme="protocol"] .card{background:linear-gradient(180deg,#121222,#0d0d18);border-color:#292743}html[data-theme="protocol"] .card:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--mint),var(--violet),transparent 78%);opacity:.65}html[data-theme="protocol"] .status-band{background:#0e0e1a;border-color:#292743}html[data-theme="protocol"] .status-cell{border-color:#292743}html[data-theme="protocol"] .status-cell.lead{background:linear-gradient(135deg,rgba(77,255,181,.08),rgba(139,123,255,.08))}
 html[data-theme="protocol"] .orbit-ring{border-color:rgba(77,255,181,.17)}html[data-theme="protocol"] .orbit-ring.r2{border-color:rgba(139,123,255,.25)}html[data-theme="protocol"] .core{background:radial-gradient(circle,#1b2131,#0d0d18 65%);border-color:var(--violet)}html[data-theme="protocol"] .data-tag{background:#0e0e1a;border-color:#2d2b49}
@@ -504,7 +508,7 @@ html[data-theme="protocol"] .flow-node,html[data-theme="protocol"] .schem-node{b
 html[data-theme="calm"]{color-scheme:light;--ink:#101828;--muted:#667085;--dim:#98a2b3;--bg:#f7f9fc;--bg2:#eef3f9;--panel:rgba(255,255,255,.82);--panel-solid:#fff;--line:rgba(15,23,42,.075);--line-strong:rgba(15,23,42,.13);--mint:#3b82f6;--mint2:#60a5fa;--acid:#7c3aed;--amber:#d97706;--violet:#8b5cf6;--red:#e5484d;--blue:#3b82f6;--radius:30px;--radius-sm:18px;--shadow:0 24px 70px rgba(31,41,55,.08)}
 html[data-theme="calm"] body{background:radial-gradient(900px 620px at 85% 3%,rgba(139,92,246,.11),transparent 70%),radial-gradient(800px 600px at 5% 20%,rgba(59,130,246,.1),transparent 70%),#f7f9fc;color:#101828}html[data-theme="calm"] .noise{display:none}html[data-theme="calm"] .grid-bg{opacity:.09;background-size:72px 72px}
 html[data-theme="calm"] .theme-review{background:#fff;color:#344054;border-color:#eef2f6;box-shadow:0 1px 10px rgba(16,24,40,.04)}html[data-theme="calm"] .site-nav{background:rgba(247,249,252,.82);border-color:rgba(15,23,42,.06);backdrop-filter:blur(22px)}html[data-theme="calm"] .nav-links a.active,html[data-theme="calm"] .nav-links a:hover{background:white;border-color:#e8edf4;color:#101828}
-html[data-theme="calm"] .hero{min-height:auto;padding:110px 0 96px}html[data-theme="calm"] .hero:before{display:none}html[data-theme="calm"] .hero h1{font-size:clamp(58px,8vw,108px);line-height:.9;letter-spacing:-.075em}html[data-theme="calm"] .hero h1 .soft{color:#8a95a8}html[data-theme="calm"] .hero h1 em{color:#3b82f6;text-shadow:none}html[data-theme="calm"] .hero-lede,html[data-theme="calm"] .section-head p,html[data-theme="calm"] .doc p,html[data-theme="calm"] .doc li{color:#667085}html[data-theme="calm"] .hero-meta-item strong{color:#344054}
+html[data-theme="calm"] .hero{min-height:auto;padding:110px 0 96px}html[data-theme="calm"] .hero:before{display:none}html[data-theme="calm"] .hero h1{font-size:clamp(58px,8vw,108px);line-height:.9;letter-spacing:-.075em}html[data-theme="calm"] .hero h1 .soft{color:var(--soft)}html[data-theme="calm"] .hero h1 em{color:#3b82f6;text-shadow:none}html[data-theme="calm"] .hero-lede,html[data-theme="calm"] .section-head p,html[data-theme="calm"] .doc p,html[data-theme="calm"] .doc li{color:#667085}html[data-theme="calm"] .hero-meta-item strong{color:#344054}
 html[data-theme="calm"] .btn{background:rgba(255,255,255,.8);border-color:#e1e7ef;color:#344054;box-shadow:0 7px 20px rgba(16,24,40,.04)}html[data-theme="calm"] .btn.primary{background:#101828;color:#fff;border-color:#101828;box-shadow:0 12px 30px rgba(16,24,40,.16)}
 html[data-theme="calm"] .orbit-glow{background:radial-gradient(circle,rgba(59,130,246,.15),rgba(139,92,246,.06) 40%,transparent 70%)}html[data-theme="calm"] .orbit-ring{border-color:rgba(59,130,246,.15)}html[data-theme="calm"] .orbit-ring.r2{border-color:rgba(139,92,246,.15)}html[data-theme="calm"] .core{background:linear-gradient(145deg,#fff,#edf4ff);border-color:#dce8ff;box-shadow:0 35px 90px rgba(59,130,246,.15)}html[data-theme="calm"] .data-tag{background:rgba(255,255,255,.88);border-color:#e5eaf1;box-shadow:0 16px 45px rgba(16,24,40,.08)}
 html[data-theme="calm"] .section{padding:125px 0}html[data-theme="calm"] .section + .section,html[data-theme="calm"] .page-hero,html[data-theme="calm"] footer{border-color:#e8edf4}html[data-theme="calm"] .card{background:rgba(255,255,255,.74);border-color:#edf0f5;backdrop-filter:blur(14px);box-shadow:var(--shadow)}html[data-theme="calm"] .card:after{display:none}html[data-theme="calm"] .status-band{background:rgba(255,255,255,.66);border-color:#edf0f5;box-shadow:0 20px 60px rgba(16,24,40,.05)}html[data-theme="calm"] .status-cell{border-color:#edf0f5}html[data-theme="calm"] .status-cell.lead{background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
@@ -605,7 +609,7 @@ html[data-theme="biotech"] .btn.primary{color:#fff}
 html[data-theme="clay"]{color-scheme:light;--ink:#2d2924;--muted:#6d645b;--dim:#94897e;--bg:#e9e0d4;--bg2:#ddd1c2;--panel:#eee7de;--panel-solid:#eee7de;--line:rgba(76,61,48,.11);--line-strong:rgba(76,61,48,.24);--mint:#b85c49;--mint2:#d27862;--acid:#567b62;--amber:#bc812f;--violet:#806c91;--red:#b85c49;--blue:#567a8e;--radius:34px;--radius-sm:22px;--shadow:14px 14px 30px rgba(98,77,57,.14),-12px -12px 28px rgba(255,255,255,.52)}
 html[data-theme="clay"] body{background:#e9e0d4;color:#2d2924}html[data-theme="clay"] .grid-bg,.clay .noise{display:none}html[data-theme="clay"] .theme-review{background:#3c342c;color:#f7eee4}html[data-theme="clay"] .site-nav{background:rgba(233,224,212,.94);border:0;box-shadow:0 8px 22px rgba(98,77,57,.09)}html[data-theme="clay"] .brand-mark{background:#e9e0d4;border:0;box-shadow:inset 4px 4px 8px rgba(89,68,51,.18),inset -4px -4px 8px rgba(255,255,255,.7)}
 html[data-theme="clay"] .btn,html[data-theme="clay"] .nav-links a{border:0;background:#e9e0d4;box-shadow:6px 6px 14px rgba(98,77,57,.14),-5px -5px 12px rgba(255,255,255,.55)}html[data-theme="clay"] .btn.primary,html[data-theme="clay"] .nav-links a.active{background:#b85c49;color:#fff;box-shadow:inset 3px 3px 7px rgba(70,24,17,.25),inset -2px -2px 7px rgba(255,255,255,.16)}
-html[data-theme="clay"] .hero{min-height:auto;padding:88px 0}html[data-theme="clay"] .hero:before{display:none}html[data-theme="clay"] .hero h1 .soft{color:#8b8178}html[data-theme="clay"] .hero h1 em{color:#b85c49;text-shadow:none}html[data-theme="clay"] .orbit-stage{min-height:560px;background:#e9e0d4;border-radius:52px;box-shadow:inset 12px 12px 25px rgba(98,77,57,.12),inset -12px -12px 25px rgba(255,255,255,.48)}
+html[data-theme="clay"] .hero{min-height:auto;padding:88px 0}html[data-theme="clay"] .hero:before{display:none}html[data-theme="clay"] .hero h1 .soft{color:var(--soft)}html[data-theme="clay"] .hero h1 em{color:#b85c49;text-shadow:none}html[data-theme="clay"] .orbit-stage{min-height:560px;background:#e9e0d4;border-radius:52px;box-shadow:inset 12px 12px 25px rgba(98,77,57,.12),inset -12px -12px 25px rgba(255,255,255,.48)}
 html[data-theme="clay"] .hero-lede{color:#6d645b}html[data-theme="clay"] .core{inset:31%;background:#b85c49;color:#fff;border:0;box-shadow:10px 10px 24px rgba(98,77,57,.24),-7px -7px 18px rgba(255,255,255,.44)}html[data-theme="clay"] .core-value{color:#fff;font-size:clamp(21px,2.3vw,34px);white-space:nowrap}html[data-theme="clay"] .core-label{color:#fff}html[data-theme="clay"] .data-tag,html[data-theme="clay"] .card,html[data-theme="clay"] .status-band,html[data-theme="clay"] .callout,html[data-theme="clay"] .table-wrap{background:#e9e0d4;border:0;box-shadow:var(--shadow)}
 
 /* 25. MUSEUM CATALOG — curatorial restraint */
@@ -1189,20 +1193,26 @@ body[data-page="mvp"] #roadmap .timeline{margin-top:32px}
 .recipe-body section{margin:0}
 .recipe-body h3{margin:0 0 10px;font-size:16px;letter-spacing:-.02em}
 .recipe-body p,.recipe-body li{color:var(--muted);font-size:14px;line-height:1.62}
-.recipe-principle-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,1fr);gap:26px;padding:24px;border:1px solid var(--line);background:var(--panel)}
+.recipe-principle-panel{display:grid;grid-template-columns:1fr;gap:22px;padding:24px;border:1px solid var(--line);background:var(--panel)}
 .recipe-principles{margin:0;padding-left:18px}.recipe-principles li+li{margin-top:7px}
-.recipe-swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-self:end}
-.recipe-swatch{min-width:0}.recipe-swatch i{display:block;aspect-ratio:1.45;border:1px solid var(--line-strong);border-radius:var(--radius-sm)}
-.recipe-swatch span{display:block;margin-top:7px;color:var(--ink);font:700 8px/1.25 var(--mono);letter-spacing:.07em}.recipe-swatch b{display:block;margin-top:3px;color:var(--dim);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recipe-swatches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.recipe-pair{display:grid;grid-template-columns:minmax(120px,.72fr) minmax(0,1.28fr);min-width:0;border:1px solid var(--line);background:var(--panel-solid)}
+.recipe-pair-sample{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px;font:750 28px/1 var(--theme-display);border-right:1px solid var(--line)}
+.recipe-pair-sample span{font:700 9px/1 var(--mono);letter-spacing:.05em;white-space:nowrap}
+.recipe-pair-meta{display:flex;min-width:0;flex-direction:column;justify-content:center;padding:13px}.recipe-pair-meta strong{font-size:12px}.recipe-pair-meta code{margin-top:5px;color:var(--dim);font:600 8px/1.45 var(--mono);overflow-wrap:anywhere}.recipe-pair-meta small{margin-top:6px;color:var(--muted);font-size:9px;line-height:1.45}
 .recipe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line)}
 .recipe-grid section{padding:22px;background:var(--panel-solid)}
 .recipe-grid p{margin:0}
+.recipe-scale{display:grid;gap:12px;margin:0}.recipe-scale div{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;padding-top:10px;border-top:1px solid var(--line)}.recipe-scale div:first-child{padding-top:0;border-top:0}.recipe-scale dt{color:var(--ink);font:750 9px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase}.recipe-scale dd{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
 .recipe-skill-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;padding:24px;border:1px solid var(--line-strong);background:color-mix(in srgb,var(--panel-solid) 88%,var(--mint))}
 .recipe-skill-panel .micro{color:var(--mint);margin-bottom:8px}.recipe-skill-panel h3{margin:0;font-size:22px}
+.recipe-copy-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
 .recipe-copy{align-self:start;min-height:42px;padding:10px 16px;border:1px solid var(--line-strong);border-radius:999px;background:var(--mint);color:#00120c;font-weight:850;cursor:pointer}
 .recipe-copy:hover{background:var(--mint2)}
+.recipe-copy.secondary{background:var(--panel-solid);color:var(--ink)}.recipe-copy.secondary:hover{background:color-mix(in srgb,var(--panel-solid) 82%,var(--mint));color:var(--ink)}
 .recipe-skill{grid-column:1/-1;max-height:330px;margin:0;padding:20px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:color-mix(in srgb,var(--bg) 94%,#000);border:1px solid var(--line);color:var(--ink);font:12px/1.65 var(--mono)}
 .recipe-copy-status{grid-column:1/-1;min-height:16px;color:var(--mint);font:750 10px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.recipe-header:focus{outline:none}
 .theme-recipe-dialog :is(button,a,pre):focus-visible{outline:3px solid var(--amber);outline-offset:3px}
 html[data-theme="brutalist"] .theme-recipe-dialog,html[data-theme="swiss"] .theme-recipe-dialog,html[data-theme="bauhaus"] .theme-recipe-dialog,html[data-theme="mono"] .theme-recipe-dialog,html[data-theme="blueprint"] .theme-recipe-dialog,html[data-theme="newspaper"] .theme-recipe-dialog,html[data-theme="industrial"] .theme-recipe-dialog{border-radius:0}
 html[data-theme="retroos"] .theme-recipe-dialog{background:#c0c0c0;border:3px outset #fff;border-radius:0;box-shadow:4px 4px 0 #000}
@@ -1211,7 +1221,7 @@ html[data-theme="industrial"] .recipe-header{border-top:14px solid #111}
 html[data-theme="newspaper"] .recipe-title,html[data-theme="noir"] .recipe-title,html[data-theme="museum"] .recipe-title,html[data-theme="cartographic"] .recipe-title{font-family:Georgia,var(--serif);font-weight:500}
 
 @media(max-width:780px){
-  .recipe-principle-panel,.recipe-grid{grid-template-columns:1fr}.recipe-swatches{grid-template-columns:repeat(4,1fr)}
+  .recipe-principle-panel,.recipe-grid{grid-template-columns:1fr}.recipe-swatches{grid-template-columns:1fr}
   .recipe-header,.recipe-body{padding:20px}.recipe-title{font-size:42px}
 }
 @media(max-width:700px){
@@ -1219,7 +1229,7 @@ html[data-theme="newspaper"] .recipe-title,html[data-theme="noir"] .recipe-title
   .theme-options{grid-column:1;min-width:0}
   .theme-recipe-mobile{display:inline-flex;grid-column:2;align-items:center;justify-content:center;min-height:34px;padding:7px 10px;border:1px solid currentColor;border-radius:999px;color:inherit;font:800 8px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
   .theme-recipe-dialog{width:calc(100% - 16px);max-height:92dvh}
-  .recipe-skill-panel{grid-template-columns:1fr}.recipe-copy{width:100%}.recipe-swatches{grid-template-columns:repeat(3,1fr)}
+  .recipe-skill-panel{grid-template-columns:1fr}.recipe-copy-actions{justify-content:stretch}.recipe-copy{width:100%}.recipe-swatches{grid-template-columns:1fr}.recipe-pair{grid-template-columns:112px minmax(0,1fr)}
 }
 
 /* Typography is part of each graphic system: display, reading, interface, and data are separate roles. */
@@ -1483,6 +1493,12 @@ html[data-theme="zen"] .core-label{color:#69635c!important}
 
 /* The accent used as a fill/glow is not automatically safe as text. */
 :is(html[data-theme="whitepaper"],html[data-theme="brutalist"],html[data-theme="calm"],html[data-theme="archive"],html[data-theme="swiss"],html[data-theme="bauhaus"],html[data-theme="solarpunk"],html[data-theme="mono"],html[data-theme="zen"],html[data-theme="retroos"],html[data-theme="newspaper"],html[data-theme="memphis"],html[data-theme="biotech"],html[data-theme="clay"],html[data-theme="museum"],html[data-theme="industrial"],html[data-theme="cartographic"]){--acid-ink:color-mix(in srgb,var(--acid) 42%,var(--ink))}
+:is(html[data-theme="whitepaper"],html[data-theme="brutalist"],html[data-theme="calm"],html[data-theme="archive"],html[data-theme="swiss"],html[data-theme="bauhaus"],html[data-theme="solarpunk"],html[data-theme="mono"],html[data-theme="zen"],html[data-theme="retroos"],html[data-theme="newspaper"],html[data-theme="memphis"],html[data-theme="biotech"],html[data-theme="clay"],html[data-theme="museum"],html[data-theme="industrial"],html[data-theme="cartographic"]){
+  --amber-ink:color-mix(in srgb,var(--amber) 42%,var(--ink));
+  --violet-ink:color-mix(in srgb,var(--violet) 58%,var(--ink));
+  --red-ink:color-mix(in srgb,var(--red) 58%,var(--ink));
+  --blue-ink:color-mix(in srgb,var(--blue) 58%,var(--ink))
+}
 html[data-theme="whitepaper"]{--acid-ink:#087354}html[data-theme="brutalist"]{--acid-ink:#485500}html[data-theme="calm"]{--acid-ink:#5b21b6}html[data-theme="archive"]{--acid-ink:#2f5d49}
 html[data-theme="swiss"]{--acid-ink:#111}html[data-theme="bauhaus"]{--acid-ink:#725b00}html[data-theme="solarpunk"]{--acid-ink:#506d1e}html[data-theme="mono"]{--acid-ink:#0a0a0a}
 html[data-theme="zen"]{--acid-ink:#465f50}html[data-theme="retroos"]{--acid-ink:#000080}html[data-theme="newspaper"]{--acid-ink:#171510}html[data-theme="memphis"]{--acid-ink:#04765d}
@@ -1606,13 +1622,19 @@ html[data-theme="memphis"]{--accent-ink:#8b1238;--acid-ink:#03614c}
 html[data-theme="calm"]{--accent-ink:#1d4ed8;--soft:#76839c}
 html[data-theme="clay"]{--accent-ink:#7f3022;--soft:#7d6f63}
 html[data-theme="swiss"]{--accent-ink:#a51e0e}
+html[data-theme="solarpunk"]{--accent-ink:#286c46}
+html[data-theme="bauhaus"]{--accent-ink:#a51c18}
+html[data-theme="blueprint"]{--red-ink:#ffa696}
+html[data-theme="noir"]{--red-ink:#d36363}
 
 :is(html[data-theme="brutalist"],html[data-theme="memphis"],html[data-theme="calm"],html[data-theme="clay"],html[data-theme="swiss"]) :is(
   .nav-status,.eyebrow,.section-head .kicker,.page-hero .crumb,.flow-node .num,
-  .service-icon,.time-row .year,th,.section-id,.side-index .micro,
+  .service-icon,.time-row .year,.section-id,.side-index .micro,
   .journal-abstract .micro,.figure-no,.cite,.source-list li:before,.step-no,
   .api-route,.check-list li:before,.commit-list li:before,.hero-scope strong
 ){color:var(--accent-ink)!important}
+
+:is(html[data-theme="memphis"],html[data-theme="calm"],html[data-theme="clay"],html[data-theme="swiss"]) th{color:var(--accent-ink)!important}
 
 :is(html[data-theme="brutalist"],html[data-theme="memphis"],html[data-theme="calm"],html[data-theme="clay"],html[data-theme="swiss"]) .claim-badge.supported{color:var(--accent-ink)!important}
 
@@ -1642,6 +1664,24 @@ html[data-theme="swiss"] .btn.primary{background:#b92716;color:#fff!important;bo
 html[data-theme="terminal"]{--muted:#88ab94}
 html[data-theme="biotech"]{--dim:#586f68}
 html[data-theme="cartographic"]{--muted:#536159}
+
+/* Round-three close-out: component surfaces win over page-level accent ink. */
+html[data-theme="brutalist"] th{color:#fff!important}
+:is(html[data-theme="calm"],html[data-theme="swiss"],html[data-theme="memphis"],html[data-theme="clay"]) .status-cell .v.mint{color:var(--accent-ink)!important}
+:is(html[data-theme="solarpunk"],html[data-theme="bauhaus"]) :is(.nav-status,.eyebrow,.section-head .kicker,.page-hero .crumb){color:var(--accent-ink)}
+html[data-theme="memphis"] .schem-core span{color:#10162a}
+html[data-theme="archive"] .schem-core span{color:#4f4a42}
+html[data-theme="terminal"] .flow-center span{color:var(--muted)}
+
+/* Semantic colors keep their expressive fills, but use measured text inks. */
+.data-tag strong.amber,.status-cell .v.amber,.claim-badge.hypothesis{color:var(--amber-ink)!important}
+.data-tag strong.violet,.status-cell .v.violet{color:var(--violet-ink)!important}
+.claim-badge.inference{color:var(--blue-ink)!important}
+.claim-badge.unknown{color:var(--red-ink)!important}
+.claim-badge.supported,.callout .micro{color:var(--accent-ink)!important}
+
+/* Alternating editorial cards need their own quiet-copy contract. */
+html[data-theme="mono"] .grid>.card:nth-child(even) :is(.metric-label,.metric-sub,.cite){color:#bdbdbd!important}
 
 </style><link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACIUlEQVR42u1b3Y3DIAymVnWXFW6R7JFlkDLBSVmme7DIrcBb7ymnCpEUG9vAxUh9SBMZf5/Nn21u8PnxdBdu4C7ejAAj4OLtrtmZj+Gn9Nttmr80dLpJrwIY0C3IECHgCDQGCIcMdQJySnMoLCWXlYBXJSVdlrufagK0gEv1CyOCT/urmWhhRPCcJJCGwN5ZK+CcOsF/AP+qD9YTUB7AAd7HsBaA+dbyhGICasd8CXAOIrB6ognAgs8BPwOG/b5W1yICKOBTIERrkmWU6vyWgFrwNeO5Vl6J7iCwHLGCT+VQ5hKyB2CtvyvHBZyjj3cYQMLyShuftcuQmKT1JeQDh/truH6OhMJN1ekOUTUmmJC2ZJR9uNGCooRJaTkCe/Yu5wU+htXHsNZ4HmgeeHwMyzbNjyOA+7ucd0gdlEBrJt7BFyqMIqFmRYCWM7OP4e/XakUArQkvtX4KOn2WGArdpMaOLE71BMsNGgGDEbBNM+r/4QnITWgp2PQZs2w2T49Td2O1Fuc4EYLW+o9Z1rDWZ98KU2PspSQcEbG/43b9s639YURI+jhcexrE9HmG5d4wk/NwruNlEDMMMAEK7bigWkxQKzbILR9GiQVK9ceeGJHIC1DlNkmMSCQxpEi13KBlh60+wCpE0EVSvdYIUXUDrWKkXqvEyJWiPdQJcugBrSs1W1eqQg/lqi090KrF7b6A3RixO0NPuzXmLDVmBBgBF22/PbknPnXhJ/QAAAAASUVORK5CYII="></head><body><div class="grid-bg"></div><div class="noise"></div>
 <nav class="site-nav"><div class="wrap nav-inner">
@@ -1952,6 +1992,37 @@ html[data-theme="cartographic"]{--muted:#536159}
     cartographic:S('Display 72/69 map serif, H1 46/52, H2 30/38, body 17/29 serif, coordinate 10/15 mono. Use 600 titles and 400 body.','Atlas grid 12 columns at 1260px, 22px gutters; map spans 7–8, legend 3–4, field notes 5–7. Routes align to meaningful waypoints, not card centers.','4, 8, 12, 18, 24, 36, 52, 76, 112, 152. Margins evoke an atlas but retain compact, usable controls.','2–10px radius, parchment/green surfaces, fine contour rules, minimal paper shadow. Texture stays below 5% contrast behind text.','Use real cartographic conventions, contour lines, route traces, legends, compass and scale marks, field photography, and coordinate labels. Avoid pirate-map styling.','Rust route, green safe range, ochre cost terrain, red impassable. Every map has legend, scale, north/orientation, route status, and textual itinerary.'),
   };
 
+  const GOVERNANCE_GATES={
+    institution:'Any change to a public-account or charter component ships with an authorship, effective-date, and ledger-legibility review.',
+    terminal:'Any change to a data rail ships with a P&L regression fixture covering stale, negative, zero, and extreme values.',
+    whitepaper:'Any visual claim ships with a figure identifier, source, method, limitation, and reproducible data table.',
+    brutalist:'Every collision, offset, and hard shadow must pass a content-overlap audit at all six required viewports.',
+    command:'Every new signal declares NOMINAL, ADVISORY, and ABORT states plus its reduced-motion equivalent.',
+    protocol:'Every node or edge change ships with a versioned state-machine fixture and a list/table alternative.',
+    calm:'Every release is tested with 30% longer copy and a cognitive-load review that removes nonessential simultaneous choices.',
+    archive:'Every evidence component requires a stable archive ID, date, provenance, and visible revision history.',
+    swiss:'Every new module must resolve to the twelve-column grid and eight-pixel baseline at desktop and mobile breakpoints.',
+    bauhaus:'Every geometric form must declare its functional role; unassigned decorative geometry blocks release.',
+    glass:'Every translucent surface ships with a solid fallback and contrast tests over the lightest and darkest permitted backdrops.',
+    solarpunk:'Every ambient cycle must have a resource meaning, a stop condition, and a no-motion mature-state equivalent.',
+    mono:'Every page passes grayscale and print preview; any new color requires an explicit campaign exception.',
+    cyber:'Every glitch or scan effect must be excluded from reading text, live numbers, focus states, and error recovery.',
+    space:'Every telemetry component declares unit, mission time, tolerance, last contact, and explicit offline behavior.',
+    zen:'Every release includes a subtraction review: remove at least one nonessential boundary, label, accent, or motion before approval.',
+    retroos:'Every control ships with keyboard operation, a visible focus rectangle, and distinct raised, pressed, disabled, and error states.',
+    datascape:'Every spatial deformation documents its encoded variable, legend, stable text plane, and accessible table equivalent.',
+    blueprint:'Every interface change increments a revision mark and updates dimensions, connection states, and failure-condition callouts.',
+    newspaper:'Headline, deck, caption, and column-length limits are linted; every factual graphic requires source and timestamp.',
+    memphis:'Every viewport is capped at three decorative shapes, and meaning must remain intact in grayscale and reduced motion.',
+    noir:'Every dark surface is tested against the darkest approved backdrop; atmosphere may never crush evidence or body copy.',
+    biotech:'Every assay visual declares control, sample, time, range, unit, and a clear boundary against medical interpretation.',
+    clay:'Every tactile state must remain understandable without shadows and pass forced-colors, keyboard, and high-contrast review.',
+    museum:'Every object requires accession, provenance, rights/source, caption, and interpretation before entering the collection.',
+    industrial:'Every operational state uses word, icon, and color together; STOP conditions must remain unmistakable in grayscale.',
+    hologram:'Every spatial view ships with a two-dimensional projection, logical reading order, keyboard selection, and no-parallax mode.',
+    cartographic:'Every map ships with legend, scale, orientation, route status, textual itinerary, and a test for texture behind labels.'
+  };
+
   const ORDER=Object.keys(THEMES), valid=new Set(ORDER);
   let saved; try{saved=localStorage.getItem('sf-visual-theme');}catch(e){}
   let theme=valid.has(saved)?saved:(document.documentElement.dataset.theme||'institution');
@@ -1974,14 +2045,28 @@ html[data-theme="cartographic"]{--muted:#536159}
     motionTimer=setTimeout(()=>root.classList.remove('theme-transitioning'),1100);
   }
 
-  const recipeTokens=()=>{
-    const root=getComputedStyle(document.documentElement);
-    return ['--bg','--bg2','--panel-solid','--ink','--muted','--dim','--mint','--accent-ink','--acid','--acid-ink','--line','--line-strong','--callout-bg','--callout-ink','--callout-muted','--callout-accent','--radius','--radius-sm','--shadow'].map(token=>`${token}: ${root.getPropertyValue(token).trim()||'define explicitly'}`).join('\n');
-  };
+  const RECIPE_TOKEN_NAMES=['--bg','--bg2','--panel-solid','--ink','--muted','--dim','--mint','--accent-ink','--acid','--acid-ink','--line','--line-strong','--callout-bg','--callout-ink','--callout-muted','--callout-accent','--radius','--radius-sm','--shadow'];
+  const RECIPE_FONT_NAMES=['--theme-display','--theme-body','--theme-label','--theme-data'];
+  const recipeTokenObject=()=>{const root=getComputedStyle(document.documentElement);return Object.fromEntries(RECIPE_TOKEN_NAMES.map(token=>[token,root.getPropertyValue(token).trim()||'define explicitly']));};
+  const recipeFontObject=()=>{const root=getComputedStyle(document.documentElement);return Object.fromEntries(RECIPE_FONT_NAMES.map(token=>[token,root.getPropertyValue(token).trim()||'define explicitly']));};
+  const recipeTokens=()=>Object.entries(recipeTokenObject()).map(([token,value])=>`${token}: ${value}`).join('\n');
+  const recipeFonts=()=>Object.entries(recipeFontObject()).map(([token,value])=>`${token}: ${value}`).join('\n');
+  const recipeTokenJSON=id=>JSON.stringify({
+    schema:'self-funding.design-system.tokens/v1',theme:id,name:THEMES[id].label,
+    colorAndSurface:recipeTokenObject(),typography:recipeFontObject(),
+    foundations:{typeScale:SYSTEM_SPECS[id].typeScale,grid:SYSTEM_SPECS[id].grid,spacing:SYSTEM_SPECS[id].spacing},
+    governanceGate:GOVERNANCE_GATES[id]
+  },null,2);
+
+  const parseRGB=value=>{const match=String(value).match(/rgba?\(([^)]+)\)/);if(!match)return null;const parts=match[1].split(/[\s,\/]+/).filter(Boolean).map(Number);return parts.length>=3?parts.slice(0,3):null;};
+  const luminance=rgb=>rgb.map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:Math.pow((channel+.055)/1.055,2.4);}).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0);
+  const contrastRatio=(foreground,background)=>{const a=parseRGB(foreground),b=parseRGB(background);if(!a||!b)return null;const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+  const resolvedToken=(token,property)=>{const probe=document.createElement('i');probe.style.cssText='position:fixed;left:-9999px;width:1px;height:1px';probe.style[property]=`var(${token})`;document.body.appendChild(probe);const style=getComputedStyle(probe),value=property==='background'?style.backgroundColor:style.color;probe.remove();return value;};
+  const renderTokenPair=(label,surface,ink,note='')=>{const ratio=contrastRatio(resolvedToken(ink,'color'),resolvedToken(surface,'background'));const ratioText=ratio?`${ratio.toFixed(2)}:1`:'gradient · inspect stops';return `<div class="recipe-pair"><div class="recipe-pair-sample" style="background:var(${safeHTML(surface)});color:var(${safeHTML(ink)})">Aa <span>${safeHTML(ratioText)}</span></div><div class="recipe-pair-meta"><strong>${safeHTML(label)}</strong><code>${safeHTML(surface)} + ${safeHTML(ink)}</code>${note?`<small>${safeHTML(note)}</small>`:''}</div></div>`;};
 
   function recipeSkill(id){
     const p=THEMES[id],r=RECIPES[id],s=SYSTEM_SPECS[id];
-    return `You are the design-system steward for ${p.label}. Build and govern a complete company product ecosystem in this language—not a recolored template or one-off campaign page. Apply the system consistently to marketing, product, research, documentation, treasury, data-heavy operations, and mobile surfaces.\n\n1. Brand thesis\n${p.description}. ${r.principles.split('; ').join('. ')}. Every formal choice must reinforce this thesis; remove any motif that cannot explain its function.\n\n2. Voice and content architecture\n${r.voice}. Navigation, section naming, metrics, empty states, errors, and calls to action should use the same conceptual vocabulary. Preserve clear page hierarchy: proposition → system → economics → implementation → experiment → cited research. Never hide risk, cost, units, timestamps, or uncertainty behind brand language.\n\n3. Typography\nRole direction: ${r.type}.\nProduction scale: ${s.typeScale}\nDeliver self-hosted WOFF2 files, tested platform fallbacks, optical-size/weight rules, tabular figures for changing money, and line-length limits. Currency must use a non-clipping numeric container with reserved inline space, stable digit width, and at least 0.12em clearance from every enclosing edge.\n\n4. Grid, breakpoints, and density\nComposition: ${r.layout}.\nGrid specification: ${s.grid}\nSpacing scale: ${s.spacing}\nUse content-led breakpoints near 480, 700, 920, 1180, and 1440px. At laptop widths preserve the intended composition without treating the screen as a stretched tablet. At mobile widths keep reading order, convert absolute annotations to corners or document flow, and horizontally reveal the active design-system selector without moving the page vertically.\n\n5. Color and semantic tokens\nUse paired surface/text tokens; a fill color is never automatically a readable text color. The current approved seed values are:\n${recipeTokens()}\nTreat accent-fill/accent-ink, acid-fill/acid-ink, callout-bg/callout-ink/callout-muted, and every status surface/status-ink as inseparable pairs. Create hover, pressed, focus, selected, disabled, loading, success, warning, and error variants. Measure final composited colors: 4.5:1 for normal/small text, 3:1 for large text and meaningful graphics, visible focus at 3:1 against adjacent surfaces.\n\n6. Shape, surface, and elevation\n${s.surfaces}\nComponent styling: ${r.components}. Components must expose anatomy, variants, sizes, content limits, state tables, do/don't examples, keyboard behavior, and responsive rules. Minimum inventory: navigation, buttons, links, inputs, selects, cards, callouts, dialogs, tabs, chips, alerts, empty/error/loading states, stat blocks, tables, pagination, citations, source lists, diagrams, and chart containers.\n\n7. Imagery and iconography\n${s.media}\nSpecify crop ratios, caption/source placement, icon stroke and optical sizing, licensing/attribution, dark/light behavior, and alt-text patterns. Decorative graphics must never compete with labels or imply unverified data.\n\n8. Data visualization and financial notation\n${s.dataViz}\nUse tabular numerals, locale-aware formatting, explicit currency and period, deterministic rounding, negative-value treatment, loading/stale/error states, and a static snapshot when continuous money movement is not native to the style. Never animate a value merely to suggest growth.\n\n9. Motion system\n${r.motion}\nDefine separate tokens for entrance, ambient, interaction, state change, and data update. Document duration, easing, distance, stagger, loop conditions, interruption behavior, and prefers-reduced-motion equivalence. Text and money remain stable while being read; ambient motion cannot be the sole carrier of state.\n\n10. Accessibility, internationalization, and content resilience\nMeet WCAG 2.2 AA, semantic HTML, logical heading order, keyboard operation, 44×44px minimum targets, visible focus, screen-reader announcements for real state changes, zoom to 200%, forced-colors support, and no information by color alone. Test 30% longer copy, CJK, RTL-ready layout logic, currency extremes, zero/negative/unknown data, long citations, and tables on 320px screens.\n\n11. Governance and release gates\nOwn the system as versioned packages: foundations, components, patterns, content, data visualization, and motion. Use semantic versioning, changelog, named maintainers, design and code owners, deprecation windows, migration notes, and a contribution RFC. Release only after automated accessibility/contrast checks, keyboard tests, visual regression at 1440×900, 1280×800, 1024×768, 768×1024, 390×844, and 320×568, and human review of every text/surface pair.\n\n12. Required delivery\nReturn: token JSON and CSS variables; font files and type specimens; Figma variables/components; production components with stories; component anatomy/state/usage docs; chart and table standards; responsive templates for all site pages; motion and reduced-motion demos; contrast matrix; accessibility test report; visual-regression fixtures; migration guide; and a one-page governance charter.\n\nDo not use\n${r.avoid}. If a fashionable contemporary pattern conflicts with the system thesis, content readability, operational truth, or accessibility, reject it.`;
+    return `You are the design-system steward for ${p.label}. Build and govern a complete company product ecosystem in this language—not a recolored template or one-off campaign page. Apply the system consistently to marketing, product, research, documentation, treasury, data-heavy operations, and mobile surfaces.\n\n1. Brand thesis\n${p.description}. ${r.principles.split('; ').join('. ')}. Every formal choice must reinforce this thesis; remove any motif that cannot explain its function.\n\n2. Voice and content architecture\n${r.voice}. Navigation, section naming, metrics, empty states, errors, and calls to action should use the same conceptual vocabulary. Preserve clear page hierarchy: proposition → system → economics → implementation → experiment → cited research. Never hide risk, cost, units, timestamps, or uncertainty behind brand language.\n\n3. Typography\nRole direction: ${r.type}.\nProduction scale: ${s.typeScale}\nShipped font roles:\n${recipeFonts()}\nDeliver the named self-hosted WOFF2 families with tested platform fallbacks, optical-size/weight rules, tabular figures for changing money, and line-length limits. Currency must use a non-clipping numeric container with reserved inline space, stable digit width, and at least 0.12em clearance from every enclosing edge.\n\n4. Grid, breakpoints, and density\nComposition: ${r.layout}.\nGrid specification: ${s.grid}\nSpacing scale: ${s.spacing}\nUse content-led breakpoints near 480, 700, 920, 1180, and 1440px. At laptop widths preserve the intended composition without treating the screen as a stretched tablet. At mobile widths keep reading order, convert absolute annotations to corners or document flow, and horizontally reveal the active design-system selector without moving the page vertically.\n\n5. Color and semantic tokens\nUse contextual surface/text pairs; a fill color is never automatically a readable text color. The current approved seed values are:\n${recipeTokens()}\nTest page background + primary ink, solid panel + primary ink, page background + accent text, solid panel + acid text, callout background + heading ink, and callout background + muted ink as separate pairs. Create hover, pressed, focus, selected, disabled, loading, success, warning, and error variants. Measure final composited colors: 4.5:1 for normal/small text, 3:1 for large text and meaningful graphics, visible focus at 3:1 against adjacent surfaces.\n\n6. Shape, surface, and elevation\n${s.surfaces}\nComponent styling: ${r.components}. Components must expose anatomy, variants, sizes, content limits, state tables, do/don't examples, keyboard behavior, and responsive rules. Minimum inventory: navigation, buttons, links, inputs, selects, cards, callouts, dialogs, tabs, chips, alerts, empty/error/loading states, stat blocks, tables, pagination, citations, source lists, diagrams, and chart containers.\n\n7. Imagery and iconography\n${s.media}\nSpecify crop ratios, caption/source placement, icon stroke and optical sizing, licensing/attribution, dark/light behavior, and alt-text patterns. Decorative graphics must never compete with labels or imply unverified data.\n\n8. Data visualization and financial notation\n${s.dataViz}\nUse tabular numerals, locale-aware formatting, explicit currency and period, deterministic rounding, negative-value treatment, loading/stale/error states, and a static snapshot when continuous money movement is not native to the style. Never animate a value merely to suggest growth.\n\n9. Motion system\n${r.motion}\nDefine separate tokens for entrance, ambient, interaction, state change, and data update. Document duration, easing, distance, stagger, loop conditions, interruption behavior, and prefers-reduced-motion equivalence. Text and money remain stable while being read; ambient motion cannot be the sole carrier of state.\n\n10. Accessibility, internationalization, and content resilience\nMeet WCAG 2.2 AA, semantic HTML, logical heading order, keyboard operation, 44×44px minimum targets, visible focus, screen-reader announcements for real state changes, zoom to 200%, forced-colors support, and no information by color alone. Test 30% longer copy, CJK, RTL-ready layout logic, currency extremes, zero/negative/unknown data, long citations, and tables on 320px screens.\n\n11. Governance and release gates\nOwn the system as versioned packages: foundations, components, patterns, content, data visualization, and motion. Use semantic versioning, changelog, named maintainers, design and code owners, deprecation windows, migration notes, and a contribution RFC. Theme-specific release gate: ${GOVERNANCE_GATES[id]} Release only after automated accessibility/contrast checks, keyboard tests, visual regression at 1440×900, 1280×800, 1024×768, 768×1024, 390×844, and 320×568, and human review of every text/surface pair.\n\n12. Required delivery\nReturn: token JSON and CSS variables; font files and type specimens; Figma variables/components; production components with stories; component anatomy/state/usage docs; chart and table standards; responsive templates for all site pages; motion and reduced-motion demos; contrast matrix; accessibility test report; visual-regression fixtures; migration guide; and a one-page governance charter.\n\nDo not use\n${r.avoid}. If a fashionable contemporary pattern conflicts with the system thesis, content readability, operational truth, or accessibility, reject it.`;
   }
 
   function renderRecipe(id){
@@ -1991,15 +2076,24 @@ html[data-theme="cartographic"]{--muted:#536159}
     setText('.recipe-title',p.label);
     setText('.recipe-summary',`A company-scale system specification for applying ${p.description} across a complete product ecosystem.`);
     const list=recipeDialog.querySelector('.recipe-principles');
-    list.innerHTML=r.principles.split('; ').map(item=>`<li>${safeHTML(item)}</li>`).join('');
-    ['type','layout','components','motion','voice','avoid'].forEach(key=>setText(`.recipe-${key}`,r[key]));
+    list.innerHTML=r.principles.split('; ').map(item=>`<li>${safeHTML(item.charAt(0).toUpperCase()+item.slice(1))}</li>`).join('');
+    ['layout','components','motion','voice','avoid'].forEach(key=>setText(`.recipe-${key}`,r[key]));
+    const fonts=recipeFontObject();
+    setText('.recipe-type',`${r.type}. Shipped roles — display: ${fonts['--theme-display']}; body: ${fonts['--theme-body']}; labels: ${fonts['--theme-label']}; data: ${fonts['--theme-data']}.`);
     setText('.recipe-skill',recipeSkill(id));
-    setText('.recipe-foundations',`${s.typeScale} ${s.grid} ${s.spacing}`);
+    setText('.recipe-scale-type',s.typeScale);
+    setText('.recipe-scale-grid',s.grid);
+    setText('.recipe-scale-spacing',s.spacing);
     setText('.recipe-media',s.media);
     setText('.recipe-dataviz',s.dataViz);
-    setText('.recipe-governance','Version foundations, components, patterns, content, data visualization, and motion. Require named owners, semantic versions, migration notes, WCAG 2.2 AA, contrast and keyboard checks, six viewport fixtures, and human review of every text/surface pair before release.');
-    const root=getComputedStyle(document.documentElement),swatches=recipeDialog.querySelector('.recipe-swatches');
-    swatches.innerHTML=['--bg','--ink','--muted','--dim','--mint','--accent-ink','--acid','--acid-ink','--callout-bg','--callout-ink'].map(token=>{const value=root.getPropertyValue(token).trim();return `<div class="recipe-swatch"><i style="background:${safeHTML(value)}"></i><span>${safeHTML(token)}<b>${safeHTML(value)}</b></span></div>`;}).join('');
+    setText('.recipe-governance',`${GOVERNANCE_GATES[id]} Version foundations, components, patterns, content, data visualization, and motion. Require named owners, semantic versions, migration notes, WCAG 2.2 AA, contrast and keyboard checks, six viewport fixtures, and human review of every text/surface pair before release.`);
+    const swatches=recipeDialog.querySelector('.recipe-swatches');
+    swatches.innerHTML=[
+      renderTokenPair('Page','--bg','--ink'),renderTokenPair('Panel','--panel-solid','--ink'),
+      renderTokenPair('Accent text','--bg','--accent-ink','Accent ink is measured on the page surface, not on the accent fill.'),
+      renderTokenPair('Acid text','--panel-solid','--acid-ink','Acid ink is measured on a solid content panel.'),
+      renderTokenPair('Callout heading','--callout-bg','--callout-ink'),renderTokenPair('Callout quiet copy','--callout-bg','--callout-muted')
+    ].join('');
     recipeDialog.dataset.recipe=id;
   }
 
@@ -2087,11 +2181,12 @@ html[data-theme="cartographic"]{--muted:#536159}
     options.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...options.querySelectorAll('.theme-option')],currentIndex=Math.max(0,buttons.indexOf(document.activeElement)),nextIndex=event.key==='Home'?0:event.key==='End'?buttons.length-1:(currentIndex+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;event.preventDefault();buttons[nextIndex].focus();buttons[nextIndex].click();});
     recipeDialog=document.createElement('dialog');
     recipeDialog.className='theme-recipe-dialog';recipeDialog.id='style-recipe';
-    recipeDialog.innerHTML='<div class="recipe-shell"><header class="recipe-header"><div><div class="recipe-kicker"></div><h2 class="recipe-title"></h2><p class="recipe-summary"></p></div><form method="dialog"><button class="recipe-close" type="submit" aria-label="Close style recipe">×</button></form></header><div class="recipe-body"><section class="recipe-principle-panel"><h3>Design principles</h3><ul class="recipe-principles"></ul><div class="recipe-swatches" aria-label="Theme color tokens"></div></section><div class="recipe-grid"><section><h3>Typography</h3><p class="recipe-type"></p></section><section><h3>Layout system</h3><p class="recipe-layout"></p></section><section><h3>Foundations & scale</h3><p class="recipe-foundations"></p></section><section><h3>Components & visualization</h3><p class="recipe-components"></p></section><section><h3>Imagery & iconography</h3><p class="recipe-media"></p></section><section><h3>Data visualization</h3><p class="recipe-dataviz"></p></section><section><h3>Motion choreography</h3><p class="recipe-motion"></p></section><section><h3>Writing voice</h3><p class="recipe-voice"></p></section><section><h3>Governance & release gates</h3><p class="recipe-governance"></p></section><section><h3>Avoid</h3><p class="recipe-avoid"></p></section></div><section class="recipe-skill-panel"><div><div class="micro">COMPANY DESIGN-SYSTEM SKILL</div><h3>Copy the complete production specification into a design or coding agent.</h3></div><button class="recipe-copy" type="button">Copy full system skill</button><pre class="recipe-skill" tabindex="0"></pre><div class="recipe-copy-status" aria-live="polite"></div></section></div></div>';
+    recipeDialog.setAttribute('aria-labelledby','recipe-title');
+    recipeDialog.innerHTML='<div class="recipe-shell"><header class="recipe-header" tabindex="-1"><div><div class="recipe-kicker"></div><h2 class="recipe-title" id="recipe-title"></h2><p class="recipe-summary"></p></div><form method="dialog"><button class="recipe-close" type="submit" aria-label="Close style recipe">×</button></form></header><div class="recipe-body"><section class="recipe-principle-panel"><div><h3>Design principles</h3><ul class="recipe-principles"></ul></div><div class="recipe-swatches" aria-label="Measured theme color pairs"></div></section><div class="recipe-grid"><section><h3>Typography</h3><p class="recipe-type"></p></section><section><h3>Layout system</h3><p class="recipe-layout"></p></section><section><h3>Foundations & scale</h3><dl class="recipe-scale"><div><dt>Type</dt><dd class="recipe-scale-type"></dd></div><div><dt>Grid</dt><dd class="recipe-scale-grid"></dd></div><div><dt>Spacing</dt><dd class="recipe-scale-spacing"></dd></div></dl></section><section><h3>Components & visualization</h3><p class="recipe-components"></p></section><section><h3>Imagery & iconography</h3><p class="recipe-media"></p></section><section><h3>Data visualization</h3><p class="recipe-dataviz"></p></section><section><h3>Motion choreography</h3><p class="recipe-motion"></p></section><section><h3>Writing voice</h3><p class="recipe-voice"></p></section><section><h3>Governance & release gates</h3><p class="recipe-governance"></p></section><section><h3>Avoid</h3><p class="recipe-avoid"></p></section></div><section class="recipe-skill-panel"><div><div class="micro">COMPANY DESIGN-SYSTEM SKILL</div><h3>Copy the complete production specification or its machine-readable tokens.</h3></div><div class="recipe-copy-actions"><button class="recipe-copy" type="button" data-copy="skill">Copy full system skill</button><button class="recipe-copy secondary" type="button" data-copy="tokens">Copy tokens (JSON)</button></div><pre class="recipe-skill" tabindex="0"></pre><div class="recipe-copy-status" aria-live="polite"></div></section></div></div>';
     document.body.appendChild(recipeDialog);
-    bar.querySelectorAll('.theme-recipe-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();renderRecipe(theme);if(typeof recipeDialog.showModal==='function')recipeDialog.showModal();else recipeDialog.setAttribute('open','');}));
+    bar.querySelectorAll('.theme-recipe-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();renderRecipe(theme);if(typeof recipeDialog.showModal==='function')recipeDialog.showModal();else recipeDialog.setAttribute('open','');requestAnimationFrame(()=>recipeDialog.querySelector('.recipe-header').focus({preventScroll:true}));}));
     recipeDialog.addEventListener('click',event=>{if(event.target===recipeDialog)recipeDialog.close();});
-    recipeDialog.querySelector('.recipe-copy').addEventListener('click',async()=>{const skill=recipeSkill(theme),status=recipeDialog.querySelector('.recipe-copy-status');try{await navigator.clipboard.writeText(skill);status.textContent='Skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the skill text manually.';}});
+    recipeDialog.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const kind=button.dataset.copy,status=recipeDialog.querySelector('.recipe-copy-status'),payload=kind==='tokens'?recipeTokenJSON(theme):recipeSkill(theme);try{await navigator.clipboard.writeText(payload);status.textContent=kind==='tokens'?'Token JSON copied.':'System skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the content manually.';}}));
     applyTheme(theme);
   }
 
