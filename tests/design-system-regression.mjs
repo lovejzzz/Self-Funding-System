@@ -10,7 +10,7 @@ const allPages=['index.html','thesis.html','architecture.html','economics.html',
 const themes=process.env.TEST_THEMES?allThemes.filter(theme=>process.env.TEST_THEMES.split(',').includes(theme)):allThemes;
 const pages=process.env.TEST_PAGES?allPages.filter(page=>process.env.TEST_PAGES.split(',').includes(page)):allPages;
 const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
-const probes=['.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.footer-copy','.footer-bottom'];
+const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.footer-copy','.footer-bottom'];
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
 
 function startServer(){
@@ -33,6 +33,13 @@ function assertStaticContracts(){
   if(/html\[data-theme="calm"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Calm soft text bypasses --soft');
   if(/html\[data-theme="clay"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Clay soft text bypasses --soft');
   if(!/html\[data-theme="brutalist"\] th\{color:#fff!important\}/.test(css))failures.push('Brutalist filled table header is not explicitly paired with white ink');
+  const calloutTokens=['--callout-bg','--callout-ink','--callout-muted','--callout-accent'];
+  for(const theme of allThemes.slice(28)){
+    const declarations=[...css.matchAll(new RegExp(`html\\[data-theme="${theme}"\\]\\{([^}]*)\\}`,'g'))].map(match=>match[1]).join(';');
+    for(const token of calloutTokens)if(!declarations.includes(`${token}:`))failures.push(`${theme} recipe is missing explicit ${token}`);
+  }
+  if(!css.includes('html[data-theme="hologram"] .theme-review{background-color:#cfe0e8;background-image:linear-gradient'))failures.push('Hologram review bar is missing its solid gradient fallback');
+  if(!probes.includes('.theme-option'))failures.push('Theme selector chips are missing from contrast probes');
   const gateBlock=js.slice(js.indexOf('const GOVERNANCE_GATES={'),js.indexOf('const ORDER=',js.indexOf('const GOVERNANCE_GATES={')));
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
