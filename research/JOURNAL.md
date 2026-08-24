@@ -203,3 +203,34 @@ Economics now distinguishes buildable provisioning from the blocked cash-reconci
 ### Next question
 
 Horizon A deliberate live replication: with operator approval, isolated test capital, a Projects per-provider cap, and a lower OpenRouter key limit, can one paid generation reconcile its generation ID, provider usage/billing, Projects spend, SPT/payment evidence, and bank/card posting to zero unexplained difference within a preregistered window?
+
+## 2026-08-24 — Separate refund liquidity is real; most other “buckets” are ledger restrictions
+
+### Research question
+
+For the first US Stripe card job, which receiving, operating, refund, tax, and reserve separations can and should be real external fund containers, and which are only internal ledger restrictions?
+
+### Result
+
+- Direct fact: Stripe's payments balance receives customer charges; pending funds cannot be spent, while available funds can fund payouts, refunds, transfers, and other debits.
+- Direct fact: Stripe documents `refund_and_dispute_prefunding` as a separate, operator-funded balance excluded from automatic payouts. Refunds and disputes use the available payments balance first and this prefunding second; both can still be exhausted.
+- Direct fact: a Stripe minimum balance is only a retained payout floor. It can be changed or disabled and does not prevent negative balances above the floor. Stripe-created reserves are Stripe risk holds, not operator tax, job, or runway accounts.
+- Direct fact: ASC 606 presents customer prepayment as a contract liability before delivery, but that classification does not itself move cash into a separate account. IRS Publication 583 advises a business-only checking account, journals/ledgers, and reconciliation rather than prescribing five purpose accounts.
+- Bounded inference / buildable decision: V0.1 needs three external locations—a Stripe payments balance, an operator-prefunded Stripe refund/dispute balance, and one operator-owned business checking account. Customer obligation, job budget, tax allocation, general reserve, and policy-available surplus remain explicit internal accounts unless a separately funded external container is opened and reconciled.
+- Unknown: actual Stripe-account feature access, buffer size, entity/state/tax treatment, and any activity-specific segregation duty require account evidence and US legal/accounting review.
+
+### Detailed evidence
+
+See [Stripe balance separation for the first paid job](notes/2026-08-24T02-12-52Z-stripe-balance-separation.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially refines the standing custody matrix: Stripe refund/dispute prefunding is a real separate balance; a minimum balance and internal purpose accounts are not equivalent forms of segregation.
+
+### Website status
+
+Architecture and Economics now distinguish real custody containers, Stripe's retained payout floor, and internal policy restrictions. The public Research Journal records the decision, counterevidence, jurisdiction limits, and next authority question. No shared navigation, theme, CSS, JavaScript, motion, or standalone artifact changed.
+
+### Next question
+
+For this topology, define the minimum Stripe credential and approval matrix for balance read, refund, payout settings, top-up, bank-account changes, emergency stop, rotation, and independent close, and identify which controls can be verified before a live charge.

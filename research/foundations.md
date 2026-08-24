@@ -197,6 +197,16 @@ ACP、Shared Payment Token、Agent Toolkit 和 Stripe MCP 解决的是 agent 可
 
 详细状态转移、权限矩阵、反证与 sandbox 实验见：[Stripe 首笔银行卡付款的最小资金状态机](notes/2026-08-24T00-42-22Z-stripe-money-state-machine.md)。来源：[Stripe PaymentIntent lifecycle](https://docs.stripe.com/payments/paymentintents/lifecycle)、[Balances and settlement time](https://docs.stripe.com/payments/balances)、[Balance Transaction object](https://docs.stripe.com/api/balance_transactions/object)、[Refunds](https://docs.stripe.com/refunds)、[Disputes](https://docs.stripe.com/disputes/how-disputes-work)、[Payouts](https://docs.stripe.com/payouts)、[Payout reconciliation](https://docs.stripe.com/reports/payout-reconciliation)、[Webhooks](https://docs.stripe.com/webhooks)、[Testing](https://docs.stripe.com/testing)。
 
+### 6.2.1 V0.1 的真实资金隔离只有三处，其余用途必须诚实地写成账本限制
+
+Stripe 当前公开文档补充了一个重要例外：`refund_and_dispute_prefunding` 是 operator 从外部银行注资的独立 balance，不参加 automatic payout；payments balance 不足时，refund/dispute 才会动用这笔 prefunding。它与“minimum balance”不同：minimum balance 只是 automatic payout 后保留在 payments balance 的 floor，可以被 Dashboard 管理员修改或关闭，且损失超过 floor 时仍会成为负数。Stripe 自己施加的 reserve 又是 Stripe 的风险 hold，不是 operator 可分配的 job、tax 或 runway 资金。
+
+因此首版的最小外部 topology 是：operator 的 Stripe payments balance、operator 预先注资的 refund/dispute balance、以及与个人账户分开的 operator business checking。客户履约义务、job budget、tax estimate、general reserve 和 policy-available surplus 都必须在复式账本中分开，但在实际建立、注资并对账第二个银行账户或其他外部容器之前，只能称为 policy restriction，不能称为 physically segregated cash。首笔 provider 成本使用 operator 预先存在的 operating float，不使用尚未交付的 customer obligation，这样完整退款路径不依赖新收入先变成 working capital。
+
+ASC 606 对采用 US GAAP 的主体要求在服务交付前把 customer prepayment 表示为 contract liability；这是一项会计列报，不会自动创造 escrow 或 trust account。IRS Publication 583 建议开设仅用于业务的 checking account、维护 journals/ledgers 并将银行 statement 与账簿对账，但本轮没有找到 generic software merchant 必须为 tax、job 与 general reserve 各开一个银行账户的 primary-source 证据。这个负面结果不排除 entity、州、合同或特定业务触发额外义务；上线前仍需 US 法律、税务与会计专业复核。
+
+完整 source ledger、状态转移、authority matrix、fallback 与 falsification gates 见：[首笔 Stripe job 的 balance separation](notes/2026-08-24T02-12-52Z-stripe-balance-separation.md)。来源：[Stripe balances](https://docs.stripe.com/payments/balances)、[Stripe add funds](https://docs.stripe.com/get-started/account/add-funds)、[Stripe minimum balances](https://docs.stripe.com/payouts/minimum-balances-for-automatic-payouts)、[Stripe refunds](https://docs.stripe.com/refunds)、[FASB ASU 2014-09 / ASC 606](https://asc.fasb.org/layoutComponents/getPdf?fileName=GUID-922C9F73-BD0D-42C8-805D-1105C5CF9692.pdf&isSitesBucket=false)、[IRS Publication 583](https://www.irs.gov/publications/p583)。
+
 ### 6.3 “agent 自己充值 API”可以在经济控制意义上实现，但主流账户仍属于 operator
 
 首版必须区分三种不同能力：
