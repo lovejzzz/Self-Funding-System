@@ -197,6 +197,20 @@ ACP、Shared Payment Token、Agent Toolkit 和 Stripe MCP 解决的是 agent 可
 
 详细状态转移、权限矩阵、反证与 sandbox 实验见：[Stripe 首笔银行卡付款的最小资金状态机](notes/2026-08-24T00-42-22Z-stripe-money-state-machine.md)。来源：[Stripe PaymentIntent lifecycle](https://docs.stripe.com/payments/paymentintents/lifecycle)、[Balances and settlement time](https://docs.stripe.com/payments/balances)、[Balance Transaction object](https://docs.stripe.com/api/balance_transactions/object)、[Refunds](https://docs.stripe.com/refunds)、[Disputes](https://docs.stripe.com/disputes/how-disputes-work)、[Payouts](https://docs.stripe.com/payouts)、[Payout reconciliation](https://docs.stripe.com/reports/payout-reconciliation)、[Webhooks](https://docs.stripe.com/webhooks)、[Testing](https://docs.stripe.com/testing)。
 
+### 6.3 “agent 自己充值 API”可以在经济控制意义上实现，但主流账户仍属于 operator
+
+首版必须区分三种不同能力：
+
+1. **Provider auto-recharge：今天可用。** OpenAI、Claude 和 OpenRouter 都允许 operator 预设 payment method、余额阈值或自动续费。agent 可以读取 usage、cost 或 credits 并在内部保留 fuel budget，但不能更改付款方式或提高 monthly limit。
+2. **Agent-provisioned pay-as-you-go：今天部分可用。** Stripe Projects 能让 coding agent provision OpenRouter 等 provider 的 scoped credential，并设置 global/per-provider spending cap；provider cost 仍向 operator Stripe account 上的 payment method 收取，不能描述成 Stripe 销售余额直接给 agent 充值。
+3. **Wallet-native earn-to-spend：x402 范围内可用。** agent 的付费 endpoint 可以把 USDC 收入送到一个 wallet，再从同一 wallet 支付另一个 x402 endpoint。Coinbase Agentic Wallet MCP 允许 agent 在 user-set per-call/session limit 内付款，但不允许 agent 自己 onramp、任意转账或修改限额。
+
+其他收款轨道改变的是交付时间和责任分配，不会自动创造 agent 法律身份：Square 等 PSP 仍使用 verified seller account；Paddle/Lemon Squeezy 等 MoR 对最终客户承担 merchant 责任后再周期性 payout 给 supplier；bank invoice 适合高客单 B2B 但不适合即时微支付。x402 的 wallet address 是可编程 protocol identity，不等同于法律主体、银行账户、税务身份或 provider Customer。
+
+主流平台当前没有建立一个通用的、公开支持的 credit-purchase API：OpenAI 公开 Admin API 提供 usage/cost 读取而购买在 Billing portal；Claude 的购买和 auto-reload 由 Billing/Admin UI 配置；OpenRouter 的 `GET /api/v1/credits` 只读余额，旧 `POST /api/v1/credits/coinbase` 已返回 410。公开 reference 的缺失是有界结论，不排除未来或 enterprise 私有能力。
+
+因此首版的正确主张是：**operator-owned agent can economically finance its next API usage under pre-authorized limits**，而不是“agent 独立拥有账户并给自己充值”。完整证据、收款路径矩阵、provider 比较、权限矩阵和两个闭环实验见：[收款路径与 API self-funding](notes/2026-08-24T00-59-44Z-collection-rails-and-api-self-funding.md)。
+
 ## 7. 建议重写的 MVP 实验
 
 ### 7.1 更严谨的研究问题

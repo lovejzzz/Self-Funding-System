@@ -139,3 +139,36 @@ Architecture and Economics now distinguish capture, Stripe pending/available cus
 ### Next question
 
 Horizon A: decide the smallest real separation of receiving, operating, refund, tax, and reserve funds across Stripe/bank balances and internal double-entry subaccounts, including which separations are physical versus policy-only.
+
+## 2026-08-24 — An agent can economically fund its API usage, but cannot yet own the mainstream billing account
+
+### Research question
+
+Which non-Stripe collection routes can close the money loop, and can an agent turn its own earned revenue into OpenAI, Claude, OpenRouter, or other API capacity without a human manually buying credits each time?
+
+### Result
+
+- Direct fact: OpenAI, Claude, and OpenRouter support prepaid credits or pay-as-you-go billing with automatic replenishment, but their public flows still charge an operator-owned account/payment method.
+- Direct fact: OpenAI exposes organization usage and cost APIs, but its public billing guidance sends additional credit purchases to the Billing portal. Claude similarly assigns credit purchases and auto-reload configuration to Billing/Admin roles.
+- Direct fact: OpenRouter exposes a read-only Credits API; its old programmatic Coinbase credit-purchase endpoint has been removed and returns `410 Gone` in favor of a web flow.
+- Direct fact: Stripe Projects can let an agent provision an OpenRouter pay-as-you-go resource with scoped credentials and provider spend caps. Provider costs are charged to a payment method on the operator's Stripe account, not proven to net directly from Stripe sales balance.
+- Direct fact: Square can receive customer payments into a verified seller account and, for eligible US owners, make sales available through Square Checking/debit. This is a short operator-owned receipt-to-card path, but provider card acceptance needs a live test.
+- Direct fact: x402 lets a seller wallet receive USDC and a buyer wallet pay HTTP resources programmatically. Coinbase Agentic Wallet MCP lets the agent pay within user-set limits, but only the user may onramp, transfer arbitrary funds, or change limits.
+- Bounded inference: a legally operator-owned agent can be economically self-funding today through auto-recharge or capped pay-as-you-go. Literal independent agent ownership of the merchant, bank, wallet onramp, or provider account is not established.
+- Testable hypothesis: the first closed loop can be demonstrated either with `delivered revenue → operator payment method → capped OpenRouter/API usage` or, more natively, `x402 USDC receipt → same-wallet x402 spend`.
+
+### Detailed evidence
+
+See [collection rails and API self-funding](notes/2026-08-24T00-59-44Z-collection-rails-and-api-self-funding.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially changes the implementation path: provider auto-reload, Stripe Projects, Square receipt-to-debit, MoR settlement, and x402 earn-to-spend are now distinguished as separate fuel loops with different identity, timing, and custody properties.
+
+### Website status
+
+Economics now compares collection routes and documents the three viable API fuel paths. The public Research Journal adds this round, a cited fuel-loop graphic, provider limitations, counterevidence, unknowns, and the next experiment. Responsive inspection also exposed and fixed a mobile document-grid constraint that let 660px tables force the surrounding article and cards beyond the viewport; tables now scroll inside their own wrappers while the article and cards stay within the screen. Theme navigation behavior is unchanged, and all standalone previews were resynchronized with the shared stylesheet.
+
+### Next question
+
+Horizon A: verify Stripe Projects' actual OpenRouter billing object, charge timing, failure states, and lowest-risk live test; compare it with a Square receipt-to-debit auto-reload path. Horizon B: audit whether x402 currently offers the model, sandbox, storage, and deployment services needed for a complete agent stack.

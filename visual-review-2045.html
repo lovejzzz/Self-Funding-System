@@ -1135,7 +1135,8 @@ body[data-page="mvp"] #stops .card{border-top:5px solid var(--red)}
 body[data-page="mvp"] #roadmap .timeline{margin-top:32px}
 
 @media(max-width:1020px){
-  body[data-page]:not([data-page="index"]) .doc-layout,html[data-theme="swiss"] .doc>section{grid-template-columns:1fr;gap:38px}
+  body[data-page]:not([data-page="index"]) .doc-layout,html[data-theme="swiss"] .doc>section{grid-template-columns:minmax(0,1fr);gap:38px}
+  body[data-page]:not([data-page="index"]) .doc{min-width:0}
   html[data-theme="swiss"] body[data-page]:not([data-page="index"]) .page-hero>.wrap{display:block}
   html[data-theme="swiss"] body[data-page]:not([data-page="index"]) .page-hero :is(h1,p,.crumb){grid-column:auto}
   html[data-theme="swiss"] .doc>section>h2{grid-template-columns:1fr}
@@ -1447,7 +1448,6 @@ html[data-theme="zen"] .core-label{color:#69635c!important}
   html[data-theme] .page-hero h1{max-width:100%;overflow-wrap:anywhere}
   html[data-theme="retroos"] .build-hero-grid{grid-template-columns:minmax(0,1fr)}
 }
-
 </style></head><body><div class="grid-bg"></div><div class="noise"></div>
 <nav class="site-nav"><div class="wrap nav-inner">
   <a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>SELF/FUNDING</strong><span>AUTONOMOUS SYSTEMS</span></span></a>

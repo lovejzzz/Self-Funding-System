@@ -1135,7 +1135,8 @@ body[data-page="mvp"] #stops .card{border-top:5px solid var(--red)}
 body[data-page="mvp"] #roadmap .timeline{margin-top:32px}
 
 @media(max-width:1020px){
-  body[data-page]:not([data-page="index"]) .doc-layout,html[data-theme="swiss"] .doc>section{grid-template-columns:1fr;gap:38px}
+  body[data-page]:not([data-page="index"]) .doc-layout,html[data-theme="swiss"] .doc>section{grid-template-columns:minmax(0,1fr);gap:38px}
+  body[data-page]:not([data-page="index"]) .doc{min-width:0}
   html[data-theme="swiss"] body[data-page]:not([data-page="index"]) .page-hero>.wrap{display:block}
   html[data-theme="swiss"] body[data-page]:not([data-page="index"]) .page-hero :is(h1,p,.crumb){grid-column:auto}
   html[data-theme="swiss"] .doc>section>h2{grid-template-columns:1fr}
@@ -1447,7 +1448,6 @@ html[data-theme="zen"] .core-label{color:#69635c!important}
   html[data-theme] .page-hero h1{max-width:100%;overflow-wrap:anywhere}
   html[data-theme="retroos"] .build-hero-grid{grid-template-columns:minmax(0,1fr)}
 }
-
 </style></head><body><div class="grid-bg"></div><div class="noise"></div>
 <nav class="site-nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>SELF/FUNDING</strong><span>AUTONOMOUS SYSTEMS</span></span></a><div class="nav-links"><a href="index.html">Home</a><a href="thesis.html">Thesis</a><a href="architecture.html">Architecture</a><a href="economics.html">Economics</a><a class="active" href="build.html">How to Build</a><a href="mvp.html">Experiment</a><a href="journal.html">Journal</a></div><div class="nav-status"><span class="status-dot"></span>Network online</div></div></nav>
 <header class="page-hero"><div class="wrap"><div class="build-hero-grid"><div class="reveal"><div class="crumb">Build protocol // 04</div><h1>Build the loop before the empire.</h1><p>One paid code service. One economic router. One immutable ledger. One disposable sandbox. A result that either earns more than it costs—or teaches you why it cannot.</p><p><span class="stack-badge">TypeScript</span><span class="stack-badge">Hono</span><span class="stack-badge">Postgres</span><span class="stack-badge">x402</span><span class="stack-badge">E2B</span></p></div><div class="build-schematic reveal" aria-label="Implementation system diagram"><span class="schem-line sl1"></span><span class="schem-line sl2"></span><span class="schem-line sl3"></span><span class="schem-line sl4"></span><div class="schem-node a"><b>Paid API</b><span>quote + accept</span></div><div class="schem-node b"><b>Model router</b><span>budget + choose</span></div><div class="schem-node c"><b>Sandbox</b><span>run + verify</span></div><div class="schem-node d"><b>Ledger</b><span>book + settle</span></div><div class="schem-core"><div><strong>+$0.23</strong><span>contribution</span></div></div></div></div></div></header>
