@@ -237,6 +237,16 @@ manual/instant payout 不能假设拥有 automatic payout 的 membership relatio
 
 完整 schema、两次 close、authority/funds matrix、exception tiers 与 falsification fixture 见：[Stripe two-pass daily close for V0.1](notes/2026-08-24T03-14-27Z-stripe-two-pass-daily-close.md)。来源：[Stripe Balance Transaction](https://docs.stripe.com/api/balance_transactions/object)、[Balance report](https://docs.stripe.com/reports/balance)、[Payout reconciliation report](https://docs.stripe.com/reports/payout-reconciliation)、[Payout reconciliation API](https://docs.stripe.com/payouts/reconciliation)、[Payout object](https://docs.stripe.com/api/payouts/object)、[Refund object](https://docs.stripe.com/api/refunds/object)、[Dispute object](https://docs.stripe.com/api/disputes/object)、[Webhooks](https://docs.stripe.com/webhooks)、[Reporting API](https://docs.stripe.com/reports/api)、[OpenRouter Usage Accounting](https://openrouter.ai/docs/cookbook/administration/usage-accounting)、[IRS Publication 583](https://www.irs.gov/publications/p583)。
 
+### 6.2.5 Sandbox 证明 control plane，不证明真实 settlement；fixture 必须保存 evidence class
+
+Stripe sandbox 能创建可通过 API read-back 的模拟 PaymentIntent、Charge、BalanceTransaction、Refund、Dispute、Payout、Event 和 report。官方 test path 覆盖 charge/fee、pending 与 bypass-pending branch、异步 refund success/failure、dispute withdrawal/reinstatement/loss，以及 test payout success/failure；webhook resend 能重复同一 Event，官方也明确 delivery 可能乱序或由不同 Event 指向同一 object/type。这些足以测试 object linkage、复式记账、幂等、canonical refresh、reopen 和 freeze reducer。
+
+但 sandbox 明确不处理 card network、payment provider、bank 或真实资金。`pm_card_bypassPending` 故意跳过 pending，因此不能测真实 availability timing；test payout 不会形成 bank posted line；公开文档没有建立一个能按需把单次 card charge 推过 production-like standard automatic-payout schedule、bank trace 和 report latency 的确定性接口。provider mismatch、unexpected destination、unbalanced booking、credential compromise 和 evidence corruption 又是项目自己的 policy fault，不是 Stripe rail event。
+
+因此每个 fixture 必须固定为四类之一：`RAIL_SANDBOX` 保存 Stripe-created object/read-back；`TRANSPORT_INJECTION` 对已认证 payload 做 duplicate、reorder、signature fault；`POLICY_INJECTION` 以版本化 oracle 注入 provider、authority、integrity 例外；`LIVE_EVIDENCE` 才能证明真实 charge/refund、standard automatic payout、provider cash document 与 bank posting。前三类最多进入 `CONTROL_PLANE_PASSED`，即使模拟差额为零也不能进入 `REVIEWED_CLOSED_LIVE`。manual payout 只能验证拒绝规则，不能替代 automatic-payout membership。
+
+完整 source ledger、fixture manifest、state transition、authority/funds matrix 和 falsification gate 见：[Stripe sandbox fixture boundary](notes/2026-08-24T03-42-16Z-stripe-sandbox-fixture-boundary.md)。来源：[Stripe Testing](https://docs.stripe.com/testing)、[Testing use cases](https://docs.stripe.com/testing-use-cases)、[Receive payouts](https://docs.stripe.com/payouts)、[Webhooks](https://docs.stripe.com/webhooks)、[Reports API](https://docs.stripe.com/reports/api)、[Payout reconciliation](https://docs.stripe.com/reports/payout-reconciliation)、[Sandbox settings](https://docs.stripe.com/sandboxes/dashboard/sandbox-settings)、[How disputes work](https://docs.stripe.com/disputes/how-disputes-work)。
+
 ### 6.3 “agent 自己充值 API”可以在经济控制意义上实现，但主流账户仍属于 operator
 
 首版必须区分三种不同能力：

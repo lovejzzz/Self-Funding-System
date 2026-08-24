@@ -329,3 +329,34 @@ Architecture, Economics, MVP, and Build now distinguish provisional freshness fr
 ### Next question
 
 Can a sandbox implementation of this schema ingest a preregistered fixture set—successful charge, duplicate/reordered webhook, Stripe fee, refund success/failure, dispute withdrawal/reinstatement, automatic payout/failure, manual-payout rejection, provider-cost mismatch, and unexpected destination—and produce the exact close state and freeze tier with zero duplicate or unbalanced entries?
+
+## 2026-08-24 — Sandbox can prove reducer controls, not external settlement
+
+### Research question
+
+Which preregistered V0.1 daily-close fixtures can Stripe's current sandbox generate as canonical Stripe objects, which require deterministic transport or policy injection, and which facts remain impossible to prove without a minimum live-money test?
+
+### Result
+
+- Direct fact: Stripe sandboxes create simulated payment, charge, refund, balance, dispute, payout, and report objects without processing card networks, payment providers, banks, or real money.
+- Direct fact: documented sandbox paths cover successful charges and fees, pending/available balance branches, asynchronous refund success/failure, dispute debit and reinstatement/loss, payout success/failure destinations, report parsing, and webhook resend. Stripe explicitly documents unordered and duplicate delivery.
+- Counterevidence / negative result: the bypass-pending fixture cannot test live settlement timing; a test payout cannot prove a posted bank line or trace; no reviewed source established a deterministic on-demand path through a one-off card charge's real automatic-payout schedule; sandbox report latency cannot validate the 36-hour live target.
+- Bounded inference / buildable decision: preregister four evidence classes—`RAIL_SANDBOX`, `TRANSPORT_INJECTION`, `POLICY_INJECTION`, and `LIVE_EVIDENCE`. Only the live class may reach `REVIEWED_CLOSED_LIVE`; sandbox and synthetic zero-difference results prove the reducer's control plane only.
+- Exact experiment rule: the fixture manifest records source, API version, hashes, expected ledger entries, close state, freeze tier, and what each fixture cannot prove. A manual payout may test rejection but cannot substitute for standard automatic-payout membership.
+- Unknown: actual sandbox report access, automatic-payout capability and timing, trace fields, live settlement/report latency, refund-prefunding access, bank identifiers, and provider cash linkage still require account evidence.
+
+### Detailed evidence
+
+See [Stripe sandbox fixture boundary for the V0.1 close reducer](notes/2026-08-24T03-42-16Z-stripe-sandbox-fixture-boundary.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially splits the standing pre-live test plan into rail-sandbox, transport-injection, policy-injection, and live-evidence classes and forbids a sandbox result from being promoted to an external close.
+
+### Website status
+
+Experiment and Build now distinguish `CONTROL_PLANE_PASSED` from `REVIEWED_CLOSED_LIVE` and reserve custody, bank posting, settlement timing, and trace proof for the live round. The public Research Journal records the evidence boundary, counterevidence, unknowns, and next executable test. No shared navigation, theme, CSS, JavaScript, motion, graphics, or standalone artifact changed.
+
+### Next question
+
+Can the first versioned fixture runner execute the source-backed `RAIL_SANDBOX`, `TRANSPORT_INJECTION`, and `POLICY_INJECTION` manifest—including an explicit automatic-payout capability probe—and produce the preregistered close state, freeze tier, and balanced entries for every case with zero silent evidence-class upgrades?
