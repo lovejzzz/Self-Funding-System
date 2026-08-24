@@ -34,6 +34,15 @@ The external audit was treated as a set of hypotheses and checked against the ru
 - 28 themes at 390 × 844: no horizontal overflow; no selector/Recipe overlap; no hero data-tag or flow-node collisions.
 - All seven content pages and three standalone previews: 28 selector options, seven navigation destinations, loaded fonts, working recipe panel, and no missing local links.
 - Theme persistence verified across normal pages and standalone previews.
-- All 28 recipe panels verified to contain eight color roles and a complete recreation skill.
+- All 28 recipe panels verified to contain ten displayed color roles and a complete company-scale design-system skill.
 
 The desktop selector was intentionally not collapsed into a dropdown or single-row scroller because the visual-review brief explicitly requires all 28 directions to remain visible and wrapped on laptop/desktop.
+
+## Round-two corrections
+
+- Replaced the leaked base dark callout treatment in Monochrome, Japanese Minimal, and Solarpunk with explicit callout surface, heading, paragraph, micro-label, and action ink pairs.
+- Corrected the Monochrome Architecture inverse metric, Neo-Brutalist center labels, and light-theme micro-labels so their text follows the component surface rather than the page accent color.
+- Added a separate `accent-ink` contract for Neo-Brutalist, Memphis, Calm Futurism, Clay, and Swiss Grid; adjusted Bauhaus, Solarpunk, Swiss, Memphis, Biotech, Cartographic, and Terminal hairline contrast pairs.
+- Mobile theme persistence now horizontally centers the active chip without changing the page's vertical position.
+- Expanded all 28 recipes from art-direction summaries into company-scale design-system specifications. Every system now defines a numeric type scale, grid, spacing scale, surface/elevation logic, imagery and iconography, data visualization, financial notation, motion, accessibility, internationalization, component-state inventory, required deliverables, ownership, versioning, migration, and release gates.
+- Each copied design-system skill includes the selected theme's live token values and requires paired surface/text tokens, six viewport regression fixtures, WCAG 2.2 AA, and human review of every text/background relationship.

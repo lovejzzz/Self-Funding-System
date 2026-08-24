@@ -22,9 +22,14 @@
   --line-strong:rgba(126,255,212,.28);
   --mint:#78ffd0;
   --mint2:#b8ffe8;
+  --accent-ink:var(--mint);
   --acid:#d7ff70;
   --acid-ink:#d7ff70;
   --soft:#a8bab5;
+  --callout-bg:radial-gradient(700px 300px at 0 0,rgba(120,255,208,.09),transparent 62%),#06110e;
+  --callout-ink:var(--ink);
+  --callout-muted:var(--muted);
+  --callout-accent:var(--mint);
   --review-bg:#060b0a;
   --review-ink:#f0f7f4;
   --amber:#ffc86b;
@@ -1586,3 +1591,53 @@ html[data-theme="retroos"] footer :is(.footer-copy,.footer-links h5,.footer-bott
   html[data-theme="terminal"] .flow-center{grid-column:1}
   html[data-theme="terminal"] .flow-node{min-height:0}
 }
+
+/* =========================================================
+   ROUND-TWO HUMAN-EYE AUDIT — SURFACE/TEXT CONTRACT 7.0
+   Accent fills, readable accent text, and callout surfaces are
+   intentionally separate. These overrides answer verified visual
+   defects without flattening the 28 distinct design systems.
+   ========================================================= */
+
+/* Small accent copy needs a darker theme-specific ink on light canvases. */
+html[data-theme="brutalist"]{--accent-ink:#9f160f}
+html[data-theme="memphis"]{--accent-ink:#8b1238;--acid-ink:#03614c}
+html[data-theme="calm"]{--accent-ink:#1d4ed8;--soft:#76839c}
+html[data-theme="clay"]{--accent-ink:#7f3022;--soft:#7d6f63}
+html[data-theme="swiss"]{--accent-ink:#a51e0e}
+
+:is(html[data-theme="brutalist"],html[data-theme="memphis"],html[data-theme="calm"],html[data-theme="clay"],html[data-theme="swiss"]) :is(
+  .nav-status,.eyebrow,.section-head .kicker,.page-hero .crumb,.flow-node .num,
+  .service-icon,.time-row .year,th,.section-id,.side-index .micro,
+  .journal-abstract .micro,.figure-no,.cite,.source-list li:before,.step-no,
+  .api-route,.check-list li:before,.commit-list li:before,.hero-scope strong
+){color:var(--accent-ink)!important}
+
+:is(html[data-theme="brutalist"],html[data-theme="memphis"],html[data-theme="calm"],html[data-theme="clay"],html[data-theme="swiss"]) .claim-badge.supported{color:var(--accent-ink)!important}
+
+/* Callouts inherit a surface/text pair instead of the base dark gradient. */
+html[data-theme="mono"]{--callout-bg:#0a0a0a;--callout-ink:#fff;--callout-muted:#d5d5d2;--callout-accent:#fff}
+html[data-theme="zen"]{--callout-bg:#faf8f1;--callout-ink:#2a2825;--callout-muted:#5f5a53;--callout-accent:#8f2f26}
+html[data-theme="solarpunk"]{--callout-bg:linear-gradient(135deg,#f8f7e9,#e8f0d9);--callout-ink:#173125;--callout-muted:#526552;--callout-accent:#236540}
+:is(html[data-theme="mono"],html[data-theme="zen"],html[data-theme="solarpunk"]) .callout{
+  background:var(--callout-bg);color:var(--callout-ink);border-color:var(--line-strong)
+}
+:is(html[data-theme="mono"],html[data-theme="zen"],html[data-theme="solarpunk"]) .callout h3{color:inherit}
+:is(html[data-theme="mono"],html[data-theme="zen"],html[data-theme="solarpunk"]) .callout p{color:var(--callout-muted)}
+:is(html[data-theme="mono"],html[data-theme="zen"],html[data-theme="solarpunk"]) .callout .micro{color:var(--callout-accent)!important}
+html[data-theme="mono"] .callout .btn.primary{background:#fff;color:#0a0a0a!important;border-color:#fff}
+
+/* Text follows the actual component surface, not the page-level token alone. */
+html[data-theme="mono"] .grid>.card:nth-child(even) :is(.big.acid,.price){color:#fff!important}
+html[data-theme="brutalist"] :is(.flow-center,.schem-core) span{color:#fff!important}
+
+/* Primary actions retain the theme accent while using a measured ink pair. */
+html[data-theme="bauhaus"] .btn.primary,html[data-theme="solarpunk"] .btn.primary{color:#fff!important}
+html[data-theme="bauhaus"] .btn.primary:hover{background:#f2493f;color:#121212!important}
+html[data-theme="solarpunk"] .btn.primary:hover{background:#256b43;color:#fff!important}
+html[data-theme="swiss"] .btn.primary{background:#b92716;color:#fff!important;border-color:#101010}
+
+/* Hairline contrast corrections for quiet copy on its real surface. */
+html[data-theme="terminal"]{--muted:#88ab94}
+html[data-theme="biotech"]{--dim:#586f68}
+html[data-theme="cartographic"]{--muted:#536159}
