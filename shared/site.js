@@ -178,7 +178,7 @@
   const themeColors={institution:'#020706',terminal:'#020403',whitepaper:'#f6f6f2',brutalist:'#f2efe5',command:'#02030b',protocol:'#080812',calm:'#f7f9fc',archive:'#e9e1d0',swiss:'#f2f1ec',bauhaus:'#f5f0e6',glass:'#091423',solarpunk:'#edf2df',mono:'#f4f4f1',cyber:'#070312',space:'#07111f',zen:'#f3f0e8',retroos:'#c7c7c7',datascape:'#0c0c10',blueprint:'#123c68',newspaper:'#f4efe3',memphis:'#fff4d8',noir:'#050505',biotech:'#eff7f2',clay:'#e9e0d4',museum:'#f5f1e8',industrial:'#f1b900',hologram:'#0b1020',cartographic:'#ebe3cf'};
   const rawPageName=(location.pathname.split('/').pop()||'index.html').replace('.html','');
   const pageName=['visual-review-2045','homepage-standalone'].includes(rawPageName)?'index':rawPageName==='build-standalone'?'build':rawPageName;
-  const pageNumber={thesis:'01',architecture:'02',economics:'03',build:'04',mvp:'05'}[pageName];
+  const pageNumber={thesis:'01',architecture:'02',economics:'03',build:'04',mvp:'05',journal:'06'}[pageName];
   const safeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const setText=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value;};
   let recipeDialog,motionTimer;

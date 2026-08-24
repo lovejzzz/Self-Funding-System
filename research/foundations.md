@@ -182,6 +182,21 @@ ACP、Shared Payment Token、Agent Toolkit 和 Stripe MCP 解决的是 agent 可
 
 详细证据与权限矩阵见：[Stripe 是否解决 agent 身份问题](notes/2026-08-24T00-25-34Z-stripe-agent-identity.md)。来源：[Stripe Services Agreement](https://stripe.com/legal/ssa)、[Stripe Services Terms](https://stripe.com/legal/ssa-services-terms)、[Stripe Connect identity verification](https://docs.stripe.com/connect/identity-verification)、[Stripe merchant of record](https://docs.stripe.com/connect/merchant-of-record)、[Stripe ACP design](https://stripe.com/blog/developing-an-open-standard-for-agentic-commerce)、[Stripe Financial Accounts guide](https://docs.stripe.com/issuing/integration-guides/embedded-finance)。
 
+### 6.2 银行卡付款没有一个可以同时代表履约、可用现金与不可撤销性的 Stripe 状态
+
+首版 Stripe 状态必须分层：
+
+- `PaymentIntent.succeeded` 表示 payment flow 完成，Stripe 官方允许开始履约；
+- linked BalanceTransaction `pending` 表示净额尚不可 withdraw 或 spend；
+- BalanceTransaction `available` 表示净额可用于 payout、refund、transfer 或其他 debit，但仍有 refund 与 dispute 风险；
+- payout `paid` 也可能在最多五个额外工作日后变为 `failed`；
+- 银行入账只证明 custody location 改变，不消除之后的 card dispute；
+- 只有在交付、成本、准备金和 external reconciliation 完成后，内部 policy 才能把剩余金额标为 `policy_available_surplus`，而且不得称为不可撤销资金。
+
+因此每个 job 至少需要四个正交字段：payment flow、Stripe custody availability、customer obligation 和 internal allocation。内部 job/refund/tax/reserve 子账户只解释用途；除非资金确实位于独立 Stripe balance、银行账户或其他外部容器并被对账，否则不能称为物理隔离。
+
+详细状态转移、权限矩阵、反证与 sandbox 实验见：[Stripe 首笔银行卡付款的最小资金状态机](notes/2026-08-24T00-42-22Z-stripe-money-state-machine.md)。来源：[Stripe PaymentIntent lifecycle](https://docs.stripe.com/payments/paymentintents/lifecycle)、[Balances and settlement time](https://docs.stripe.com/payments/balances)、[Balance Transaction object](https://docs.stripe.com/api/balance_transactions/object)、[Refunds](https://docs.stripe.com/refunds)、[Disputes](https://docs.stripe.com/disputes/how-disputes-work)、[Payouts](https://docs.stripe.com/payouts)、[Payout reconciliation](https://docs.stripe.com/reports/payout-reconciliation)、[Webhooks](https://docs.stripe.com/webhooks)、[Testing](https://docs.stripe.com/testing)。
+
 ## 7. 建议重写的 MVP 实验
 
 ### 7.1 更严谨的研究问题

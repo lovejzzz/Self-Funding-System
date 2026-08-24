@@ -108,3 +108,34 @@ Thesis and Experiment now show the present implementation path and future missin
 ### Next question
 
 Horizon A: with the operator as sole merchant of record, define and implement the minimum Stripe money state machine from PaymentIntent through refund/dispute/payout and internal unrestricted surplus. After two Horizon A rounds, conduct a Horizon B scan of the requirements for machine-attributable commercial identity.
+
+## 2026-08-24 — Stripe card payments have layered availability, not one final state
+
+### Research question
+
+For a US operator accepting one prepaid Stripe card payment, what minimum state machine should gate job-budget reservation, real provider spend, delivery, refunds/disputes, payout reconciliation, and the label “available surplus”?
+
+### Result
+
+- Direct fact: `PaymentIntent.succeeded` completes the payment flow and permits fulfillment, but the linked BalanceTransaction can still be `pending` and unusable for payout, refund, transfer, or other debit.
+- Direct fact: `BalanceTransaction.available` means the net funds are usable on Stripe; it does not remove card refund or dispute exposure. Card disputes are typically possible for 120 days and sometimes longer.
+- Direct fact: refunds and payouts can regress after appearing successful: a refund can later fail, and a payout can change from `paid` to `failed` within up to five additional business days.
+- Bounded inference / buildable decision: track payment flow, Stripe custody availability, customer obligation, and internal allocation as separate dimensions. Allow an internal job reserve at `succeeded`; allow real provider spend only from an independently confirmed available operating balance. Never create a card state named `final` or `unrestricted_cash`.
+- Testable hypothesis: Stripe's official dispute, asynchronous-refund, and available-balance sandbox fixtures plus duplicate/out-of-order webhook tests can validate the reducer before one small live payment and real refund.
+- Unknown: actual account reserves/timing, revenue recognition, reserve sizing, and whether external account segregation is required need live evidence and US legal/accounting review.
+
+### Detailed evidence
+
+See [the Stripe money state-machine note](notes/2026-08-24T00-42-22Z-stripe-money-state-machine.md).
+
+### Foundations update
+
+Updated `research/foundations.md` because this round materially refines the standing payment-finality and custody matrix: `succeeded`, Stripe pending, Stripe available, payout, delivery, and policy-available surplus are now explicitly separate states, and no absolute card-finality state is claimed.
+
+### Website status
+
+Architecture and Economics now distinguish capture, Stripe pending/available custody, delivery, residual dispute exposure, and policy-available surplus. No shared component, navigation, theme, motion, or standalone artifact changed.
+
+### Next question
+
+Horizon A: decide the smallest real separation of receiving, operating, refund, tax, and reserve funds across Stripe/bank balances and internal double-entry subaccounts, including which separations are physical versus policy-only.

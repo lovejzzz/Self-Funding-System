@@ -47,4 +47,6 @@ Source order: standards and government material; peer-reviewed research and repr
 
 Website content must distinguish `SUPPORTED`, `HYPOTHESIS`, `TARGET`, `ILLUSTRATIVE`, and `LIVE RESULT`. A research round may update the site only when the new evidence materially changes a claim, source, experiment design, risk boundary, or measured result.
 
+`journal.html` is the public scholarly view of this research record and is the exception to the material-change rule: every completed research round must add its UTC time, question, evidence classification, concise result, citations, unknowns, and next question to that page. Update its evidence graphics when the standing model changes; never use graphics to imply measurements that were not observed.
+
 Research must not invent citations, treat marketing claims as independent evidence, silently replace an existing conclusion, or turn a protocol's availability into proof of customer demand.
