@@ -44,7 +44,7 @@ function assertStaticContracts(){
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
   for(const marker of ['LAB_SYSTEMS','initSystemsLab','initCompare','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems Lab contract missing: ${marker}`);
-  for(const marker of ['initEditMode','sf-live-edit-v1','data-editor-content','data-editor-export','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
+  for(const marker of ['initEditMode','sf-live-edit-v1','self-funding.live-edit/v2','data-editor-content','data-editor-export','data-editor-scope','data-editor-navigator','rebuildResponsiveStyle','data-editor-copy','data-editor-reset-component','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -98,11 +98,16 @@ try{
           await page.locator('[data-editor-content]').fill(`Edited ${theme}`);
           await page.locator('[data-style="font-size"]').fill('48');
           await page.locator('[data-nudge="8,0"]').click();
-          const edited=await page.evaluate(()=>({active:document.documentElement.hasAttribute('data-sf-editing'),text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x'),saved:document.querySelector('[data-editor-status]')?.textContent,undo:!document.querySelector('[data-editor-undo]')?.disabled}));
+          const edited=await page.evaluate(()=>({active:document.documentElement.hasAttribute('data-sf-editing'),text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x'),saved:document.querySelector('[data-editor-status]')?.textContent,undo:!document.querySelector('[data-editor-undo]')?.disabled,scopes:document.querySelectorAll('[data-editor-scope]').length,navigator:document.querySelectorAll('[data-editor-navigator] option').length,copy:!!document.querySelector('[data-editor-copy]')}));
+          await page.locator('[data-editor-scope="mobile"]').click();
+          await page.locator('[data-style="font-size"]').fill('34');
+          const responsive=await page.evaluate(()=>({scope:document.documentElement.dataset.sfEditScope,size:document.querySelector('.hero h1 em')?.style.fontSize,priority:document.querySelector('.hero h1 em')?.style.getPropertyPriority('font-size'),css:document.querySelector('[data-sf-responsive]')?.textContent}));
+          await page.locator('[data-editor-scope="base"]').click();
+          const baseAgain=await page.locator('.hero h1 em').evaluate(element=>element.style.fontSize);
           await page.locator('[data-editor-reset]').click();
           const reset=await page.evaluate(()=>({text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x')}));
           await page.locator('[data-editor-close]').click();
-          if(!edited.active||edited.text!==`Edited ${theme}`||edited.size!=='48px'||edited.x!=='8px'||edited.saved!=='Saved locally'||!edited.undo||reset.text!==original||reset.size||reset.x)failures.push({theme,file:fixture,selector:'live-editor',text:JSON.stringify({original,edited,reset}),ratio:0,minimum:0});
+          if(!edited.active||edited.text!==`Edited ${theme}`||edited.size!=='48px'||edited.x!=='8px'||edited.saved!=='Saved locally'||!edited.undo||edited.scopes!==4||edited.navigator<100||!edited.copy||responsive.scope!=='mobile'||responsive.size!=='34px'||responsive.priority!=='important'||!responsive.css?.includes('@media (max-width:700px)')||baseAgain!=='48px'||reset.text!==original||reset.size||reset.x)failures.push({theme,file:fixture,selector:'live-editor',text:JSON.stringify({original,edited,responsive,baseAgain,reset}),ratio:0,minimum:0});
         }
         if(file==='systems.html'&&viewport.name==='desktop'){
           const lab=await page.evaluate(()=>({name:document.querySelector('[data-lab-name]')?.textContent,swatches:document.querySelectorAll('.lab-swatch').length,patterns:document.querySelectorAll('[data-lab-patterns] li').length,download:!!document.querySelector('[data-download-tokens]'),nav:!!document.querySelector('.nav-links a[href="compare.html"]')}));

@@ -18,9 +18,9 @@ Retro OS, Swiss Grid and Calm Futurism are the first production-candidate refere
 
 ### Live Edit Mode
 
-Every top-level page includes an **Edit page** control. In edit mode, select any page component to change its text or form value, typography, text/background color, opacity, radius, width, spacing, alignment, or position. The selection handle supports free dragging; the inspector also provides exact X/Y values and eight-pixel nudges.
+Every top-level page includes an **Edit page** control. In edit mode, select any page component to change its text or form value, typography, text/background color, opacity, borders, shadows, dimensions, spacing, layout, visibility, stacking, alignment, or position. The selection handle supports free dragging; the inspector also provides exact X/Y values, button nudges, and arrow-key movement.
 
-Edits are saved locally per page and per design system, so a customized Retro OS homepage does not alter Swiss Grid or another page. Undo, redo, reset, and JSON import/export are built in. Compare previews deliberately disable the editor to keep side-by-side evaluation isolated.
+The component navigator can search the entire page, move to a parent or child, copy and paste styles, and restore one component without resetting the whole experiment. All, Desktop, Laptop, and Mobile scopes create real breakpoint-specific overrides with a live preview. Edits are saved locally per page and per design system, so a customized Retro OS homepage does not alter Swiss Grid or another page. Undo, redo, per-component/page reset, and backward-compatible responsive JSON import/export are built in. Compare previews deliberately disable the editor to keep side-by-side evaluation isolated.
 
 ## Research
 
