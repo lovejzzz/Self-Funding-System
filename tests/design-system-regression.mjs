@@ -44,6 +44,7 @@ function assertStaticContracts(){
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
   for(const marker of ['LAB_SYSTEMS','initSystemsLab','initCompare','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems Lab contract missing: ${marker}`);
+  for(const marker of ['initEditMode','sf-live-edit-v1','data-editor-content','data-editor-export','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -90,6 +91,19 @@ try{
         const state=await page.evaluate(()=>({theme:document.documentElement.dataset.theme,options:document.querySelectorAll('.theme-option').length,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}));
         if(state.theme!==theme||state.options!==38||state.overflow>1)failures.push({theme,file:fixture,selector:'document',text:`theme=${state.theme} options=${state.options} overflow=${state.overflow}`,ratio:0,minimum:0});
         failures.push(...await collectContrastFailures(page,theme,fixture));
+        if(file==='index.html'&&viewport.name==='desktop'){
+          const original=await page.locator('.hero h1 em').textContent();
+          await page.locator('.sf-edit-toggle').click();
+          await page.locator('.hero h1 em').click();
+          await page.locator('[data-editor-content]').fill(`Edited ${theme}`);
+          await page.locator('[data-style="font-size"]').fill('48');
+          await page.locator('[data-nudge="8,0"]').click();
+          const edited=await page.evaluate(()=>({active:document.documentElement.hasAttribute('data-sf-editing'),text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x'),saved:document.querySelector('[data-editor-status]')?.textContent,undo:!document.querySelector('[data-editor-undo]')?.disabled}));
+          await page.locator('[data-editor-reset]').click();
+          const reset=await page.evaluate(()=>({text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x')}));
+          await page.locator('[data-editor-close]').click();
+          if(!edited.active||edited.text!==`Edited ${theme}`||edited.size!=='48px'||edited.x!=='8px'||edited.saved!=='Saved locally'||!edited.undo||reset.text!==original||reset.size||reset.x)failures.push({theme,file:fixture,selector:'live-editor',text:JSON.stringify({original,edited,reset}),ratio:0,minimum:0});
+        }
         if(file==='systems.html'&&viewport.name==='desktop'){
           const lab=await page.evaluate(()=>({name:document.querySelector('[data-lab-name]')?.textContent,swatches:document.querySelectorAll('.lab-swatch').length,patterns:document.querySelectorAll('[data-lab-patterns] li').length,download:!!document.querySelector('[data-download-tokens]'),nav:!!document.querySelector('.nav-links a[href="compare.html"]')}));
           if(!lab.name||lab.swatches!==6||lab.patterns<3||!lab.download||!lab.nav)failures.push({theme,file:fixture,selector:'systems-lab',text:JSON.stringify(lab),ratio:0,minimum:0});
@@ -104,8 +118,8 @@ try{
           if(!tabText.includes('bounded compute reserves')||!dialogOpen||!handoffOpen)failures.push({theme,file:fixture,selector:'systems-lab-interaction',text:JSON.stringify({tabText,dialogOpen,handoffOpen}),ratio:0,minimum:0});
         }
         if(file==='compare.html'&&viewport.name==='desktop'){
-          const compare=await page.evaluate(()=>({selectors:document.querySelectorAll('[data-compare-theme] option').length,frames:[...document.querySelectorAll('.compare-frame iframe')].map(frame=>frame.getAttribute('src')),nav:!!document.querySelector('.nav-links a[href="systems.html"]')}));
-          if(compare.selectors!==114||compare.frames.length!==3||compare.frames.some(src=>!src?.includes('embed=1'))||!compare.nav)failures.push({theme,file:fixture,selector:'compare',text:JSON.stringify(compare),ratio:0,minimum:0});
+          const compare=await page.evaluate(()=>({selectors:document.querySelectorAll('[data-compare-theme] option').length,frames:[...document.querySelectorAll('.compare-frame iframe')].map(frame=>frame.getAttribute('src')),embeddedEditors:[...document.querySelectorAll('.compare-frame iframe')].filter(frame=>frame.contentDocument?.querySelector('.sf-edit-toggle')).length,nav:!!document.querySelector('.nav-links a[href="systems.html"]')}));
+          if(compare.selectors!==114||compare.frames.length!==3||compare.frames.some(src=>!src?.includes('embed=1'))||compare.embeddedEditors!==0||!compare.nav)failures.push({theme,file:fixture,selector:'compare',text:JSON.stringify(compare),ratio:0,minimum:0});
         }
         if(file==='index.html'&&viewport.name==='desktop'){
           await page.locator('.theme-recipe-link').first().click();

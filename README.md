@@ -16,6 +16,12 @@ The website is published from the root of the `main` branch. Research updates pu
 
 Retro OS, Swiss Grid and Calm Futurism are the first production-candidate reference systems. The remaining 35 retain complete recipes and live specimens but are explicitly marked as documented drafts until they pass the same component, pattern and release gates.
 
+### Live Edit Mode
+
+Every top-level page includes an **Edit page** control. In edit mode, select any page component to change its text or form value, typography, text/background color, opacity, radius, width, spacing, alignment, or position. The selection handle supports free dragging; the inspector also provides exact X/Y values and eight-pixel nudges.
+
+Edits are saved locally per page and per design system, so a customized Retro OS homepage does not alter Swiss Grid or another page. Undo, redo, reset, and JSON import/export are built in. Compare previews deliberately disable the editor to keep side-by-side evaluation isolated.
+
 ## Research
 
 - [Public research journal](https://lovejzzz.github.io/Self-Funding-System/journal.html)
