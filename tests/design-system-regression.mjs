@@ -78,7 +78,7 @@ try{
   for(const theme of themes){
     for(const viewport of viewports){
       const context=await browser.newContext({viewport:{width:viewport.width,height:viewport.height},reducedMotion:'reduce'});
-      await context.addInitScript(selected=>localStorage.setItem('sf-visual-theme',selected),theme);
+      await context.addInitScript(selected=>localStorage.setItem('sf-visual-theme-v2',selected),theme);
       const page=await context.newPage();
       page.on('console',message=>{if(message.type()==='error')runtimeErrors.push(`${theme}/${viewport.name}: ${message.text()}`);});
       page.on('pageerror',error=>runtimeErrors.push(`${theme}/${viewport.name}: ${error.message}`));

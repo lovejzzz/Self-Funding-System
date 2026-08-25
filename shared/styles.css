@@ -1884,3 +1884,24 @@ html[data-theme="bento"]{--muted:#4b596d;--dim:#59677b}html[data-theme="aero"]{-
 html[data-theme="kinetic"] .status-cell :is(.v,.v.mint,.v.acid,.v.amber,.v.violet){color:#160c10!important}
 html[data-theme="manga"] :is(.nav-status,.section-head .kicker,.page-hero .crumb){color:#96141a!important}
 html[data-theme="aero"] :is(.nav-status,.section-head .kicker,.page-hero .crumb){color:#116c58!important}
+
+/* DESKTOP REVIEW RAIL — the design-system switcher becomes a persistent
+   left-hand instrument panel. Tablet and mobile retain the horizontal rail. */
+@media(min-width:1181px){
+  html{--review-w:220px}
+  body{padding-left:var(--review-w)}
+  .theme-review{position:fixed!important;inset:0 auto 0 0!important;width:var(--review-w);height:100dvh!important;min-height:0!important;padding:0!important;overflow-x:hidden;overflow-y:auto;align-items:stretch;border-right:1px solid currentColor;border-bottom:0;overscroll-behavior:contain;scrollbar-width:thin}
+  .theme-review-inner{display:flex!important;flex-direction:column;width:100%!important;min-height:100%;margin:0!important;padding:18px 14px!important;gap:14px!important}
+  .theme-review-label{display:block!important;width:100%;padding:0 2px 14px!important;border-bottom:1px solid currentColor;white-space:normal}
+  .theme-review-label:before{margin-right:8px}
+  .theme-review-label b{display:block;width:auto;margin:8px 0 0 15px;line-height:1.35}
+  .theme-review-label .theme-recipe-link{margin:12px 0 0 15px}
+  .theme-options{display:flex!important;flex:0 0 auto;flex-direction:column;flex-wrap:nowrap!important;align-items:stretch!important;width:100%;gap:5px!important;overflow:visible!important;mask-image:none!important;padding:0!important}
+  .theme-option{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:29px;padding:7px 10px!important;text-align:left;font-size:9.5px!important}
+  .theme-option[aria-pressed="true"]{transform:translateX(3px)}
+  .theme-current{display:block!important;width:100%;margin-top:auto;padding:13px 2px 2px!important;border-top:1px solid currentColor;border-left:0!important;font-size:8px;line-height:1.5}
+  .theme-recipe-mobile{display:none!important}
+  .site-nav{top:0!important}
+  .research-time,.side-index{top:96px}
+  .doc>section,[id]{scroll-margin-top:96px}
+}

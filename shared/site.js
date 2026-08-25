@@ -310,9 +310,9 @@
     manga:'Every page passes chronological panel-order, zoom, grayscale, reduced-motion, caption, and evidence-resolution review without relying on cultural shorthand.'
   };
 
-  const ORDER=Object.keys(THEMES), valid=new Set(ORDER);
-  let saved; try{saved=localStorage.getItem('sf-visual-theme');}catch(e){}
-  let theme=valid.has(saved)?saved:(document.documentElement.dataset.theme||'institution');
+  const ORDER=Object.keys(THEMES), valid=new Set(ORDER), THEME_STORAGE_KEY='sf-visual-theme-v2';
+  let saved; try{saved=localStorage.getItem(THEME_STORAGE_KEY);}catch(e){}
+  let theme=valid.has(saved)?saved:'retroos';
   const meta=document.querySelector('meta[name="theme-color"]');
   const themeColors={institution:'#020706',terminal:'#020403',whitepaper:'#f6f6f2',brutalist:'#f2efe5',command:'#02030b',protocol:'#080812',calm:'#f7f9fc',archive:'#e9e1d0',swiss:'#f2f1ec',bauhaus:'#f5f0e6',glass:'#091423',solarpunk:'#edf2df',mono:'#f4f4f1',cyber:'#070312',space:'#07111f',zen:'#f3f0e8',retroos:'#c7c7c7',datascape:'#0c0c10',blueprint:'#123c68',newspaper:'#f4efe3',memphis:'#fff4d8',noir:'#050505',biotech:'#eff7f2',clay:'#e9e0d4',museum:'#f5f1e8',industrial:'#f1b900',hologram:'#0b1020',cartographic:'#ebe3cf',bento:'#edf2f7',riso:'#f1e6ce',kinetic:'#111014',spatialos:'#07131f',quietlux:'#eee8dc',civic:'#f5f8fc',parametric:'#0a0e12',vernacular:'#ffffff',aero:'#dff4ff',manga:'#f7f0de'};
   const rawPageName=(location.pathname.split('/').pop()||'index.html').replace('.html','');
@@ -436,7 +436,7 @@
     theme=next;
     const p=THEMES[next];
     document.documentElement.dataset.theme=next;
-    try{localStorage.setItem('sf-visual-theme',next);}catch(e){}
+    try{localStorage.setItem(THEME_STORAGE_KEY,next);}catch(e){}
     if(meta)meta.setAttribute('content',themeColors[next]||'#020706');
     applyPersona(p);
     document.querySelectorAll('.theme-option').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===next)));
@@ -449,7 +449,9 @@
 
   function revealActiveTheme(){
     const options=document.querySelector('.theme-options'),active=options&&options.querySelector('.theme-option[aria-pressed="true"]');
-    if(!options||!active||!window.matchMedia('(max-width:700px)').matches)return;
+    if(!options||!active)return;
+    if(window.matchMedia('(min-width:1181px)').matches){const rail=options.closest('.theme-review'),activeRect=active.getBoundingClientRect(),railRect=rail.getBoundingClientRect();if(activeRect.top>=railRect.top&&activeRect.bottom<=railRect.bottom)return;const target=active.offsetTop-(rail.clientHeight-active.offsetHeight)/2;rail.scrollTo({top:Math.max(0,target),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});return;}
+    if(!window.matchMedia('(max-width:700px)').matches)return;
     const activeRect=active.getBoundingClientRect(),optionsRect=options.getBoundingClientRect();
     const target=options.scrollLeft+(activeRect.left-optionsRect.left)-(options.clientWidth-activeRect.width)/2;
     options.scrollTo({left:Math.max(0,target),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
@@ -464,8 +466,8 @@
     const options=bar.querySelector('.theme-options');
     ORDER.forEach(id=>{const b=document.createElement('button');b.type='button';b.className='theme-option';b.dataset.theme=id;b.textContent=THEMES[id].label;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>applyTheme(id));options.appendChild(b);});
     document.body.insertBefore(bar,nav);
-    const syncReviewHeight=()=>document.documentElement.style.setProperty('--review-h',`${Math.ceil(bar.getBoundingClientRect().height)}px`);
-    syncReviewHeight();if('ResizeObserver'in window)new ResizeObserver(syncReviewHeight).observe(bar);else window.addEventListener('resize',syncReviewHeight,{passive:true});
+    const syncReviewGeometry=()=>{const desktop=window.matchMedia('(min-width:1181px)').matches,rect=bar.getBoundingClientRect();document.documentElement.style.setProperty('--review-h',desktop?'0px':`${Math.ceil(rect.height)}px`);document.documentElement.style.setProperty('--review-w',desktop?`${Math.ceil(rect.width)}px`:'0px');};
+    syncReviewGeometry();if('ResizeObserver'in window)new ResizeObserver(syncReviewGeometry).observe(bar);window.addEventListener('resize',syncReviewGeometry,{passive:true});
     options.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...options.querySelectorAll('.theme-option')],currentIndex=Math.max(0,buttons.indexOf(document.activeElement)),nextIndex=event.key==='Home'?0:event.key==='End'?buttons.length-1:(currentIndex+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;event.preventDefault();buttons[nextIndex].focus();buttons[nextIndex].click();});
     recipeDialog=document.createElement('dialog');
     recipeDialog.className='theme-recipe-dialog';recipeDialog.id='style-recipe';
