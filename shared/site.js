@@ -385,6 +385,7 @@
   }
 
   function applyPersona(p){
+    const stableProjectCopy=document.body.dataset.projectCopy==='stable';
     document.documentElement.dataset.logic=p.logic;
     document.documentElement.dataset.density=p.density;
     setText('.brand-copy span',p.brand);
@@ -393,7 +394,7 @@
     if(navStatus)navStatus.innerHTML=`<span class="status-dot"></span>${safeHTML(p.status)}`;
     if(pageNumber)setText('.page-hero .crumb',`${p.brand} // ${pageNumber}`);
     document.body.dataset.page=pageName;
-    if(PAGE_BASE_INTRO[pageName]){
+    if(PAGE_BASE_INTRO[pageName]&&!stableProjectCopy){
       const titleIndex={thesis:0,architecture:1,economics:2,mvp:3}[pageName];
       const titles=PAGE_TITLES[theme];
       if(titles)setText('.page-hero h1',titles[titleIndex]);
@@ -406,7 +407,7 @@
     });
     setText('.side-index .micro',`${sectionMark} INDEX`);
     if(pageNumber)setText('.footer-bottom span:first-child',`${p.brand} // ${pageNumber}`);
-    if(pageName==='build'){
+    if(pageName==='build'&&!stableProjectCopy){
       const copy=BUILD_COPY[theme];
       if(copy){
         setText('.page-hero h1',copy[0]);
@@ -415,7 +416,7 @@
         setText('.schem-core span',copy[3]);
       }
     }
-    if(pageName==='index'||!pageName){
+    if((pageName==='index'||!pageName)&&!stableProjectCopy){
       const eyebrow=document.querySelector('.hero .eyebrow');
       if(eyebrow)eyebrow.innerHTML=`<span class="rule"></span>${safeHTML(p.eyebrow)}`;
       const headline=document.querySelector('.hero h1');

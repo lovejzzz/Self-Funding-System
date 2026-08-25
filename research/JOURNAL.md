@@ -455,3 +455,36 @@ The public Research Journal records the audit findings, corrections, measured gu
 ### Next question
 
 When an authorized operator runs the hardened harness with a sandbox-only restricted key, do the real sandbox response shapes satisfy all linkage/privacy guards, and can the reviewed bundle be replayed twice through the reducer with exactly one balanced booking and no evidence-class upgrade?
+
+## 2026-08-25 — Money is one resource rail, not the definition of agent wealth
+
+### Research question
+
+Can SELF/FUNDING be defined more generally as a system that converts verified contribution into future action capacity—compute, data, storage, permissions, services, reputation, and reciprocal commitments—without forcing every resource into a currency or pretending unlike rights are fungible?
+
+### Result
+
+- Direct fact: money reduces the double-coincidence and common-accounting frictions of barter, but scholarly models and observed systems also support non-monetary exchange, reciprocity, structured matching, and accounting-based coordination.
+- Direct fact: cloud credits and repository roles create real future action capacity while remaining issuer-bound, scoped, revocable or expiring, commonly non-transferable, and not redeemable for cash.
+- Direct fact: W3C Verifiable Credentials can make issuer claims tamper-evident, but verification does not establish claim truth or automatic authorization; OAuth rich authorization can express reduced permissions only inside an underlying grant and policy.
+- Bounded inference: an agent's operational wealth is better represented as a typed portfolio of resource rights and relationships that defines its feasible permitted actions, not as one scalar balance.
+- Buildable decision: keep the cash ledger for custody, obligations, refunds, tax, and settlement; add a resource-rights ledger for compute, data, licenses, permissions, reciprocal priority, and commitments. Never sum unlike units or invent a cash equivalent.
+- Direct measured result: a local three-party fixture matched compute seconds, data queries, and one repository-maintenance action into a closed cycle. Three simulated rights were redeemed once and seven scope, transfer, cash-equivalence, duplication, and connectivity corruptions were rejected.
+- Counterevidence: no reviewed source or experiment establishes a live general-purpose agent economy across these resources. No external provider issued or honored a right, and provider terms often prohibit transfer.
+- Exact evidence ceiling: `SIMULATED_RESOURCE_EXCHANGE → LOCAL_CONTROL_PLANE_ONLY`.
+
+### Detailed evidence and experiment
+
+See [the non-monetary resource-rights research note](notes/2026-08-25T03-11-02Z-nonmonetary-resource-rights-economy.md), [the experiment instructions](experiments/resource-rights-ledger-v0.1/README.md), and [the measured result](experiments/resource-rights-ledger-v0.1/measured-result.json).
+
+### Foundations update
+
+The standing model is broadened. The money lifecycle remains the first accountable bridge and cannot be skipped, but money is no longer the frontier definition of self-funding. The project now distinguishes a reconciled cash ledger from an issuer-bound resource-rights ledger.
+
+### Website status
+
+The homepage, Thesis, Economics, Architecture, and public Research Journal are updated to present money as one conversion rail within a wider portfolio of typed action rights. The pages explicitly reject a universal AI token, unsupported cash equivalence, transferable reputation, and authority inferred from credentials alone.
+
+### Next question
+
+Can one simulated edge be replaced with a live, operator-owned, revocable compute allowance whose issuance, scope, expiry, redemption, provider usage, remaining capacity, and revocation all reconcile without broadening agent authority?

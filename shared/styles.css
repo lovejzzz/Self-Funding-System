@@ -1464,6 +1464,20 @@ html[data-theme] :is(.data-tag,.status-cell,.card,.btn,.schem-node,.flow-node){m
 html[data-theme] :is(.data-tag strong,.data-tag span,.status-cell .v,.status-cell .l,.schem-node b,.schem-node span,.flow-node h4,.flow-node p){max-width:100%}
 html[data-theme] :is(.status-cell .l,.data-tag span,.schem-node span){overflow-wrap:anywhere}
 
+/* The research headline is deliberately stable across systems. Loud display
+   languages scale it to the available column instead of clipping a long word. */
+:is(html[data-theme="brutalist"],html[data-theme="bauhaus"],html[data-theme="memphis"]) body[data-project-copy="stable"] .hero h1{max-width:100%;font-size:clamp(52px,5.35vw,76px);line-height:.86}
+:is(html[data-theme="command"],html[data-theme="space"],html[data-theme="industrial"],html[data-theme="riso"],html[data-theme="manga"]) body[data-project-copy="stable"] .hero h1{max-width:100%;font-size:clamp(48px,4.8vw,66px);line-height:.88}
+html[data-theme="kinetic"] body[data-project-copy="stable"] .hero h1{max-width:100%;font-size:clamp(54px,5.2vw,72px);line-height:.82;letter-spacing:-.07em}
+html[data-theme="command"] body[data-project-copy="stable"] .hero h1,html[data-theme="manga"] body[data-project-copy="stable"] .hero h1{font-size:clamp(46px,4.35vw,60px)}
+html[data-theme="solarpunk"] body[data-project-copy="stable"] .core{inset:30%}
+
+@media(max-width:1360px) and (min-width:1021px){
+  html[data-theme="datascape"] .hero-layout{grid-template-columns:minmax(0,1fr) minmax(460px,.85fr)}
+  html[data-theme="datascape"] .orbit-shell{width:min(620px,100%);max-width:100%;margin-left:0}
+  html[data-theme="datascape"] :is(.tag-b,.tag-d){right:2%}
+}
+
 /* Final contrast corrections from the original text/surface inspection. */
 html[data-theme="brutalist"] .core-value{color:#0b0b0b!important}
 html[data-theme="swiss"] :is(.core,.core-value,.core-label){color:#101010!important}

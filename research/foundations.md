@@ -261,6 +261,30 @@ Stripe sandbox 能创建可通过 API read-back 的模拟 PaymentIntent、Charge
 
 因此首版的正确主张是：**operator-owned agent can economically finance its next API usage under pre-authorized limits**，而不是“agent 独立拥有账户并给自己充值”。但“可预授权”也不能替代外部对账：Stripe Projects 应被视为 provisioning、credential delegation 和 outer cap；generation usage、OpenRouter billing、SPT/payment evidence 与 bank/card posting 必须分别捕获并匹配。Projects `spend` 只做 aggregate cross-check。完整收款路径见：[收款路径与 API self-funding](notes/2026-08-24T00-59-44Z-collection-rails-and-api-self-funding.md)；SPT 对象链、状态与 capped live test 见：[Stripe Projects + OpenRouter 账单对象与最小可对账证据](notes/2026-08-24T01-44-21Z-stripe-projects-openrouter-reconciliation.md)。
 
+### 6.4 Money 是第一条可执行 rail，不是 agent wealth 的最终定义
+
+新的证据要求修正项目的上层本体。货币确实解决 double coincidence of wants、共同计价和延期交换等协调摩擦，但非货币交换并不等于无效交换。研究表明，reciprocal favors 可以传递价格未表达的信息并加强失信制裁；kidney exchange 的结构化 cycles 与 memory 在严格领域中实现了无货币多边匹配；OurGrid 也曾以 Network of Favors 根据历史计算贡献分配 idle processors。
+
+今天的数字系统已经包含真实但异质的行动权利。AWS 与 Google Cloud credits 可以抵扣未来服务，却通常不可转让、不可出售、无现金价值；GitHub repository roles 直接改变持有者可以执行的动作；W3C Verifiable Credentials 能防篡改地表达 issuer claim，却明确不保证 claim 为真，也不自动赋予 authorization；OAuth Rich Authorization Requests 可以描述细粒度权限，但仍受 underlying grant 与 authorization-server policy 约束。
+
+因此 frontier treasury 必须拆成两个互相连接但不可混淆的系统：
+
+```text
+money ledger
+  = custody + customer obligations + refunds + taxes + settlement + cash reconciliation
+
+resource-rights ledger
+  = compute + storage + data + licenses + scoped permissions + reciprocal commitments
+```
+
+resource-rights ledger 不能把 CPU seconds、query calls、repository actions、reputation 与 attention 加总成一个数。每项记录都必须包含 issuer、authority evidence、holder/controller、native unit、scope、quantity、conditions、expiry、revocation、transferability、redemption evidence、liability/dispute path；`cash_equivalent` 默认必须为 `null`，只有真实、获准、已对账的 conversion event 才能产生 monetary record。
+
+本轮的 V0.1 local fixture 用 compute seconds、data queries 与 repository triage action 形成一个三方 cycle，三个模拟 right 各消费一次，并拒绝七种 transfer、cash-equivalence、quantity、scope、duplicate 和 connectivity corruption。它只达到 `LOCAL_CONTROL_PLANE_ONLY`；没有任何 external provider 发行或兑现 right。
+
+最强的 frontier 定义因此变成：agent 的 operational wealth 是在当前 policy 与 world state 下可合法抵达的 future action set，而不是单一余额。这个定义仍需反证保护：不可转让 credit 不能被包装成 liquid asset，credential 不能被当作 authority，reputation 不能被当作 portable currency，共享资源必须有 Ostrom 所强调的 boundaries、monitoring、sanctions、conflict resolution 与 recognized governance。
+
+完整 source ledger、counterevidence、resource-right schema、local experiment 与 falsification criteria 见：[Beyond money: a resource-rights economy for software agents](notes/2026-08-25T03-11-02Z-nonmonetary-resource-rights-economy.md)。来源：[Hayashi & Matsui](https://www.nber.org/papers/w4919)、[Prendergast & Stole](https://www.nber.org/papers/w5765)、[Unpaired Kidney Exchange](https://www.nber.org/papers/w27765)、[W3C VC 2.0](https://www.w3.org/TR/vc-data-model-2.0/)、[RFC 9396](https://datatracker.ietf.org/doc/html/rfc9396)、[AWS credits](https://aws.amazon.com/awscredits/)、[Google Cloud credits](https://cloud.google.com/terms/open-source-software-tos)、[GitHub repository roles](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization)、[Ostrom Prize Lecture](https://www.nobelprize.org/uploads/2018/06/ostrom_lecture.pdf)。
+
 ## 7. 建议重写的 MVP 实验
 
 ### 7.1 更严谨的研究问题

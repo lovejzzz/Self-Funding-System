@@ -13,6 +13,14 @@ The project's first-order question is not merely whether software can produce re
 
 Until these questions are supported by research and a tested design, revenue growth, treasury allocation percentages, and self-funding runway remain downstream hypotheses.
 
+## Broader research program: future action capacity
+
+Money remains the first accountable bridge because customer obligations, refunds, taxes, provider invoices, and legal settlement still require monetary records. It is no longer the frontier definition of agent wealth.
+
+The broader program asks whether verified contribution can earn a typed portfolio of future action rights: compute, storage, data queries, licenses, scoped permissions, reciprocal priority, and counterparty commitments. Research must keep each resource in its native unit, name its issuer and holder, record scope, expiry, revocation, transferability, redemption evidence, and dispute path, and default cash equivalence to `null`.
+
+Do not describe cloud credits as cash, credentials as authority, reputation as transferable property, or simulated commitments as live capacity. The standing architecture uses two linked records: a reconciled money ledger for cash and obligations, and a resource-rights ledger for issuer-bound non-cash capacity. See [the resource-rights research note](notes/2026-08-25T03-11-02Z-nonmonetary-resource-rights-economy.md).
+
 ## Two horizons, one program
 
 Research must maintain two explicit queues without allowing either to replace the other.

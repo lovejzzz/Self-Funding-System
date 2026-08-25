@@ -1,0 +1,31 @@
+{
+  "run_at": "2026-08-25T03:11:02Z",
+  "status": "PASS",
+  "evidence_class": "SIMULATED_RESOURCE_EXCHANGE",
+  "maximum_evidence_state": "LOCAL_CONTROL_PLANE_ONLY",
+  "participants": 3,
+  "resource_types": [
+    "compute.cpu_seconds",
+    "data.query_calls",
+    "repository.maintenance_actions"
+  ],
+  "matched_rights": 3,
+  "simulated_redemptions": 3,
+  "cash_equivalents_asserted": 0,
+  "guard_tests_passed": 7,
+  "guards": [
+    { "name": "reject transferable right", "passed": true },
+    { "name": "reject invented cash equivalent", "passed": true },
+    { "name": "reject quantity amplification", "passed": true },
+    { "name": "reject scope amplification", "passed": true },
+    { "name": "reject duplicate right id", "passed": true },
+    { "name": "reject duplicate offer allocation", "passed": true },
+    { "name": "reject disconnected exchange", "passed": true }
+  ],
+  "cannot_prove": [
+    "that any external provider will issue or honor a right",
+    "that heterogeneous resources have a stable exchange rate",
+    "legal ownership, accounting-asset treatment, transferability, or enforceability",
+    "live atomic settlement across compute, data, and repository systems"
+  ]
+}

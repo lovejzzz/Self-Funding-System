@@ -1,0 +1,78 @@
+{
+  "manifest_version": "0.1.0",
+  "evidence_class": "SIMULATED_RESOURCE_EXCHANGE",
+  "maximum_evidence_state": "LOCAL_CONTROL_PLANE_ONLY",
+  "participants": [
+    {
+      "id": "compute-lab",
+      "offers": {
+        "resource_type": "compute.cpu_seconds",
+        "quantity": 3600,
+        "scope": { "service": "sandbox-batch", "max_cpu_seconds": 3600 }
+      },
+      "wants": { "resource_type": "data.query_calls", "quantity": 100 }
+    },
+    {
+      "id": "data-cooperative",
+      "offers": {
+        "resource_type": "data.query_calls",
+        "quantity": 100,
+        "scope": { "dataset": "public-maintenance-signals-v1", "max_queries": 100 }
+      },
+      "wants": { "resource_type": "repository.maintenance_actions", "quantity": 1 }
+    },
+    {
+      "id": "repository-commons",
+      "offers": {
+        "resource_type": "repository.maintenance_actions",
+        "quantity": 1,
+        "scope": { "repository": "example/commons", "actions": ["triage"] }
+      },
+      "wants": { "resource_type": "compute.cpu_seconds", "quantity": 3600 }
+    }
+  ],
+  "rights": [
+    {
+      "right_id": "rr_compute_001",
+      "issuer": "compute-lab",
+      "holder": "repository-commons",
+      "resource_type": "compute.cpu_seconds",
+      "quantity": 3600,
+      "scope": { "service": "sandbox-batch", "max_cpu_seconds": 3600 },
+      "issued_at": "2026-08-25T03:11:02Z",
+      "expires_at": "2026-09-01T03:11:02Z",
+      "revocable": true,
+      "transferable": false,
+      "cash_equivalent": null,
+      "status": "reserved"
+    },
+    {
+      "right_id": "rr_data_001",
+      "issuer": "data-cooperative",
+      "holder": "compute-lab",
+      "resource_type": "data.query_calls",
+      "quantity": 100,
+      "scope": { "dataset": "public-maintenance-signals-v1", "max_queries": 100 },
+      "issued_at": "2026-08-25T03:11:02Z",
+      "expires_at": "2026-09-01T03:11:02Z",
+      "revocable": true,
+      "transferable": false,
+      "cash_equivalent": null,
+      "status": "reserved"
+    },
+    {
+      "right_id": "rr_repo_001",
+      "issuer": "repository-commons",
+      "holder": "data-cooperative",
+      "resource_type": "repository.maintenance_actions",
+      "quantity": 1,
+      "scope": { "repository": "example/commons", "actions": ["triage"] },
+      "issued_at": "2026-08-25T03:11:02Z",
+      "expires_at": "2026-09-01T03:11:02Z",
+      "revocable": true,
+      "transferable": false,
+      "cash_equivalent": null,
+      "status": "reserved"
+    }
+  ]
+}
