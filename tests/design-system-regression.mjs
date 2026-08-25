@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const allThemes=['institution','terminal','whitepaper','brutalist','command','protocol','calm','archive','swiss','bauhaus','glass','solarpunk','mono','cyber','space','zen','retroos','datascape','blueprint','newspaper','memphis','noir','biotech','clay','museum','industrial','hologram','cartographic','bento','riso','kinetic','spatialos','quietlux','civic','parametric','vernacular','aero','manga'];
-const allPages=['index.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
+const allPages=['index.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','systems.html','compare.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
 const themes=process.env.TEST_THEMES?allThemes.filter(theme=>process.env.TEST_THEMES.split(',').includes(theme)):allThemes;
 const pages=process.env.TEST_PAGES?allPages.filter(page=>process.env.TEST_PAGES.split(',').includes(page)):allPages;
 const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
-const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.footer-copy','.footer-bottom'];
+const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom'];
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
 
 function startServer(){
@@ -43,6 +43,7 @@ function assertStaticContracts(){
   const gateBlock=js.slice(js.indexOf('const GOVERNANCE_GATES={'),js.indexOf('const ORDER=',js.indexOf('const GOVERNANCE_GATES={')));
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
+  for(const marker of ['LAB_SYSTEMS','initSystemsLab','initCompare','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems Lab contract missing: ${marker}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -89,6 +90,23 @@ try{
         const state=await page.evaluate(()=>({theme:document.documentElement.dataset.theme,options:document.querySelectorAll('.theme-option').length,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}));
         if(state.theme!==theme||state.options!==38||state.overflow>1)failures.push({theme,file:fixture,selector:'document',text:`theme=${state.theme} options=${state.options} overflow=${state.overflow}`,ratio:0,minimum:0});
         failures.push(...await collectContrastFailures(page,theme,fixture));
+        if(file==='systems.html'&&viewport.name==='desktop'){
+          const lab=await page.evaluate(()=>({name:document.querySelector('[data-lab-name]')?.textContent,swatches:document.querySelectorAll('.lab-swatch').length,patterns:document.querySelectorAll('[data-lab-patterns] li').length,download:!!document.querySelector('[data-download-tokens]'),nav:!!document.querySelector('.nav-links a[href="compare.html"]')}));
+          if(!lab.name||lab.swatches!==6||lab.patterns<3||!lab.download||!lab.nav)failures.push({theme,file:fixture,selector:'systems-lab',text:JSON.stringify(lab),ratio:0,minimum:0});
+          await page.locator('[role="tab"][data-panel]').nth(1).click();
+          const tabText=await page.locator('[data-tab-panel]').innerText();
+          await page.locator('[data-open-dialog]').click();
+          const dialogOpen=await page.locator('.lab-dialog').evaluate(element=>element.open);
+          await page.locator('[data-close-dialog]').click();
+          await page.locator('[data-open-recipe]').last().click();
+          const handoffOpen=await page.locator('.theme-recipe-dialog').evaluate(element=>element.open);
+          await page.locator('.recipe-close').click();
+          if(!tabText.includes('bounded compute reserves')||!dialogOpen||!handoffOpen)failures.push({theme,file:fixture,selector:'systems-lab-interaction',text:JSON.stringify({tabText,dialogOpen,handoffOpen}),ratio:0,minimum:0});
+        }
+        if(file==='compare.html'&&viewport.name==='desktop'){
+          const compare=await page.evaluate(()=>({selectors:document.querySelectorAll('[data-compare-theme] option').length,frames:[...document.querySelectorAll('.compare-frame iframe')].map(frame=>frame.getAttribute('src')),nav:!!document.querySelector('.nav-links a[href="systems.html"]')}));
+          if(compare.selectors!==114||compare.frames.length!==3||compare.frames.some(src=>!src?.includes('embed=1'))||!compare.nav)failures.push({theme,file:fixture,selector:'compare',text:JSON.stringify(compare),ratio:0,minimum:0});
+        }
         if(file==='index.html'&&viewport.name==='desktop'){
           await page.locator('.theme-recipe-link').first().click();
           const recipe=await page.evaluate(()=>({pairs:document.querySelectorAll('.recipe-pair').length,tokenButton:!!document.querySelector('[data-copy="tokens"]'),governance:document.querySelector('.recipe-governance')?.textContent.length||0,focus:document.activeElement?.classList.contains('recipe-header')}));

@@ -311,8 +311,9 @@
   };
 
   const ORDER=Object.keys(THEMES), valid=new Set(ORDER), THEME_STORAGE_KEY='sf-visual-theme-v2';
+  const query=new URLSearchParams(location.search),requestedTheme=query.get('theme'),embedded=query.get('embed')==='1';
   let saved; try{saved=localStorage.getItem(THEME_STORAGE_KEY);}catch(e){}
-  let theme=valid.has(saved)?saved:'retroos';
+  let theme=valid.has(requestedTheme)?requestedTheme:(valid.has(saved)?saved:'retroos');
   const meta=document.querySelector('meta[name="theme-color"]');
   const themeColors={institution:'#020706',terminal:'#020403',whitepaper:'#f6f6f2',brutalist:'#f2efe5',command:'#02030b',protocol:'#080812',calm:'#f7f9fc',archive:'#e9e1d0',swiss:'#f2f1ec',bauhaus:'#f5f0e6',glass:'#091423',solarpunk:'#edf2df',mono:'#f4f4f1',cyber:'#070312',space:'#07111f',zen:'#f3f0e8',retroos:'#c7c7c7',datascape:'#0c0c10',blueprint:'#123c68',newspaper:'#f4efe3',memphis:'#fff4d8',noir:'#050505',biotech:'#eff7f2',clay:'#e9e0d4',museum:'#f5f1e8',industrial:'#f1b900',hologram:'#0b1020',cartographic:'#ebe3cf',bento:'#edf2f7',riso:'#f1e6ce',kinetic:'#111014',spatialos:'#07131f',quietlux:'#eee8dc',civic:'#f5f8fc',parametric:'#0a0e12',vernacular:'#ffffff',aero:'#dff4ff',manga:'#f7f0de'};
   const rawPageName=(location.pathname.split('/').pop()||'index.html').replace('.html','');
@@ -321,6 +322,17 @@
   const safeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const setText=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value;};
   let recipeDialog,motionTimer;
+
+  if(embedded)document.documentElement.dataset.embed='true';
+  const primaryNav=document.querySelector('.nav-links');
+  if(primaryNav&&!embedded){
+    [{href:'systems.html',label:'Systems Lab',page:'systems'},{href:'compare.html',label:'Compare',page:'compare'}].forEach(item=>{
+      if(primaryNav.querySelector(`[href="${item.href}"]`))return;
+      const link=document.createElement('a');link.href=item.href;link.textContent=item.label;
+      if(pageName===item.page)link.className='active';
+      primaryNav.appendChild(link);
+    });
+  }
 
   function triggerThemeMotion(){
     const root=document.documentElement;
@@ -384,6 +396,54 @@
     recipeDialog.dataset.recipe=id;
   }
 
+  const LAB_SYSTEMS={
+    retroos:{version:'1.0.0-rc.1',status:'Production candidate',readiness:92,thesis:'Inspectable desktop software. Every responsibility is a window, every state is explicit, and every action feels physically reversible.',type:'Whole-pixel system typography with compact mono data and hard hierarchy.',grid:'8px desktop grid; windows snap to 4/8-column tiles with 12px gaps.',patterns:['Workstation dashboard','Install wizard','Ledger table','System dialog','README document'],release:'Keyboard, focus, pressed, disabled, error, CJK, 200% zoom and reduced-motion gates passed.'},
+    swiss:{version:'1.0.0-rc.1',status:'Production candidate',readiness:90,thesis:'Rational hierarchy removes ambiguity. Typography, rules and exact alignment carry meaning before decoration is allowed.',type:'Grotesk display contrast, disciplined weights, uppercase micro-labels.',grid:'Strict 12 columns, 20px gutters and an 8px baseline at desktop.',patterns:['Program index','Analytical dashboard','Editorial report','Exact form','Comparison table'],release:'Twelve-column resolution, contrast, long-copy, table and six-viewport gates passed.'},
+    calm:{version:'1.0.0-rc.1',status:'Production candidate',readiness:94,thesis:'Complex machinery becomes a calm human product through progressive disclosure, generous rhythm and plain language.',type:'Comfortable contemporary sans with restrained weights and generous leading.',grid:'12 columns at 1180px; reading blocks use 7–8 columns and quiet whitespace.',patterns:['Product landing','Guided onboarding','Friendly settings','Status dashboard','Help article'],release:'Cognitive-load, 30% longer copy, focus, error recovery and reduced-motion gates passed.'}
+  };
+
+  function renderSystemsLab(id){
+    const lab=document.querySelector('[data-systems-lab]');if(!lab)return;
+    const p=THEMES[id],s=SYSTEM_SPECS[id],r=RECIPES[id],gold=LAB_SYSTEMS[id];
+    const info=gold||{version:'0.4.0',status:'Documented draft',readiness:58,thesis:`${p.description}. The production specimen is available; full component and pattern certification is scheduled after the three reference systems.`,type:r.type,grid:s.grid,patterns:['Marketing page','Research document','Dashboard concept'],release:GOVERNANCE_GATES[id]};
+    lab.dataset.maturity=gold?'reference':'draft';
+    setText('[data-lab-name]',p.label);setText('[data-lab-version]',info.version);setText('[data-lab-status]',info.status);
+    setText('[data-lab-readiness]',`${info.readiness}%`);setText('[data-lab-thesis]',info.thesis);
+    setText('[data-lab-type]',info.type);setText('[data-lab-grid]',info.grid);setText('[data-lab-spacing]',s.spacing);
+    setText('[data-lab-surfaces]',s.surfaces);setText('[data-lab-motion]',r.motion);setText('[data-lab-release]',info.release);
+    const patternList=lab.querySelector('[data-lab-patterns]');if(patternList)patternList.innerHTML=info.patterns.map((item,index)=>`<li><span>${String(index+1).padStart(2,'0')}</span>${safeHTML(item)}</li>`).join('');
+    const readiness=lab.querySelector('.lab-readiness-fill');if(readiness)readiness.style.width=`${info.readiness}%`;
+    const swatches=lab.querySelector('[data-lab-swatches]');if(swatches)swatches.innerHTML=[['--bg','Page'],['--panel-solid','Panel'],['--ink','Primary'],['--muted','Muted'],['--mint','Action'],['--acid','Signal']].map(([token,label])=>`<div class="lab-swatch"><i style="background:var(${token})"></i><strong>${label}</strong><code>${token}</code></div>`).join('');
+    lab.querySelectorAll('[data-lab-reference-only]').forEach(element=>element.hidden=!gold);
+    lab.querySelectorAll('[data-lab-draft-only]').forEach(element=>element.hidden=!!gold);
+  }
+
+  function downloadLabTokens(){
+    const blob=new Blob([recipeTokenJSON(theme)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url;link.download=`${theme}-design-tokens.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),0);
+  }
+
+  function initSystemsLab(){
+    const lab=document.querySelector('[data-systems-lab]');if(!lab)return;
+    lab.querySelector('[data-download-tokens]')?.addEventListener('click',downloadLabTokens);
+    lab.querySelectorAll('[data-open-recipe]').forEach(button=>button.addEventListener('click',()=>document.querySelector('.theme-recipe-link')?.click()));
+    const dialog=document.querySelector('.lab-dialog'),open=lab.querySelector('[data-open-dialog]'),close=document.querySelector('[data-close-dialog]');
+    open?.addEventListener('click',()=>typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open',''));
+    close?.addEventListener('click',()=>dialog.close?.());
+    lab.querySelectorAll('[role="tab"]').forEach(tab=>tab.addEventListener('click',()=>{lab.querySelectorAll('[role="tab"]').forEach(item=>item.setAttribute('aria-selected',String(item===tab)));setText('[data-tab-panel]',tab.dataset.panel); }));
+    renderSystemsLab(theme);
+  }
+
+  function initCompare(){
+    const compare=document.querySelector('[data-compare]');if(!compare)return;
+    const selectors=[...compare.querySelectorAll('[data-compare-theme]')],pageSelect=compare.querySelector('[data-compare-page]'),frames=[...compare.querySelectorAll('.compare-frame iframe')];
+    selectors.forEach((select,index)=>{select.innerHTML=ORDER.map(id=>`<option value="${id}">${safeHTML(THEMES[id].label)}</option>`).join('');select.value=['retroos','swiss','calm'][index]||ORDER[index];});
+    const render=()=>frames.forEach((frame,index)=>{const selected=selectors[index]?.value||'retroos',page=pageSelect?.value||'index.html';frame.title=`${THEMES[selected].label} — ${page}`;frame.src=`${page}?theme=${encodeURIComponent(selected)}&embed=1`;setText(`[data-compare-label="${index}"]`,THEMES[selected].label);});
+    selectors.forEach(select=>select.addEventListener('change',render));pageSelect?.addEventListener('change',render);
+    compare.querySelectorAll('[data-compare-viewport]').forEach(button=>button.addEventListener('click',()=>{compare.dataset.viewport=button.dataset.compareViewport;compare.querySelectorAll('[data-compare-viewport]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));}));
+    render();
+  }
+
   function applyPersona(p){
     const stableProjectCopy=document.body.dataset.projectCopy==='stable';
     document.documentElement.dataset.logic=p.logic;
@@ -436,7 +496,7 @@
     theme=next;
     const p=THEMES[next];
     document.documentElement.dataset.theme=next;
-    try{localStorage.setItem(THEME_STORAGE_KEY,next);}catch(e){}
+    if(!embedded)try{localStorage.setItem(THEME_STORAGE_KEY,next);}catch(e){}
     if(meta)meta.setAttribute('content',themeColors[next]||'#020706');
     applyPersona(p);
     document.querySelectorAll('.theme-option').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===next)));
@@ -444,6 +504,7 @@
     const current=document.querySelector('.theme-current');if(current)current.textContent=p.description;
     document.querySelectorAll('.theme-recipe-link').forEach(link=>{link.textContent='Recipe ↗';link.setAttribute('aria-label',`Open ${p.label} style recipe`);link.title=`Open ${p.label} style recipe`;});
     renderRecipe(next);
+    renderSystemsLab(next);
     triggerThemeMotion();
   }
 
@@ -479,6 +540,9 @@
     recipeDialog.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const kind=button.dataset.copy,status=recipeDialog.querySelector('.recipe-copy-status'),payload=kind==='tokens'?recipeTokenJSON(theme):recipeSkill(theme);try{await navigator.clipboard.writeText(payload);status.textContent=kind==='tokens'?'Token JSON copied.':'System skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the content manually.';}}));
     applyTheme(theme);
   }
+
+  initSystemsLab();
+  initCompare();
 
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');}),{threshold:.06,rootMargin:'0px 0px -30px 0px'});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
