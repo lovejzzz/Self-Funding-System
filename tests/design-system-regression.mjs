@@ -10,7 +10,7 @@ const allPages=['index.html','thesis.html','architecture.html','economics.html',
 const themes=process.env.TEST_THEMES?allThemes.filter(theme=>process.env.TEST_THEMES.split(',').includes(theme)):allThemes;
 const pages=process.env.TEST_PAGES?allPages.filter(page=>process.env.TEST_PAGES.split(',').includes(page)):allPages;
 const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
-const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom'];
+const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom','.sf-edit-toggle','.sf-edit-panel>header span','.sf-edit-panel>header strong','.sf-edit-panel>header button','.sf-edit-actions button:not([disabled])','.sf-edit-actions label','.sf-edit-scope>span','.sf-edit-scope button','.sf-edit-scope p','.sf-edit-navigator label','.sf-edit-navigator input','.sf-edit-navigator button','.sf-edit-selected span','.sf-edit-selected strong','.sf-edit-group h3','.sf-edit-group label','.sf-edit-group input:not([type="color"]):not([type="range"])','.sf-edit-group select','.sf-edit-group textarea','.sf-edit-help','.sf-edit-reset button','.sf-edit-reset p'];
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
 
 function startServer(){
@@ -44,7 +44,7 @@ function assertStaticContracts(){
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
   for(const marker of ['LAB_SYSTEMS','initSystemsLab','initCompare','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems Lab contract missing: ${marker}`);
-  for(const marker of ['initEditMode','sf-live-edit-v1','self-funding.live-edit/v2','data-editor-content','data-editor-export','data-editor-scope','data-editor-navigator','rebuildResponsiveStyle','data-editor-copy','data-editor-reset-component','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
+  for(const marker of ['initEditMode','LIVE EDIT 2.1','sf-live-edit-v1','self-funding.live-edit/v2','data-editor-content','data-editor-export','data-editor-scope','data-editor-navigator','data-editor-canvas','data-sf-editor-canvas','rebuildResponsiveStyle','data-editor-copy','data-editor-reset-component','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -57,7 +57,7 @@ async function collectContrastFailures(page,theme,file){
     const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
     const failures=[];
     for(const selector of probes){for(const element of document.querySelectorAll(selector)){
-      const rect=element.getBoundingClientRect(),style=getComputedStyle(element),text=element.textContent.trim();
+      const rect=element.getBoundingClientRect(),style=getComputedStyle(element),text=(element.textContent||element.value||element.placeholder||'').trim();
       if(!text||rect.width<1||rect.height<1||style.visibility==='hidden'||style.display==='none')continue;
       const foreground=parse(style.color);if(!foreground)continue;
       const bg=background(element),composited=blend(foreground,bg),value=ratio(composited,bg);
@@ -104,10 +104,14 @@ try{
           const responsive=await page.evaluate(()=>({scope:document.documentElement.dataset.sfEditScope,size:document.querySelector('.hero h1 em')?.style.fontSize,priority:document.querySelector('.hero h1 em')?.style.getPropertyPriority('font-size'),css:document.querySelector('[data-sf-responsive]')?.textContent}));
           await page.locator('[data-editor-scope="base"]').click();
           const baseAgain=await page.locator('.hero h1 em').evaluate(element=>element.style.fontSize);
+          await page.locator('[data-editor-canvas]').click();
+          const canvas=await page.evaluate(()=>({active:document.documentElement.hasAttribute('data-sf-editing'),canvas:document.documentElement.hasAttribute('data-sf-editor-canvas'),panel:document.querySelector('.sf-edit-panel')?.classList.contains('is-canvas'),toggle:document.querySelector('.sf-edit-toggle')?.textContent.trim()}));
+          await page.locator('.sf-edit-toggle').click();
+          const inspectorRestored=await page.evaluate(()=>!document.documentElement.hasAttribute('data-sf-editor-canvas')&&document.querySelector('.sf-edit-panel')?.classList.contains('is-open'));
           await page.locator('[data-editor-reset]').click();
           const reset=await page.evaluate(()=>({text:document.querySelector('.hero h1 em')?.textContent,size:document.querySelector('.hero h1 em')?.style.fontSize,x:document.querySelector('.hero h1 em')?.style.getPropertyValue('--sf-edit-x')}));
           await page.locator('[data-editor-close]').click();
-          if(!edited.active||edited.text!==`Edited ${theme}`||edited.size!=='48px'||edited.x!=='8px'||edited.saved!=='Saved locally'||!edited.undo||edited.scopes!==4||edited.navigator<100||!edited.copy||responsive.scope!=='mobile'||responsive.size!=='34px'||responsive.priority!=='important'||!responsive.css?.includes('@media (max-width:700px)')||baseAgain!=='48px'||reset.text!==original||reset.size||reset.x)failures.push({theme,file:fixture,selector:'live-editor',text:JSON.stringify({original,edited,responsive,baseAgain,reset}),ratio:0,minimum:0});
+          if(!edited.active||edited.text!==`Edited ${theme}`||edited.size!=='48px'||edited.x!=='8px'||edited.saved!=='Saved locally'||!edited.undo||edited.scopes!==4||edited.navigator<100||!edited.copy||responsive.scope!=='mobile'||responsive.size!=='34px'||responsive.priority!=='important'||!responsive.css?.includes('@media (max-width:700px)')||baseAgain!=='48px'||!canvas.active||!canvas.canvas||!canvas.panel||!canvas.toggle.includes('Inspector')||!inspectorRestored||reset.text!==original||reset.size||reset.x)failures.push({theme,file:fixture,selector:'live-editor',text:JSON.stringify({original,edited,responsive,baseAgain,canvas,inspectorRestored,reset}),ratio:0,minimum:0});
         }
         if(file==='systems.html'&&viewport.name==='desktop'){
           const lab=await page.evaluate(()=>({name:document.querySelector('[data-lab-name]')?.textContent,swatches:document.querySelectorAll('.lab-swatch').length,patterns:document.querySelectorAll('[data-lab-patterns] li').length,download:!!document.querySelector('[data-download-tokens]'),nav:!!document.querySelector('.nav-links a[href="compare.html"]')}));
