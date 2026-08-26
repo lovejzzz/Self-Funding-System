@@ -326,12 +326,17 @@
   if(embedded)document.documentElement.dataset.embed='true';
   const primaryNav=document.querySelector('.nav-links');
   if(primaryNav&&!embedded){
-    [{href:'systems.html',label:'Systems Lab',page:'systems'},{href:'compare.html',label:'Compare',page:'compare'}].forEach(item=>{
-      if(primaryNav.querySelector(`[href="${item.href}"]`))return;
-      const link=document.createElement('a');link.href=item.href;link.textContent=item.label;
-      if(pageName===item.page)link.className='active';
-      primaryNav.appendChild(link);
-    });
+    const productNav=[
+      {href:'index.html',label:'Home',page:'index'},
+      {href:'studio.html',label:'Studio',page:'studio'},
+      {href:'projects.html',label:'Projects',page:'projects'},
+      {href:'systems.html',label:'Systems',page:'systems'},
+      {href:'compare.html',label:'Compare',page:'compare'},
+      {href:'case-study.html',label:'SELF/FUNDING',page:'case-study'},
+      {href:'journal.html',label:'Research',page:'journal'}
+    ];
+    primaryNav.dataset.productNav='true';
+    primaryNav.innerHTML=productNav.map(item=>`<a href="${item.href}"${pageName===item.page?' class="active"':''}>${item.label}</a>`).join('');
   }
 
   function triggerThemeMotion(){
@@ -446,12 +451,14 @@
 
   function applyPersona(p){
     const stableProjectCopy=document.body.dataset.projectCopy==='stable';
+    const productSurface=['index','studio','projects','systems','compare'].includes(pageName);
     document.documentElement.dataset.logic=p.logic;
     document.documentElement.dataset.density=p.density;
-    setText('.brand-copy span',p.brand);
-    [...document.querySelectorAll('.nav-links a')].forEach((link,index)=>{if(p.nav[index])link.textContent=p.nav[index];});
+    if(productSurface){setText('.brand-copy strong','SYSTEMS/38');setText('.brand-copy span','DESIGN STUDIO');}
+    else{setText('.brand-copy strong','SELF/FUNDING');setText('.brand-copy span',p.brand);}
+    if(!primaryNav?.dataset.productNav)[...document.querySelectorAll('.nav-links a')].forEach((link,index)=>{if(p.nav[index])link.textContent=p.nav[index];});
     const navStatus=document.querySelector('.nav-status');
-    if(navStatus)navStatus.innerHTML=`<span class="status-dot"></span>${safeHTML(p.status)}`;
+    if(navStatus&&!document.body.hasAttribute('data-studio-shell'))navStatus.innerHTML=`<span class="status-dot"></span>${safeHTML(p.status)}`;
     if(pageNumber)setText('.page-hero .crumb',`${p.brand} // ${pageNumber}`);
     document.body.dataset.page=pageName;
     if(PAGE_BASE_INTRO[pageName]&&!stableProjectCopy){
@@ -509,6 +516,13 @@
     triggerThemeMotion();
     window.SFEditor?.onThemeChange(next);
   }
+
+  window.SFDesignSystems={
+    order:[...ORDER],
+    themes:Object.fromEntries(ORDER.map(id=>[id,{label:THEMES[id].label,description:THEMES[id].description,logic:THEMES[id].logic,density:THEMES[id].density}])),
+    get current(){return theme;},
+    apply:applyTheme
+  };
 
   function revealActiveTheme(){
     const options=document.querySelector('.theme-options'),active=options&&options.querySelector('.theme-option[aria-pressed="true"]');
@@ -593,7 +607,7 @@
 
   /* LIVE EDIT MODE — local, reversible page/theme overrides. */
   function initEditMode(){
-    if(embedded)return;
+    if(embedded||document.body.hasAttribute('data-studio-shell'))return;
     const STORAGE_PREFIX='sf-live-edit-v1',root=document.documentElement;
     const EDIT_TOKENS=['--bg','--panel-solid','--ink','--mint','--acid','--muted'];
     const EDIT_SCOPES={desktop:'(min-width:1181px)',laptop:'(min-width:701px) and (max-width:1180px)',mobile:'(max-width:700px)'};

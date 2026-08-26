@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('sf-visual-theme-v2')||'retroos'}catch(e){document.documentElement.dataset.theme='retroos'}</script>
+  <meta name="theme-color" content="#c7c7c7">
+  <meta name="description" content="Compose, edit, version, preview, and export complete websites using any SYSTEMS/38 design system.">
+  <title>Studio — SYSTEMS/38</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="shared/styles.css">
+  <link rel="stylesheet" href="shared/studio.css">
+</head>
+<body data-studio-shell data-project-copy="stable">
+<div class="noise"></div><div class="grid-bg"></div>
+<nav class="site-nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>SYSTEMS/38</strong><span>DESIGN STUDIO</span></span></a><div class="nav-links"><a href="studio.html" class="active">Studio</a></div><div class="nav-status"><span class="status-dot"></span><span data-studio-save-status>Ready</span></div></div></nav>
+
+<main class="studio-shell" data-studio-app>
+  <header class="studio-toolbar">
+    <div class="studio-project-identity"><a href="projects.html" aria-label="Back to projects">←</a><div><span>ACTIVE PROJECT</span><input data-project-name aria-label="Project name" maxlength="80"></div></div>
+    <label class="studio-theme-control">Design system<select data-studio-theme aria-label="Design system"></select></label>
+    <div class="studio-viewport" role="group" aria-label="Preview viewport"><button type="button" data-studio-viewport="desktop" aria-pressed="true">Desktop</button><button type="button" data-studio-viewport="tablet" aria-pressed="false">Tablet</button><button type="button" data-studio-viewport="mobile" aria-pressed="false">Mobile</button></div>
+    <div class="studio-top-actions"><button type="button" data-save-version>Save version</button><button type="button" class="primary" data-export-site>Export website</button></div>
+  </header>
+
+  <div class="studio-workspace">
+    <aside class="studio-sidebar" aria-label="Pages and components">
+      <section><div class="studio-panel-title"><div><span>01</span><strong>Pages</strong></div><button type="button" data-add-page aria-label="Add page">＋</button></div><div class="studio-pages" data-studio-pages></div></section>
+      <section><div class="studio-panel-title"><div><span>02</span><strong>Add section</strong></div></div><div class="studio-library" data-studio-library></div></section>
+      <section class="studio-document"><div class="studio-panel-title"><div><span>03</span><strong>Document order</strong></div></div><div class="studio-outline" data-studio-outline></div></section>
+    </aside>
+
+    <section class="studio-stage" data-studio-stage data-viewport="desktop">
+      <div class="studio-stage-meta"><span data-preview-label>Desktop preview · 1440</span><span data-autosave-note>Autosaved locally</span></div>
+      <div class="studio-device"><div class="studio-device-bar"><i></i><i></i><i></i><span data-preview-url>project.local</span></div><div class="studio-preview" data-studio-preview></div></div>
+    </section>
+
+    <aside class="studio-inspector" aria-label="Selected section editor">
+      <header><div><span>INSPECTOR</span><h2 data-inspector-title>Choose a section</h2></div><button type="button" data-collapse-inspector aria-label="Collapse inspector">×</button></header>
+      <div class="studio-inspector-empty" data-inspector-empty><strong>No section selected</strong><p>Select a section in the preview or document order. Its content fields will appear here.</p></div>
+      <form data-section-form hidden></form>
+      <section class="studio-version-panel"><div class="studio-panel-title"><div><span>04</span><strong>Versions</strong></div></div><div data-version-list></div></section>
+    </aside>
+  </div>
+
+  <div class="studio-mobile-tabs" role="tablist" aria-label="Studio panels"><button type="button" data-mobile-panel="library" aria-selected="false">Build</button><button type="button" data-mobile-panel="canvas" aria-selected="true">Preview</button><button type="button" data-mobile-panel="inspector" aria-selected="false">Edit</button></div>
+</main>
+
+<dialog class="studio-dialog" data-page-dialog aria-labelledby="page-dialog-title"><form method="dialog" data-page-form><header><div><div class="micro">ADD PAGE</div><h2 id="page-dialog-title">Create a destination.</h2></div><button type="button" data-close-page aria-label="Close">×</button></header><div><label>Page name<input name="name" required maxlength="50" placeholder="Services"></label><label>URL slug<input name="slug" maxlength="60" placeholder="services"></label></div><footer><button type="button" data-close-page>Cancel</button><button class="primary" type="submit">Add page</button></footer></form></dialog>
+<dialog class="studio-dialog" data-version-dialog aria-labelledby="version-dialog-title"><form method="dialog" data-version-form><header><div><div class="micro">NAMED CHECKPOINT</div><h2 id="version-dialog-title">Save this direction.</h2></div><button type="button" data-close-version aria-label="Close">×</button></header><div><label>Version name<input name="name" required maxlength="80" placeholder="First client review"></label><label>Note<textarea name="note" rows="3" maxlength="240" placeholder="What changed, and why?"></textarea></label></div><footer><button type="button" data-close-version>Cancel</button><button class="primary" type="submit">Save version</button></footer></form></dialog>
+
+<script src="shared/site.js?v=20260826b"></script>
+<script src="shared/studio.js?v=20260826b"></script>
+</body>
+</html>

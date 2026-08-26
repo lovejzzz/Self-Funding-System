@@ -673,7 +673,7 @@ html[data-theme="retroos"] .schem-node{background:#c0c0c0;border:2px outset #fff
   html[data-theme="museum"] .hero{padding-block:82px}html[data-theme="industrial"] .hero h1{text-shadow:none}
 }
 
-/* ========================================================================== 
+/* ==========================================================================
    VISUAL REVIEW 2.0 — 18 layout systems + desktop-first wrapped selector
    ========================================================================== */
 
@@ -936,7 +936,7 @@ html[data-theme="mono"] .core-label{color:#fff}
   .theme-option{flex:0 0 auto;min-height:34px}
 }
 
-/* ========================================================================== 
+/* ==========================================================================
    COMPLETE SITE PASS — every tab speaks the active design system
    ========================================================================== */
 body[data-page]:not([data-page="index"]) .page-hero{overflow:hidden}

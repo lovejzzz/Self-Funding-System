@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('sf-visual-theme-v2')||'retroos'}catch(e){document.documentElement.dataset.theme='retroos'}</script>
+  <meta name="theme-color" content="#c7c7c7">
+  <meta name="description" content="Create, duplicate, version, import, and export website projects built with any of the 38 design systems.">
+  <title>Projects — SYSTEMS/38</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="shared/styles.css">
+  <link rel="stylesheet" href="shared/studio.css">
+</head>
+<body data-studio-shell data-project-copy="stable">
+<div class="noise"></div><div class="grid-bg"></div>
+<nav class="site-nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>SYSTEMS/38</strong><span>DESIGN STUDIO</span></span></a><div class="nav-links"><a href="projects.html" class="active">Projects</a></div><div class="nav-status"><span class="status-dot"></span>Local workspace</div></div></nav>
+
+<main data-projects-app>
+  <header class="page-hero studio-page-hero"><div class="wrap"><div class="crumb">SYSTEMS/38 // PROJECTS</div><h1>Your working<br><em>websites.</em></h1><p>Each project keeps its system, pages, section order, content, and named versions together. Everything stays on this device until you export it.</p><div class="hero-actions"><button class="btn primary" type="button" data-new-project>New project <span>↗</span></button><label class="btn studio-import-label">Import project<input type="file" accept="application/json" data-import-project></label></div></div></header>
+
+  <section class="section compact"><div class="wrap">
+    <div class="project-summary" aria-label="Project workspace summary">
+      <div><span>Projects</span><strong data-project-total>0</strong></div>
+      <div><span>Pages</span><strong data-page-total>0</strong></div>
+      <div><span>Versions</span><strong data-version-total>0</strong></div>
+      <p>Browser-local by design · export before clearing site data</p>
+    </div>
+  </div></section>
+
+  <section class="section project-library-section"><div class="wrap">
+    <div class="section-head"><div class="kicker">WORKSPACE</div><div><h2>Projects are decisions with memory.</h2><p>Open the latest state, duplicate a direction before a major change, or export the project document for backup and transfer.</p></div></div>
+    <div class="project-grid" data-project-grid></div>
+    <div class="project-empty" data-project-empty hidden><span>＋</span><h2>No projects yet.</h2><p>Create the first one from a short brief. A complete starter page will be ready in the Studio.</p><button class="btn primary" type="button" data-new-project>Create first project</button></div>
+  </div></section>
+</main>
+
+<dialog class="project-dialog" data-project-dialog aria-labelledby="new-project-title">
+  <form method="dialog" data-project-form>
+    <header><div><div class="micro">NEW WEBSITE PROJECT</div><h2 id="new-project-title">Start from intent.</h2></div><button type="button" data-close-project aria-label="Close">×</button></header>
+    <div class="project-dialog-body">
+      <label>Project name<input name="name" required maxlength="80" placeholder="Northstar Studio"></label>
+      <label>One-sentence brief<textarea name="brief" rows="3" maxlength="280" placeholder="A clear portfolio for an independent architecture practice."></textarea></label>
+      <label>Starting system<select name="theme" data-project-theme></select></label>
+      <fieldset><legend>Starting pages</legend><label><input type="checkbox" name="pages" value="home" checked> Home</label><label><input type="checkbox" name="pages" value="about" checked> About</label><label><input type="checkbox" name="pages" value="contact" checked> Contact</label></fieldset>
+    </div>
+    <footer><button class="btn" type="button" data-close-project>Cancel</button><button class="btn primary" type="submit">Create in Studio →</button></footer>
+  </form>
+</dialog>
+
+<footer><div class="wrap"><div class="footer-grid"><div><div class="footer-title">PROJECTS</div><div class="footer-copy">Device-local working files for complete visual systems.</div></div><div class="footer-links"><h5>Create</h5><a href="studio.html">Open Studio</a><a href="systems.html">Choose a system</a></div><div class="footer-links"><h5>Reference</h5><a href="compare.html">Compare</a><a href="case-study.html">SELF/FUNDING case</a></div></div><div class="footer-bottom"><span>LOCAL WORKSPACE / EXPORTABLE</span><span>Your content remains yours.</span></div></div></footer>
+<script src="shared/site.js?v=20260826b"></script>
+<script src="shared/studio.js?v=20260826b"></script>
+</body>
+</html>

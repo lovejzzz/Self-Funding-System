@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const allThemes=['institution','terminal','whitepaper','brutalist','command','protocol','calm','archive','swiss','bauhaus','glass','solarpunk','mono','cyber','space','zen','retroos','datascape','blueprint','newspaper','memphis','noir','biotech','clay','museum','industrial','hologram','cartographic','bento','riso','kinetic','spatialos','quietlux','civic','parametric','vernacular','aero','manga'];
-const allPages=['index.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','systems.html','compare.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
+const allPages=['index.html','case-study.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','systems.html','compare.html','projects.html','studio.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
 const themes=process.env.TEST_THEMES?allThemes.filter(theme=>process.env.TEST_THEMES.split(',').includes(theme)):allThemes;
 const pages=process.env.TEST_PAGES?allPages.filter(page=>process.env.TEST_PAGES.split(',').includes(page)):allPages;
 const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
-const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom','.sf-edit-toggle','.sf-edit-panel>header span','.sf-edit-panel>header strong','.sf-edit-panel>header button','.sf-edit-actions button:not([disabled])','.sf-edit-actions label','.sf-edit-scope>span','.sf-edit-scope button','.sf-edit-scope p','.sf-edit-navigator label','.sf-edit-navigator input','.sf-edit-navigator button','.sf-edit-selected span','.sf-edit-selected strong','.sf-edit-group h3','.sf-edit-group label','.sf-edit-group input:not([type="color"]):not([type="range"])','.sf-edit-group select','.sf-edit-group textarea','.sf-edit-help','.sf-edit-reset button','.sf-edit-reset p'];
+const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom','.sf-edit-toggle','.sf-edit-panel>header span','.sf-edit-panel>header strong','.sf-edit-panel>header button','.sf-edit-actions button:not([disabled])','.sf-edit-actions label','.sf-edit-scope>span','.sf-edit-scope button','.sf-edit-scope p','.sf-edit-navigator label','.sf-edit-navigator input','.sf-edit-navigator button','.sf-edit-selected span','.sf-edit-selected strong','.sf-edit-group h3','.sf-edit-group label','.sf-edit-group input:not([type="color"]):not([type="range"])','.sf-edit-group select','.sf-edit-group textarea','.sf-edit-help','.sf-edit-reset button','.sf-edit-reset p','.studio-toolbar span','.studio-toolbar button','.studio-theme-control','.studio-sidebar .studio-panel-title strong','.studio-pages button','.studio-library button','.studio-outline-item','.studio-stage-meta','.studio-device-bar span','.studio-output-nav strong','.studio-output-nav a','.studio-inspector>header span','.studio-inspector>header h2','.studio-inspector>header button','.studio-inspector form label','.studio-inspector form input','.studio-inspector form textarea','.studio-version-empty','.project-summary span','.project-summary strong','.project-summary p','.project-card-body p','.project-card-meta span'];
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
 
 function startServer(){
@@ -29,6 +29,8 @@ function startServer(){
 function assertStaticContracts(){
   const css=readFileSync(join(root,'shared/styles.css'),'utf8');
   const js=readFileSync(join(root,'shared/site.js'),'utf8');
+  const studioJS=readFileSync(join(root,'shared/studio.js'),'utf8');
+  const studioCSS=readFileSync(join(root,'shared/studio.css'),'utf8');
   const failures=[];
   if(/html\[data-theme="calm"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Calm soft text bypasses --soft');
   if(/html\[data-theme="clay"\] \.hero h1 \.soft\{color:#/i.test(css))failures.push('Clay soft text bypasses --soft');
@@ -45,6 +47,9 @@ function assertStaticContracts(){
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
   for(const marker of ['LAB_SYSTEMS','initSystemsLab','initCompare','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems Lab contract missing: ${marker}`);
   for(const marker of ['initEditMode','LIVE EDIT 2.1','sf-live-edit-v1','self-funding.live-edit/v2','data-editor-content','data-editor-export','data-editor-scope','data-editor-navigator','data-editor-canvas','data-sf-editor-canvas','rebuildResponsiveStyle','data-editor-copy','data-editor-reset-component','beforeThemeChange'])if(!js.includes(marker))failures.push(`Live editor contract missing: ${marker}`);
+  for(const marker of ['systems38.projects.v1','systems38.project/v1','systems38.production-site/v1','SECTION_LIBRARY','data-save-version','data-export-site','buildSiteZip','zipStore','LIVE EDIT MODE'])if(!studioJS.includes(marker))failures.push(`Project Studio contract missing: ${marker}`);
+  for(const marker of ['.studio-workspace','.studio-preview','.studio-inspector','.project-grid','data-theme="retroos"','data-theme="swiss"'])if(!studioCSS.includes(marker))failures.push(`Project Studio style contract missing: ${marker}`);
+  for(const file of ['index.html','case-study.html','projects.html','studio.html'])if(!statSync(join(root,file)).isFile())failures.push(`Product route missing: ${file}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -129,6 +134,37 @@ try{
         if(file==='compare.html'&&viewport.name==='desktop'){
           const compare=await page.evaluate(()=>({selectors:document.querySelectorAll('[data-compare-theme] option').length,frames:[...document.querySelectorAll('.compare-frame iframe')].map(frame=>frame.getAttribute('src')),embeddedEditors:[...document.querySelectorAll('.compare-frame iframe')].filter(frame=>frame.contentDocument?.querySelector('.sf-edit-toggle')).length,nav:!!document.querySelector('.nav-links a[href="systems.html"]')}));
           if(compare.selectors!==114||compare.frames.length!==3||compare.frames.some(src=>!src?.includes('embed=1'))||compare.embeddedEditors!==0||!compare.nav)failures.push({theme,file:fixture,selector:'compare',text:JSON.stringify(compare),ratio:0,minimum:0});
+        }
+        if(file==='projects.html'&&viewport.name==='desktop'){
+          const projectsState=await page.evaluate(()=>({empty:!document.querySelector('[data-project-empty]')?.hidden,cards:document.querySelectorAll('[data-project-card]').length,themeOptions:document.querySelectorAll('[data-project-theme] option').length,editor:document.querySelectorAll('.sf-edit-toggle').length,studioLink:!!document.querySelector('.nav-links a[href="studio.html"]')}));
+          if(!projectsState.empty||projectsState.cards!==0||projectsState.themeOptions!==38||projectsState.editor!==0||!projectsState.studioLink)failures.push({theme,file:fixture,selector:'projects-workspace',text:JSON.stringify(projectsState),ratio:0,minimum:0});
+          await page.locator('[data-new-project]').first().click();
+          const dialogOpen=await page.locator('[data-project-dialog]').evaluate(element=>element.open);
+          await page.locator('[data-close-project]').first().click();
+          if(!dialogOpen)failures.push({theme,file:fixture,selector:'projects-dialog',text:'New project dialog did not open',ratio:0,minimum:0});
+        }
+        if(file==='studio.html'&&viewport.name==='desktop'){
+          const studioState=await page.evaluate(()=>({pages:document.querySelectorAll('[data-page-id]').length,library:document.querySelectorAll('[data-add-section]').length,outline:document.querySelectorAll('[data-outline-id]').length,preview:document.querySelectorAll('[data-studio-section]').length,editor:document.querySelectorAll('.sf-edit-toggle').length,theme:document.querySelector('[data-studio-theme]')?.value,status:document.querySelector('[data-studio-save-status]')?.textContent}));
+          if(studioState.pages!==3||studioState.library!==10||studioState.outline!==5||studioState.preview!==5||studioState.editor!==0||studioState.theme!==theme||!studioState.status)failures.push({theme,file:fixture,selector:'project-studio',text:JSON.stringify(studioState),ratio:0,minimum:0});
+          if(theme==='retroos'){
+            await page.locator('[data-add-section="gallery"]').click();
+            await page.locator('[data-section-form] [name="title"]').fill('Regression gallery');
+            await page.locator('[data-add-page]').click();
+            await page.locator('[data-page-form] [name="name"]').fill('Services');
+            await page.locator('[data-page-form] [name="slug"]').fill('services');
+            await page.locator('[data-page-form] button[type="submit"]').click();
+            await page.locator('[data-save-version]').click();
+            await page.locator('[data-version-form] [name="name"]').fill('Regression checkpoint');
+            await page.locator('[data-version-form] button[type="submit"]').click();
+            await page.locator('[data-studio-viewport="mobile"]').click();
+            await page.waitForTimeout(350);
+            const downloadPromise=page.waitForEvent('download');
+            await page.locator('[data-export-site]').click();
+            const download=await downloadPromise;
+            const interaction=await page.evaluate(()=>({pages:document.querySelectorAll('[data-page-id]').length,versions:document.querySelectorAll('.studio-version-card').length,viewport:document.querySelector('[data-studio-stage]')?.dataset.viewport,width:Math.round(document.querySelector('.studio-device')?.getBoundingClientRect().width||0),status:document.querySelector('[data-studio-save-status]')?.textContent}));
+            interaction.file=download.suggestedFilename();
+            if(interaction.pages!==4||interaction.versions!==1||interaction.viewport!=='mobile'||interaction.width!==390||!interaction.status?.includes('exported')||!interaction.file.endsWith('-website.zip'))failures.push({theme,file:fixture,selector:'project-studio-interaction',text:JSON.stringify(interaction),ratio:0,minimum:0});
+          }
         }
         if(file==='index.html'&&viewport.name==='desktop'){
           await page.locator('.theme-recipe-link').first().click();
