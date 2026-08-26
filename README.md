@@ -13,7 +13,7 @@ The website is published from the root of the `main` branch. Updates pushed to `
 ## Public collection
 
 - [Visual Review](https://lovejzzz.github.io/Self-Funding-System/visual-review-2045.html) — move the complete specimen through all 38 systems; Retro OS is the default.
-- [Systems Lab](https://lovejzzz.github.io/Self-Funding-System/systems.html) — inspect foundations, components, patterns, motion, accessibility gates, governance, and downloadable tokens for the active system.
+- [Systems Collection](https://lovejzzz.github.io/Self-Funding-System/systems.html) — search and filter all 38 systems by visual logic, density, and maturity, then enter a dedicated exhibition room.
 - [Compare](https://lovejzzz.github.io/Self-Funding-System/compare.html) — hold one real page and viewport constant while comparing three systems side by side.
 - [SELF/FUNDING case study](https://lovejzzz.github.io/Self-Funding-System/case-study.html) — read the original research project as a coherent multi-page website.
 - [Research Journal](https://lovejzzz.github.io/Self-Funding-System/journal.html) — follow the evidence, experiments, citations, and open questions behind the case study.
@@ -25,6 +25,8 @@ Retro OS, Swiss Grid, and Calm Futurism are the first production-candidate refer
 SYSTEMS/38 is a reference instrument, not a website builder. Its purpose is to sharpen visual judgment, support controlled comparison, and make the logic of a design system transferable. It does not replace a company’s production framework, content model, engineering architecture, or governance process.
 
 Each recipe is intended to be specific enough for a company to recreate the system in its own stack. It covers the design thesis, semantic tokens, typography roles, spacing and grid, composition rules, component anatomy and states, responsive behavior, motion grammar, data visualization, accessibility gates, anti-patterns, adoption, and release governance.
+
+Every system also has a stable exhibition-room URL such as `system.html?theme=retroos`. The room brings its thesis, foundations, component states, patterns, motion, accessibility evidence, release status, tokens, recipe, full-page specimen, and prefilled three-way comparison into one shareable route.
 
 The earlier Projects and Studio prototypes are preserved in the repository as unlinked, `noindex` internal experiment archives. They are not part of the public product or navigation.
 

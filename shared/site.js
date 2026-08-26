@@ -317,7 +317,7 @@
   const meta=document.querySelector('meta[name="theme-color"]');
   const themeColors={institution:'#020706',terminal:'#020403',whitepaper:'#f6f6f2',brutalist:'#f2efe5',command:'#02030b',protocol:'#080812',calm:'#f7f9fc',archive:'#e9e1d0',swiss:'#f2f1ec',bauhaus:'#f5f0e6',glass:'#091423',solarpunk:'#edf2df',mono:'#f4f4f1',cyber:'#070312',space:'#07111f',zen:'#f3f0e8',retroos:'#c7c7c7',datascape:'#0c0c10',blueprint:'#123c68',newspaper:'#f4efe3',memphis:'#fff4d8',noir:'#050505',biotech:'#eff7f2',clay:'#e9e0d4',museum:'#f5f1e8',industrial:'#f1b900',hologram:'#0b1020',cartographic:'#ebe3cf',bento:'#edf2f7',riso:'#f1e6ce',kinetic:'#111014',spatialos:'#07131f',quietlux:'#eee8dc',civic:'#f5f8fc',parametric:'#0a0e12',vernacular:'#ffffff',aero:'#dff4ff',manga:'#f7f0de'};
   const rawPageName=(location.pathname.split('/').pop()||'index.html').replace('.html','');
-  const navPageName=rawPageName==='homepage-standalone'?'index':rawPageName;
+  const navPageName=rawPageName==='homepage-standalone'?'index':rawPageName==='system'?'systems':rawPageName;
   const pageName=['visual-review-2045','homepage-standalone'].includes(rawPageName)?'index':rawPageName==='build-standalone'?'build':rawPageName;
   const pageNumber={thesis:'01',architecture:'02',economics:'03',build:'04',mvp:'05',journal:'06'}[pageName];
   const safeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -399,6 +399,7 @@
       renderTokenPair('Callout heading','--callout-bg','--callout-ink'),renderTokenPair('Callout quiet copy','--callout-bg','--callout-muted')
     ].join('');
     recipeDialog.dataset.recipe=id;
+    const roomLink=recipeDialog.querySelector('.recipe-room-link');if(roomLink)roomLink.href=`system.html?theme=${encodeURIComponent(id)}`;
   }
 
   const LAB_SYSTEMS={
@@ -421,6 +422,19 @@
     const swatches=lab.querySelector('[data-lab-swatches]');if(swatches)swatches.innerHTML=[['--bg','Page'],['--panel-solid','Panel'],['--ink','Primary'],['--muted','Muted'],['--mint','Action'],['--acid','Signal']].map(([token,label])=>`<div class="lab-swatch"><i style="background:var(${token})"></i><strong>${label}</strong><code>${token}</code></div>`).join('');
     lab.querySelectorAll('[data-lab-reference-only]').forEach(element=>element.hidden=!gold);
     lab.querySelectorAll('[data-lab-draft-only]').forEach(element=>element.hidden=!!gold);
+    if(lab.hasAttribute('data-system-room')){
+      const index=ORDER.indexOf(id),previous=ORDER[(index-1+ORDER.length)%ORDER.length],next=ORDER[(index+1)%ORDER.length];
+      const prevLink=lab.querySelector('[data-room-prev]'),nextLink=lab.querySelector('[data-room-next]'),position=lab.querySelector('[data-room-position]');
+      if(prevLink){prevLink.href=`system.html?theme=${encodeURIComponent(previous)}`;prevLink.textContent=`← ${THEMES[previous].label}`;}
+      if(nextLink){nextLink.href=`system.html?theme=${encodeURIComponent(next)}`;nextLink.textContent=`${THEMES[next].label} →`;}
+      if(position)position.textContent=`${String(index+1).padStart(2,'0')} / ${ORDER.length}`;
+      const compare=lab.querySelector('.hero-actions a[href^="compare.html"]');if(compare)compare.href=`compare.html?a=${encodeURIComponent(id)}&b=${encodeURIComponent(next)}&c=${encodeURIComponent(previous)}`;
+      const actions=lab.querySelector('.hero-actions');if(actions&&!actions.querySelector('[data-room-visual]'))actions.insertAdjacentHTML('beforeend',`<a class="btn" data-room-visual href="visual-review-2045.html?theme=${encodeURIComponent(id)}">View full-page specimen</a>`);
+      const visual=actions?.querySelector('[data-room-visual]');if(visual)visual.href=`visual-review-2045.html?theme=${encodeURIComponent(id)}`;
+      document.title=`${p.label} — SYSTEMS/38 Exhibition Room`;
+      const description=document.querySelector('meta[name="description"]');if(description)description.content=`Explore ${p.label}: ${p.description}, with foundations, components, patterns, motion, accessibility, release evidence, and a company-scale recipe.`;
+      const url=new URL(location.href);url.searchParams.set('theme',id);history.replaceState(null,'',url);
+    }
   }
 
   function downloadLabTokens(){
@@ -439,11 +453,33 @@
     renderSystemsLab(theme);
   }
 
+  function initSystemsCatalog(){
+    const catalog=document.querySelector('[data-systems-catalog]');if(!catalog)return;
+    const grid=catalog.querySelector('[data-catalog-grid]'),search=catalog.querySelector('[data-catalog-search]'),logic=catalog.querySelector('[data-catalog-filter="logic"]'),density=catalog.querySelector('[data-catalog-filter="density"]'),maturity=catalog.querySelector('[data-catalog-filter="maturity"]'),empty=catalog.querySelector('[data-catalog-empty]'),summary=catalog.querySelector('[data-catalog-summary]');
+    const roots=document.documentElement,initialTheme=roots.dataset.theme,palettes={};
+    for(const id of ORDER){roots.dataset.theme=id;const style=getComputedStyle(roots);palettes[id]={bg:style.getPropertyValue('--bg').trim(),panel:style.getPropertyValue('--panel-solid').trim(),ink:style.getPropertyValue('--ink').trim(),accent:style.getPropertyValue('--mint').trim(),radius:style.getPropertyValue('--radius-sm').trim()};}
+    roots.dataset.theme=initialTheme;
+    const addOptions=(select,values)=>values.sort().forEach(value=>select.insertAdjacentHTML('beforeend',`<option value="${safeHTML(value)}">${safeHTML(value.charAt(0).toUpperCase()+value.slice(1))}</option>`));
+    addOptions(logic,[...new Set(ORDER.map(id=>THEMES[id].logic))]);addOptions(density,[...new Set(ORDER.map(id=>THEMES[id].density))]);
+    const params=new URLSearchParams(location.search),state={q:params.get('q')||'',logic:params.get('logic')||'all',density:params.get('density')||'all',maturity:params.get('maturity')||'all'};
+    search.value=state.q;logic.value=[...logic.options].some(option=>option.value===state.logic)?state.logic:'all';density.value=[...density.options].some(option=>option.value===state.density)?state.density:'all';maturity.value=[...maturity.options].some(option=>option.value===state.maturity)?state.maturity:'all';
+    const card=id=>{const p=THEMES[id],gold=!!LAB_SYSTEMS[id],palette=palettes[id],index=ORDER.indexOf(id),next=ORDER[(index+1)%ORDER.length],previous=ORDER[(index-1+ORDER.length)%ORDER.length];return `<article class="system-catalog-card" data-system-card="${id}" data-logic="${safeHTML(p.logic)}" data-density="${safeHTML(p.density)}" data-maturity="${gold?'reference':'draft'}"><a class="system-card-preview" href="system.html?theme=${id}" style="--sample-bg:${safeHTML(palette.bg)};--sample-panel:${safeHTML(palette.panel)};--sample-ink:${safeHTML(palette.ink)};--sample-accent:${safeHTML(palette.accent)};--sample-radius:${safeHTML(palette.radius)}" aria-label="Enter ${safeHTML(p.label)} exhibition room"><span class="system-card-no">${String(index+1).padStart(2,'0')}</span><i></i><b>${safeHTML(p.label)}</b><small>${safeHTML(p.logic)} / ${safeHTML(p.density)}</small></a><div class="system-card-copy"><div class="system-card-tags"><span>${gold?'Production candidate':'Documented draft'}</span><span>${safeHTML(p.logic)}</span><span>${safeHTML(p.density)}</span></div><h3>${safeHTML(p.label)}</h3><p>${safeHTML(p.description)}</p><div class="system-card-actions"><a href="system.html?theme=${id}">Enter room →</a><a href="compare.html?a=${id}&b=${next}&c=${previous}">Compare</a></div></div></article>`;};
+    grid.innerHTML=ORDER.map(card).join('');
+    const syncUrl=()=>{const url=new URL(location.href);for(const [key,value] of Object.entries(state)){if(value&&value!=='all')url.searchParams.set(key,value);else url.searchParams.delete(key);}history.replaceState(null,'',url);};
+    const render=()=>{const queryText=state.q.trim().toLowerCase();let visible=0;for(const id of ORDER){const p=THEMES[id],cardElement=grid.querySelector(`[data-system-card="${id}"]`),gold=!!LAB_SYSTEMS[id],haystack=`${p.label} ${p.description} ${p.logic} ${p.density} ${RECIPES[id].principles}`.toLowerCase(),show=(!queryText||haystack.includes(queryText))&&(state.logic==='all'||p.logic===state.logic)&&(state.density==='all'||p.density===state.density)&&(state.maturity==='all'||state.maturity===(gold?'reference':'draft'));cardElement.hidden=!show;if(show)visible++;}
+      catalog.querySelectorAll('[data-catalog-count]').forEach(node=>node.textContent=visible);empty.hidden=visible!==0;summary.textContent=visible===ORDER.length?'Showing the complete collection.':`Showing ${visible} of ${ORDER.length} systems.`;catalog.querySelectorAll('[data-catalog-route]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.catalogRoute===state.logic||button.dataset.catalogRoute===state.density)));syncUrl();};
+    search.addEventListener('input',()=>{state.q=search.value;render();});for(const select of [logic,density,maturity])select.addEventListener('change',()=>{state[select.dataset.catalogFilter]=select.value;render();});
+    catalog.querySelectorAll('[data-catalog-route]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.catalogRoute;if([...logic.options].some(option=>option.value===value)){state.logic=state.logic===value?'all':value;logic.value=state.logic;}else{state.density=state.density===value?'all':value;density.value=state.density;}render();}));
+    catalog.querySelectorAll('[data-catalog-reset]').forEach(button=>button.addEventListener('click',()=>{Object.assign(state,{q:'',logic:'all',density:'all',maturity:'all'});search.value='';logic.value=density.value=maturity.value='all';render();search.focus();}));
+    render();
+  }
+
   function initCompare(){
     const compare=document.querySelector('[data-compare]');if(!compare)return;
     const selectors=[...compare.querySelectorAll('[data-compare-theme]')],pageSelect=compare.querySelector('[data-compare-page]'),frames=[...compare.querySelectorAll('.compare-frame iframe')];
-    selectors.forEach((select,index)=>{select.innerHTML=ORDER.map(id=>`<option value="${id}">${safeHTML(THEMES[id].label)}</option>`).join('');select.value=['retroos','swiss','calm'][index]||ORDER[index];});
-    const render=()=>frames.forEach((frame,index)=>{const selected=selectors[index]?.value||'retroos',page=pageSelect?.value||'index.html';frame.title=`${THEMES[selected].label} — ${page}`;frame.src=`${page}?theme=${encodeURIComponent(selected)}&embed=1`;setText(`[data-compare-label="${index}"]`,THEMES[selected].label);});
+    const compareParams=new URLSearchParams(location.search),initial=[compareParams.get('a'),compareParams.get('b'),compareParams.get('c')];
+    selectors.forEach((select,index)=>{select.innerHTML=ORDER.map(id=>`<option value="${id}">${safeHTML(THEMES[id].label)}</option>`).join('');select.value=valid.has(initial[index])?initial[index]:(['retroos','swiss','calm'][index]||ORDER[index]);const header=select.closest('header');if(header&&!header.querySelector('.compare-room-link'))header.insertAdjacentHTML('beforeend','<a class="compare-room-link" href="system.html">Enter room ↗</a>');});
+    const render=()=>{frames.forEach((frame,index)=>{const selected=selectors[index]?.value||'retroos',page=pageSelect?.value||'index.html';frame.title=`${THEMES[selected].label} — ${page}`;frame.src=`${page}?theme=${encodeURIComponent(selected)}&embed=1`;setText(`[data-compare-label="${index}"]`,THEMES[selected].label);const link=selectors[index]?.closest('header')?.querySelector('.compare-room-link');if(link)link.href=`system.html?theme=${encodeURIComponent(selected)}`;});const url=new URL(location.href);['a','b','c'].forEach((key,index)=>url.searchParams.set(key,selectors[index].value));history.replaceState(null,'',url);};
     selectors.forEach(select=>select.addEventListener('change',render));pageSelect?.addEventListener('change',render);
     compare.querySelectorAll('[data-compare-viewport]').forEach(button=>button.addEventListener('click',()=>{compare.dataset.viewport=button.dataset.compareViewport;compare.querySelectorAll('[data-compare-viewport]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));}));
     render();
@@ -451,7 +487,7 @@
 
   function applyPersona(p){
     const stableProjectCopy=document.body.dataset.projectCopy==='stable';
-    const exhibitionSurface=['index','systems','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
+    const exhibitionSurface=['index','systems','system','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
     document.documentElement.dataset.logic=p.logic;
     document.documentElement.dataset.density=p.density;
     if(exhibitionSurface){setText('.brand-copy strong','SYSTEMS/38');setText('.brand-copy span','LIVING EXHIBITION');}
@@ -511,7 +547,7 @@
     document.querySelectorAll('.theme-option').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===next)));
     requestAnimationFrame(revealActiveTheme);
     const current=document.querySelector('.theme-current');if(current)current.textContent=p.description;
-    document.querySelectorAll('.theme-recipe-link').forEach(link=>{link.textContent='Recipe ↗';link.setAttribute('aria-label',`Open ${p.label} style recipe`);link.title=`Open ${p.label} style recipe`;});
+    document.querySelectorAll('.theme-recipe-link').forEach(link=>{link.textContent='Recipe ↗';link.setAttribute('aria-label',`Open ${p.label} style recipe`);link.title=`Open ${p.label} style recipe`;});document.querySelectorAll('.theme-room-link').forEach(link=>{link.href=`system.html?theme=${encodeURIComponent(next)}`;link.setAttribute('aria-label',`Enter ${p.label} exhibition room`);});
     renderRecipe(next);
     renderSystemsLab(next);
     triggerThemeMotion();
@@ -540,7 +576,7 @@
   if(nav){
     const bar=document.createElement('div');
     bar.className='theme-review';bar.setAttribute('role','region');bar.setAttribute('aria-label','Visual design review switcher');
-    bar.innerHTML=`<div class="theme-review-inner"><div class="theme-review-label"><span>Visual review</span><b>${ORDER.length} design systems</b><a class="theme-recipe-link" href="#style-recipe">Style recipe ↗</a></div><div class="theme-options" role="group" aria-label="Choose visual direction"></div><div class="theme-current" aria-live="polite"></div><a class="theme-recipe-link theme-recipe-mobile" href="#style-recipe">Recipe ↗</a></div>`;
+    bar.innerHTML=`<div class="theme-review-inner"><div class="theme-review-label"><span>Visual review</span><b>${ORDER.length} design systems</b><a class="theme-room-link" href="system.html">System room ↗</a><a class="theme-recipe-link" href="#style-recipe">Style recipe ↗</a></div><div class="theme-options" role="group" aria-label="Choose visual direction"></div><div class="theme-current" aria-live="polite"></div><a class="theme-recipe-link theme-recipe-mobile" href="#style-recipe">Recipe ↗</a></div>`;
     const options=bar.querySelector('.theme-options');
     ORDER.forEach(id=>{const b=document.createElement('button');b.type='button';b.className='theme-option';b.dataset.theme=id;b.textContent=THEMES[id].label;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>applyTheme(id));options.appendChild(b);});
     document.body.insertBefore(bar,nav);
@@ -552,6 +588,7 @@
     recipeDialog.setAttribute('aria-labelledby','recipe-title');
     recipeDialog.innerHTML='<div class="recipe-shell"><header class="recipe-header" tabindex="-1"><div><div class="recipe-kicker"></div><h2 class="recipe-title" id="recipe-title"></h2><p class="recipe-summary"></p></div><form method="dialog"><button class="recipe-close" type="submit" aria-label="Close style recipe">×</button></form></header><div class="recipe-body"><section class="recipe-principle-panel"><div><h3>Design principles</h3><ul class="recipe-principles"></ul></div><div class="recipe-swatches" aria-label="Measured theme color pairs"></div></section><div class="recipe-grid"><section><h3>Typography</h3><p class="recipe-type"></p></section><section><h3>Layout system</h3><p class="recipe-layout"></p></section><section><h3>Foundations & scale</h3><dl class="recipe-scale"><div><dt>Type</dt><dd class="recipe-scale-type"></dd></div><div><dt>Grid</dt><dd class="recipe-scale-grid"></dd></div><div><dt>Spacing</dt><dd class="recipe-scale-spacing"></dd></div></dl></section><section><h3>Components & visualization</h3><p class="recipe-components"></p></section><section><h3>Imagery & iconography</h3><p class="recipe-media"></p></section><section><h3>Data visualization</h3><p class="recipe-dataviz"></p></section><section><h3>Motion choreography</h3><p class="recipe-motion"></p></section><section><h3>Writing voice</h3><p class="recipe-voice"></p></section><section><h3>Governance & release gates</h3><p class="recipe-governance"></p></section><section><h3>Avoid</h3><p class="recipe-avoid"></p></section></div><section class="recipe-skill-panel"><div><div class="micro">COMPANY DESIGN-SYSTEM SKILL</div><h3>Copy the complete production specification or its machine-readable tokens.</h3></div><div class="recipe-copy-actions"><button class="recipe-copy" type="button" data-copy="skill">Copy full system skill</button><button class="recipe-copy secondary" type="button" data-copy="tokens">Copy tokens (JSON)</button></div><pre class="recipe-skill" tabindex="0"></pre><div class="recipe-copy-status" aria-live="polite"></div></section></div></div>';
     document.body.appendChild(recipeDialog);
+    recipeDialog.querySelector('.recipe-header>div')?.insertAdjacentHTML('beforeend','<a class="recipe-room-link" href="system.html">View dedicated exhibition room →</a>');
     bar.querySelectorAll('.theme-recipe-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();renderRecipe(theme);if(typeof recipeDialog.showModal==='function')recipeDialog.showModal();else recipeDialog.setAttribute('open','');requestAnimationFrame(()=>recipeDialog.querySelector('.recipe-header').focus({preventScroll:true}));}));
     recipeDialog.addEventListener('click',event=>{if(event.target===recipeDialog)recipeDialog.close();});
     recipeDialog.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const kind=button.dataset.copy,status=recipeDialog.querySelector('.recipe-copy-status'),payload=kind==='tokens'?recipeTokenJSON(theme):recipeSkill(theme);try{await navigator.clipboard.writeText(payload);status.textContent=kind==='tokens'?'Token JSON copied.':'System skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the content manually.';}}));
@@ -559,6 +596,7 @@
   }
 
   initSystemsLab();
+  initSystemsCatalog();
   initCompare();
 
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;

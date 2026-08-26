@@ -1907,7 +1907,7 @@ html[data-theme="aero"] :is(.nav-status,.section-head .kicker,.page-hero .crumb)
   .theme-review-label{display:block!important;width:100%;padding:0 2px 14px!important;border-bottom:1px solid currentColor;white-space:normal}
   .theme-review-label:before{margin-right:8px}
   .theme-review-label b{display:block;width:auto;margin:8px 0 0 15px;line-height:1.35}
-  .theme-review-label .theme-recipe-link{margin:12px 0 0 15px}
+  .theme-review-label :is(.theme-recipe-link,.theme-room-link){display:inline-flex;margin:12px 0 0 15px;color:inherit;font:800 8px/1 var(--theme-label);letter-spacing:.1em;text-transform:uppercase;text-underline-offset:3px;opacity:.78}
   .theme-options{display:flex!important;flex:0 0 auto;flex-direction:column;flex-wrap:nowrap!important;align-items:stretch!important;width:100%;gap:5px!important;overflow:visible!important;mask-image:none!important;padding:0!important}
   .theme-option{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:29px;padding:7px 10px!important;text-align:left;font-size:9.5px!important}
   .theme-option[aria-pressed="true"]{transform:translateX(3px)}
@@ -1919,10 +1919,22 @@ html[data-theme="aero"] :is(.nav-status,.section-head .kicker,.page-hero .crumb)
 }
 
 /* ==========================================================================
+   SYSTEMS COLLECTION — a filterable exhibition index and dedicated rooms
+   ========================================================================== */
+.collection-hero{position:relative;padding:clamp(76px,9vw,140px) 0 68px;border-bottom:1px solid var(--line)}.collection-hero h1{max-width:1000px;margin:22px 0;font:760 clamp(64px,9vw,132px)/.86 var(--theme-display);letter-spacing:-.075em}.collection-hero h1 em{color:var(--mint);font-style:normal}.collection-hero p{max-width:780px;margin:0;color:var(--muted);font-size:clamp(17px,1.6vw,21px);line-height:1.58}.collection-tally{position:absolute;right:max(20px,calc((100vw - var(--max))/2));bottom:68px;display:grid;text-align:right}.collection-tally strong{font:780 clamp(62px,8vw,120px)/.8 var(--theme-data);letter-spacing:-.08em}.collection-tally span{margin-top:12px;color:var(--muted);font:750 9px/1 var(--theme-label);letter-spacing:.13em;text-transform:uppercase}
+.collection-controls{position:sticky;top:76px;z-index:35;border-bottom:1px solid var(--line-strong);background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(20px)}.collection-controls .wrap{display:grid;grid-template-columns:minmax(230px,1.6fr) repeat(3,minmax(145px,.7fr)) auto;gap:8px;padding-block:12px}.collection-controls label{display:grid;gap:6px;color:var(--muted);font:750 8px/1 var(--theme-label);letter-spacing:.11em;text-transform:uppercase}.collection-controls :is(input,select){width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--panel-solid);color:var(--ink);font:600 12px/1 var(--theme-body)}.collection-controls :is(input,select):focus-visible{outline:3px solid var(--amber);outline-offset:2px}.collection-controls>.wrap>.btn{align-self:end;min-height:44px;padding-block:9px}
+.collection-routes{border-bottom:1px solid var(--line)}.collection-route-list{display:flex;flex-wrap:wrap;gap:8px}.collection-route-list button{min-height:44px;padding:10px 15px;border:1px solid var(--line-strong);border-radius:999px;background:var(--panel-solid);color:var(--ink);font:750 10px/1 var(--theme-label);letter-spacing:.05em;cursor:pointer}.collection-route-list button:hover,.collection-route-list button[aria-pressed="true"]{border-color:var(--mint);background:var(--mint);color:var(--accent-fill-ink,#00120c)}.collection-index-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:32px}.collection-index-head h2{margin:9px 0 0;font-size:clamp(42px,5vw,72px);line-height:.9}.collection-index-head p{margin:0;color:var(--muted)}
+.system-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.system-catalog-card{min-width:0;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--panel-solid);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s var(--motion-ease),border-color .2s ease}.system-catalog-card:hover{transform:translateY(-4px);border-color:var(--mint)}.system-card-preview{position:relative;display:grid;align-content:end;min-height:210px;padding:22px;overflow:hidden;border-bottom:1px solid var(--line-strong);border-radius:calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;background:var(--sample-bg);color:var(--sample-ink);text-decoration:none;isolation:isolate}.system-card-preview:before{content:"";position:absolute;inset:16px 16px auto auto;width:46%;height:52%;border:1px solid var(--sample-accent);border-radius:var(--sample-radius);background:var(--sample-panel);transform:rotate(-4deg);z-index:-1}.system-card-preview:after{content:"";position:absolute;right:34%;top:23%;width:52px;height:52px;border-radius:50%;background:var(--sample-accent);opacity:.9;z-index:-1}.system-card-preview i{position:absolute;left:22px;right:22px;top:54%;height:1px;background:var(--sample-accent);opacity:.75}.system-card-no{position:absolute;left:22px;top:20px;color:var(--sample-accent);font:800 11px/1 var(--theme-data)}.system-card-preview b{font:780 clamp(24px,2.3vw,38px)/.92 var(--theme-display);letter-spacing:-.055em}.system-card-preview small{margin-top:9px;color:var(--sample-ink);font:700 8px/1 var(--theme-label);letter-spacing:.12em;text-transform:uppercase;opacity:.72}.system-card-copy{display:grid;grid-template-rows:auto auto 1fr auto;min-height:245px;padding:20px}.system-card-tags{display:flex;flex-wrap:wrap;gap:5px}.system-card-tags span{padding:5px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font:700 7px/1 var(--theme-label);letter-spacing:.09em;text-transform:uppercase}.system-card-copy h3{margin:18px 0 8px;font-size:24px}.system-card-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}.system-card-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}.system-card-actions a{color:var(--ink);font:800 9px/1 var(--theme-label);letter-spacing:.06em;text-transform:uppercase;text-underline-offset:4px}.collection-empty{padding:72px 24px;border:1px dashed var(--line-strong);text-align:center}.collection-empty strong{font-size:28px}.collection-empty p{color:var(--muted)}
+.system-room-bar{position:sticky;top:76px;z-index:34;border-bottom:1px solid var(--line-strong);background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(18px)}.system-room-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:48px}.system-room-bar a{color:var(--ink);font:750 9px/1 var(--theme-label);letter-spacing:.06em;text-transform:uppercase;text-underline-offset:4px}.system-room-bar div div{display:flex;align-items:center;gap:16px}.system-room-bar span{color:var(--muted);font:700 9px/1 var(--theme-data)}.recipe-room-link{display:inline-flex;margin-top:14px;color:var(--ink);font:800 9px/1 var(--theme-label);letter-spacing:.08em;text-transform:uppercase;text-underline-offset:4px}.compare-room-link{grid-column:1/-1;color:var(--muted);font:750 8px/1 var(--theme-label);letter-spacing:.08em;text-transform:uppercase;text-underline-offset:3px}
+html[data-theme="retroos"] :is(.system-catalog-card,.system-card-preview,.collection-controls input,.collection-controls select,.collection-route-list button){border-radius:0;border-width:2px}html[data-theme="retroos"] .system-catalog-card{border:3px outset #fff;box-shadow:3px 3px 0 #000}html[data-theme="retroos"] .collection-hero .wrap{padding:34px;border:3px outset #fff;background:#c0c0c0;color:#000}html[data-theme="retroos"] .collection-hero :is(.eyebrow,p),html[data-theme="retroos"] .collection-tally span,html[data-theme="retroos"] .collection-controls label{color:#000!important}html[data-theme="retroos"] .collection-controls,html[data-theme="retroos"] .system-room-bar{background:#c0c0c0;color:#000}html[data-theme="retroos"] .system-room-bar :is(a,span){color:#000}html[data-theme="retroos"] .collection-index-head p{color:#fff}html[data-theme="swiss"] :is(.system-catalog-card,.system-card-preview,.collection-controls input,.collection-controls select,.collection-route-list button){border-radius:0}html[data-theme="swiss"] .system-catalog-card{box-shadow:7px 7px 0 #ef3b24}
+@media(max-width:1100px){.collection-controls .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-search{grid-column:1/-1}.collection-controls>.wrap>.btn{width:100%}.system-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-tally{position:static;margin-top:42px;text-align:left}}
+@media(max-width:700px){.collection-hero{padding:58px 0}.collection-hero h1{font-size:clamp(58px,17vw,82px)}.collection-controls{position:relative;top:auto}.collection-controls .wrap{grid-template-columns:1fr}.collection-search{grid-column:auto}.system-catalog-grid{grid-template-columns:1fr}.collection-index-head{align-items:flex-start;flex-direction:column}.system-card-preview{min-height:190px}.system-room-bar{position:relative;top:auto}.system-room-bar .wrap{align-items:flex-start;flex-direction:column;padding-block:12px}.system-room-bar div div{width:100%;justify-content:space-between}.system-room-bar span{display:none}}
+
+/* ==========================================================================
    DESIGN SYSTEMS LAB — inspectable foundations, components and comparisons
    ========================================================================== */
 html[data-embed="true"] body{padding-left:0!important}
-html[data-embed="true"] .theme-review,html[data-embed="true"] .site-nav{display:none!important}
+html[data-embed="true"] .theme-review,html[data-embed="true"] .site-nav,html[data-embed="true"] .system-room-bar{display:none!important}
 html[data-embed="true"] .hero{padding-top:36px}
 
 .lab-hero,.compare-hero{padding:clamp(72px,8vw,118px) 0;border-bottom:1px solid var(--line);position:relative}
@@ -2010,6 +2022,10 @@ html[data-theme="space"]{--editor-accent-ink:#06131f}
 :is(html[data-theme="newspaper"],html[data-theme="museum"],html[data-theme="quietlux"],html[data-theme="whitepaper"]) .sf-edit-panel>header strong{font-weight:500!important;letter-spacing:-.02em}:is(html[data-theme="newspaper"],html[data-theme="museum"],html[data-theme="quietlux"],html[data-theme="whitepaper"]) .sf-edit-group{border-inline:0!important;border-radius:0!important}
 html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-radius:0!important;box-shadow:9px 9px 0 #111!important}html[data-theme="manga"] .sf-edit-panel :is(section,input,select,textarea,button){border-radius:0!important}html[data-theme="manga"] .sf-edit-panel>header{background:#111!important;color:#fff!important}
 
+/* Catalog preview labels use the system's tested panel/ink pair. */
+.system-card-preview .system-card-no{padding:5px 7px;border:1px solid var(--sample-ink);border-radius:var(--sample-radius);background:var(--sample-panel);color:var(--sample-ink)}.system-card-preview b{justify-self:start;padding:6px 8px;border-radius:var(--sample-radius);background:var(--sample-panel);color:var(--sample-ink)}.system-card-preview small{justify-self:start;margin-top:5px;padding:5px 8px;border-radius:var(--sample-radius);background:var(--sample-panel);color:var(--sample-ink);opacity:1}
+.collection-hero .eyebrow{color:var(--ink)}
+
 </style>
 </head>
 <body>
@@ -2062,7 +2078,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
     <div class="grid">
       <article class="card span4 reveal"><div class="metric-label">VISUAL REVIEW</div><div class="big">38</div><h3>Experience each world</h3><p>Switch the complete SELF/FUNDING case study between systems whose composition, voice, density, type, and motion change together.</p><div class="actions"><a class="btn" href="visual-review-2045.html">Open the exhibition</a></div></article>
       <article class="card span4 reveal"><div class="metric-label">COMPARE</div><div class="big">3×</div><h3>Remove memory from judgment</h3><p>Lock one page and viewport, then inspect three systems side by side. Difference becomes visible instead of vaguely remembered.</p><div class="actions"><a class="btn" href="compare.html">Compare systems</a></div></article>
-      <article class="card span4 reveal"><div class="metric-label">SYSTEMS LAB</div><div class="big">1:1</div><h3>Read the logic underneath</h3><p>Study foundations, patterns, state behavior, motion contracts, accessibility criteria, and governance—not just surface styling.</p><div class="actions"><a class="btn" href="systems.html">Inspect the recipes</a></div></article>
+      <article class="card span4 reveal"><div class="metric-label">SYSTEMS COLLECTION</div><div class="big">1:1</div><h3>Find and enter a system</h3><p>Filter the collection by underlying logic, density, and maturity, then study foundations, patterns, motion, accessibility, and governance in its dedicated room.</p><div class="actions"><a class="btn" href="systems.html">Browse the collection</a></div></article>
     </div>
   </div></section>
 
@@ -2080,7 +2096,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
   </div></section>
 </main>
 
-<footer><div class="wrap"><div class="footer-grid"><div><div class="footer-title">SYSTEMS/38</div><div class="footer-copy">A living comparative exhibition for seeing, understanding, and recreating complete design systems.</div></div><div class="footer-links"><h5>Explore</h5><a href="visual-review-2045.html">Visual Review</a><a href="systems.html">Systems Lab</a><a href="compare.html">Compare</a></div><div class="footer-links"><h5>Evidence</h5><a href="case-study.html">SELF/FUNDING</a><a href="journal.html">Research</a><a href="architecture.html">Architecture</a></div></div><div class="footer-bottom"><span>38 systems // exhibition open</span><span>Depth before system 39.</span></div></div></footer>
+<footer><div class="wrap"><div class="footer-grid"><div><div class="footer-title">SYSTEMS/38</div><div class="footer-copy">A living comparative exhibition for seeing, understanding, and recreating complete design systems.</div></div><div class="footer-links"><h5>Explore</h5><a href="visual-review-2045.html">Visual Review</a><a href="systems.html">Systems Collection</a><a href="compare.html">Compare</a></div><div class="footer-links"><h5>Evidence</h5><a href="case-study.html">SELF/FUNDING</a><a href="journal.html">Research</a><a href="architecture.html">Architecture</a></div></div><div class="footer-bottom"><span>38 systems // exhibition open</span><span>Depth before system 39.</span></div></div></footer>
 <script>
 (() => {
   const T = (label, description, logic, density, eyebrow, headline, lede, primary, secondary, nav, status, brand, core, tags, meta) => ({label,description,logic,density,eyebrow,headline,lede,actions:[primary,secondary],nav,status,brand,core,tags,meta});
@@ -2401,7 +2417,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
   const meta=document.querySelector('meta[name="theme-color"]');
   const themeColors={institution:'#020706',terminal:'#020403',whitepaper:'#f6f6f2',brutalist:'#f2efe5',command:'#02030b',protocol:'#080812',calm:'#f7f9fc',archive:'#e9e1d0',swiss:'#f2f1ec',bauhaus:'#f5f0e6',glass:'#091423',solarpunk:'#edf2df',mono:'#f4f4f1',cyber:'#070312',space:'#07111f',zen:'#f3f0e8',retroos:'#c7c7c7',datascape:'#0c0c10',blueprint:'#123c68',newspaper:'#f4efe3',memphis:'#fff4d8',noir:'#050505',biotech:'#eff7f2',clay:'#e9e0d4',museum:'#f5f1e8',industrial:'#f1b900',hologram:'#0b1020',cartographic:'#ebe3cf',bento:'#edf2f7',riso:'#f1e6ce',kinetic:'#111014',spatialos:'#07131f',quietlux:'#eee8dc',civic:'#f5f8fc',parametric:'#0a0e12',vernacular:'#ffffff',aero:'#dff4ff',manga:'#f7f0de'};
   const rawPageName=(location.pathname.split('/').pop()||'index.html').replace('.html','');
-  const navPageName=rawPageName==='homepage-standalone'?'index':rawPageName;
+  const navPageName=rawPageName==='homepage-standalone'?'index':rawPageName==='system'?'systems':rawPageName;
   const pageName=['visual-review-2045','homepage-standalone'].includes(rawPageName)?'index':rawPageName==='build-standalone'?'build':rawPageName;
   const pageNumber={thesis:'01',architecture:'02',economics:'03',build:'04',mvp:'05',journal:'06'}[pageName];
   const safeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2483,6 +2499,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
       renderTokenPair('Callout heading','--callout-bg','--callout-ink'),renderTokenPair('Callout quiet copy','--callout-bg','--callout-muted')
     ].join('');
     recipeDialog.dataset.recipe=id;
+    const roomLink=recipeDialog.querySelector('.recipe-room-link');if(roomLink)roomLink.href=`system.html?theme=${encodeURIComponent(id)}`;
   }
 
   const LAB_SYSTEMS={
@@ -2505,6 +2522,19 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
     const swatches=lab.querySelector('[data-lab-swatches]');if(swatches)swatches.innerHTML=[['--bg','Page'],['--panel-solid','Panel'],['--ink','Primary'],['--muted','Muted'],['--mint','Action'],['--acid','Signal']].map(([token,label])=>`<div class="lab-swatch"><i style="background:var(${token})"></i><strong>${label}</strong><code>${token}</code></div>`).join('');
     lab.querySelectorAll('[data-lab-reference-only]').forEach(element=>element.hidden=!gold);
     lab.querySelectorAll('[data-lab-draft-only]').forEach(element=>element.hidden=!!gold);
+    if(lab.hasAttribute('data-system-room')){
+      const index=ORDER.indexOf(id),previous=ORDER[(index-1+ORDER.length)%ORDER.length],next=ORDER[(index+1)%ORDER.length];
+      const prevLink=lab.querySelector('[data-room-prev]'),nextLink=lab.querySelector('[data-room-next]'),position=lab.querySelector('[data-room-position]');
+      if(prevLink){prevLink.href=`system.html?theme=${encodeURIComponent(previous)}`;prevLink.textContent=`← ${THEMES[previous].label}`;}
+      if(nextLink){nextLink.href=`system.html?theme=${encodeURIComponent(next)}`;nextLink.textContent=`${THEMES[next].label} →`;}
+      if(position)position.textContent=`${String(index+1).padStart(2,'0')} / ${ORDER.length}`;
+      const compare=lab.querySelector('.hero-actions a[href^="compare.html"]');if(compare)compare.href=`compare.html?a=${encodeURIComponent(id)}&b=${encodeURIComponent(next)}&c=${encodeURIComponent(previous)}`;
+      const actions=lab.querySelector('.hero-actions');if(actions&&!actions.querySelector('[data-room-visual]'))actions.insertAdjacentHTML('beforeend',`<a class="btn" data-room-visual href="visual-review-2045.html?theme=${encodeURIComponent(id)}">View full-page specimen</a>`);
+      const visual=actions?.querySelector('[data-room-visual]');if(visual)visual.href=`visual-review-2045.html?theme=${encodeURIComponent(id)}`;
+      document.title=`${p.label} — SYSTEMS/38 Exhibition Room`;
+      const description=document.querySelector('meta[name="description"]');if(description)description.content=`Explore ${p.label}: ${p.description}, with foundations, components, patterns, motion, accessibility, release evidence, and a company-scale recipe.`;
+      const url=new URL(location.href);url.searchParams.set('theme',id);history.replaceState(null,'',url);
+    }
   }
 
   function downloadLabTokens(){
@@ -2523,11 +2553,33 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
     renderSystemsLab(theme);
   }
 
+  function initSystemsCatalog(){
+    const catalog=document.querySelector('[data-systems-catalog]');if(!catalog)return;
+    const grid=catalog.querySelector('[data-catalog-grid]'),search=catalog.querySelector('[data-catalog-search]'),logic=catalog.querySelector('[data-catalog-filter="logic"]'),density=catalog.querySelector('[data-catalog-filter="density"]'),maturity=catalog.querySelector('[data-catalog-filter="maturity"]'),empty=catalog.querySelector('[data-catalog-empty]'),summary=catalog.querySelector('[data-catalog-summary]');
+    const roots=document.documentElement,initialTheme=roots.dataset.theme,palettes={};
+    for(const id of ORDER){roots.dataset.theme=id;const style=getComputedStyle(roots);palettes[id]={bg:style.getPropertyValue('--bg').trim(),panel:style.getPropertyValue('--panel-solid').trim(),ink:style.getPropertyValue('--ink').trim(),accent:style.getPropertyValue('--mint').trim(),radius:style.getPropertyValue('--radius-sm').trim()};}
+    roots.dataset.theme=initialTheme;
+    const addOptions=(select,values)=>values.sort().forEach(value=>select.insertAdjacentHTML('beforeend',`<option value="${safeHTML(value)}">${safeHTML(value.charAt(0).toUpperCase()+value.slice(1))}</option>`));
+    addOptions(logic,[...new Set(ORDER.map(id=>THEMES[id].logic))]);addOptions(density,[...new Set(ORDER.map(id=>THEMES[id].density))]);
+    const params=new URLSearchParams(location.search),state={q:params.get('q')||'',logic:params.get('logic')||'all',density:params.get('density')||'all',maturity:params.get('maturity')||'all'};
+    search.value=state.q;logic.value=[...logic.options].some(option=>option.value===state.logic)?state.logic:'all';density.value=[...density.options].some(option=>option.value===state.density)?state.density:'all';maturity.value=[...maturity.options].some(option=>option.value===state.maturity)?state.maturity:'all';
+    const card=id=>{const p=THEMES[id],gold=!!LAB_SYSTEMS[id],palette=palettes[id],index=ORDER.indexOf(id),next=ORDER[(index+1)%ORDER.length],previous=ORDER[(index-1+ORDER.length)%ORDER.length];return `<article class="system-catalog-card" data-system-card="${id}" data-logic="${safeHTML(p.logic)}" data-density="${safeHTML(p.density)}" data-maturity="${gold?'reference':'draft'}"><a class="system-card-preview" href="system.html?theme=${id}" style="--sample-bg:${safeHTML(palette.bg)};--sample-panel:${safeHTML(palette.panel)};--sample-ink:${safeHTML(palette.ink)};--sample-accent:${safeHTML(palette.accent)};--sample-radius:${safeHTML(palette.radius)}" aria-label="Enter ${safeHTML(p.label)} exhibition room"><span class="system-card-no">${String(index+1).padStart(2,'0')}</span><i></i><b>${safeHTML(p.label)}</b><small>${safeHTML(p.logic)} / ${safeHTML(p.density)}</small></a><div class="system-card-copy"><div class="system-card-tags"><span>${gold?'Production candidate':'Documented draft'}</span><span>${safeHTML(p.logic)}</span><span>${safeHTML(p.density)}</span></div><h3>${safeHTML(p.label)}</h3><p>${safeHTML(p.description)}</p><div class="system-card-actions"><a href="system.html?theme=${id}">Enter room →</a><a href="compare.html?a=${id}&b=${next}&c=${previous}">Compare</a></div></div></article>`;};
+    grid.innerHTML=ORDER.map(card).join('');
+    const syncUrl=()=>{const url=new URL(location.href);for(const [key,value] of Object.entries(state)){if(value&&value!=='all')url.searchParams.set(key,value);else url.searchParams.delete(key);}history.replaceState(null,'',url);};
+    const render=()=>{const queryText=state.q.trim().toLowerCase();let visible=0;for(const id of ORDER){const p=THEMES[id],cardElement=grid.querySelector(`[data-system-card="${id}"]`),gold=!!LAB_SYSTEMS[id],haystack=`${p.label} ${p.description} ${p.logic} ${p.density} ${RECIPES[id].principles}`.toLowerCase(),show=(!queryText||haystack.includes(queryText))&&(state.logic==='all'||p.logic===state.logic)&&(state.density==='all'||p.density===state.density)&&(state.maturity==='all'||state.maturity===(gold?'reference':'draft'));cardElement.hidden=!show;if(show)visible++;}
+      catalog.querySelectorAll('[data-catalog-count]').forEach(node=>node.textContent=visible);empty.hidden=visible!==0;summary.textContent=visible===ORDER.length?'Showing the complete collection.':`Showing ${visible} of ${ORDER.length} systems.`;catalog.querySelectorAll('[data-catalog-route]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.catalogRoute===state.logic||button.dataset.catalogRoute===state.density)));syncUrl();};
+    search.addEventListener('input',()=>{state.q=search.value;render();});for(const select of [logic,density,maturity])select.addEventListener('change',()=>{state[select.dataset.catalogFilter]=select.value;render();});
+    catalog.querySelectorAll('[data-catalog-route]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.catalogRoute;if([...logic.options].some(option=>option.value===value)){state.logic=state.logic===value?'all':value;logic.value=state.logic;}else{state.density=state.density===value?'all':value;density.value=state.density;}render();}));
+    catalog.querySelectorAll('[data-catalog-reset]').forEach(button=>button.addEventListener('click',()=>{Object.assign(state,{q:'',logic:'all',density:'all',maturity:'all'});search.value='';logic.value=density.value=maturity.value='all';render();search.focus();}));
+    render();
+  }
+
   function initCompare(){
     const compare=document.querySelector('[data-compare]');if(!compare)return;
     const selectors=[...compare.querySelectorAll('[data-compare-theme]')],pageSelect=compare.querySelector('[data-compare-page]'),frames=[...compare.querySelectorAll('.compare-frame iframe')];
-    selectors.forEach((select,index)=>{select.innerHTML=ORDER.map(id=>`<option value="${id}">${safeHTML(THEMES[id].label)}</option>`).join('');select.value=['retroos','swiss','calm'][index]||ORDER[index];});
-    const render=()=>frames.forEach((frame,index)=>{const selected=selectors[index]?.value||'retroos',page=pageSelect?.value||'index.html';frame.title=`${THEMES[selected].label} — ${page}`;frame.src=`${page}?theme=${encodeURIComponent(selected)}&embed=1`;setText(`[data-compare-label="${index}"]`,THEMES[selected].label);});
+    const compareParams=new URLSearchParams(location.search),initial=[compareParams.get('a'),compareParams.get('b'),compareParams.get('c')];
+    selectors.forEach((select,index)=>{select.innerHTML=ORDER.map(id=>`<option value="${id}">${safeHTML(THEMES[id].label)}</option>`).join('');select.value=valid.has(initial[index])?initial[index]:(['retroos','swiss','calm'][index]||ORDER[index]);const header=select.closest('header');if(header&&!header.querySelector('.compare-room-link'))header.insertAdjacentHTML('beforeend','<a class="compare-room-link" href="system.html">Enter room ↗</a>');});
+    const render=()=>{frames.forEach((frame,index)=>{const selected=selectors[index]?.value||'retroos',page=pageSelect?.value||'index.html';frame.title=`${THEMES[selected].label} — ${page}`;frame.src=`${page}?theme=${encodeURIComponent(selected)}&embed=1`;setText(`[data-compare-label="${index}"]`,THEMES[selected].label);const link=selectors[index]?.closest('header')?.querySelector('.compare-room-link');if(link)link.href=`system.html?theme=${encodeURIComponent(selected)}`;});const url=new URL(location.href);['a','b','c'].forEach((key,index)=>url.searchParams.set(key,selectors[index].value));history.replaceState(null,'',url);};
     selectors.forEach(select=>select.addEventListener('change',render));pageSelect?.addEventListener('change',render);
     compare.querySelectorAll('[data-compare-viewport]').forEach(button=>button.addEventListener('click',()=>{compare.dataset.viewport=button.dataset.compareViewport;compare.querySelectorAll('[data-compare-viewport]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));}));
     render();
@@ -2535,7 +2587,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
 
   function applyPersona(p){
     const stableProjectCopy=document.body.dataset.projectCopy==='stable';
-    const exhibitionSurface=['index','systems','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
+    const exhibitionSurface=['index','systems','system','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
     document.documentElement.dataset.logic=p.logic;
     document.documentElement.dataset.density=p.density;
     if(exhibitionSurface){setText('.brand-copy strong','SYSTEMS/38');setText('.brand-copy span','LIVING EXHIBITION');}
@@ -2595,7 +2647,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
     document.querySelectorAll('.theme-option').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===next)));
     requestAnimationFrame(revealActiveTheme);
     const current=document.querySelector('.theme-current');if(current)current.textContent=p.description;
-    document.querySelectorAll('.theme-recipe-link').forEach(link=>{link.textContent='Recipe ↗';link.setAttribute('aria-label',`Open ${p.label} style recipe`);link.title=`Open ${p.label} style recipe`;});
+    document.querySelectorAll('.theme-recipe-link').forEach(link=>{link.textContent='Recipe ↗';link.setAttribute('aria-label',`Open ${p.label} style recipe`);link.title=`Open ${p.label} style recipe`;});document.querySelectorAll('.theme-room-link').forEach(link=>{link.href=`system.html?theme=${encodeURIComponent(next)}`;link.setAttribute('aria-label',`Enter ${p.label} exhibition room`);});
     renderRecipe(next);
     renderSystemsLab(next);
     triggerThemeMotion();
@@ -2624,7 +2676,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
   if(nav){
     const bar=document.createElement('div');
     bar.className='theme-review';bar.setAttribute('role','region');bar.setAttribute('aria-label','Visual design review switcher');
-    bar.innerHTML=`<div class="theme-review-inner"><div class="theme-review-label"><span>Visual review</span><b>${ORDER.length} design systems</b><a class="theme-recipe-link" href="#style-recipe">Style recipe ↗</a></div><div class="theme-options" role="group" aria-label="Choose visual direction"></div><div class="theme-current" aria-live="polite"></div><a class="theme-recipe-link theme-recipe-mobile" href="#style-recipe">Recipe ↗</a></div>`;
+    bar.innerHTML=`<div class="theme-review-inner"><div class="theme-review-label"><span>Visual review</span><b>${ORDER.length} design systems</b><a class="theme-room-link" href="system.html">System room ↗</a><a class="theme-recipe-link" href="#style-recipe">Style recipe ↗</a></div><div class="theme-options" role="group" aria-label="Choose visual direction"></div><div class="theme-current" aria-live="polite"></div><a class="theme-recipe-link theme-recipe-mobile" href="#style-recipe">Recipe ↗</a></div>`;
     const options=bar.querySelector('.theme-options');
     ORDER.forEach(id=>{const b=document.createElement('button');b.type='button';b.className='theme-option';b.dataset.theme=id;b.textContent=THEMES[id].label;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>applyTheme(id));options.appendChild(b);});
     document.body.insertBefore(bar,nav);
@@ -2636,6 +2688,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
     recipeDialog.setAttribute('aria-labelledby','recipe-title');
     recipeDialog.innerHTML='<div class="recipe-shell"><header class="recipe-header" tabindex="-1"><div><div class="recipe-kicker"></div><h2 class="recipe-title" id="recipe-title"></h2><p class="recipe-summary"></p></div><form method="dialog"><button class="recipe-close" type="submit" aria-label="Close style recipe">×</button></form></header><div class="recipe-body"><section class="recipe-principle-panel"><div><h3>Design principles</h3><ul class="recipe-principles"></ul></div><div class="recipe-swatches" aria-label="Measured theme color pairs"></div></section><div class="recipe-grid"><section><h3>Typography</h3><p class="recipe-type"></p></section><section><h3>Layout system</h3><p class="recipe-layout"></p></section><section><h3>Foundations & scale</h3><dl class="recipe-scale"><div><dt>Type</dt><dd class="recipe-scale-type"></dd></div><div><dt>Grid</dt><dd class="recipe-scale-grid"></dd></div><div><dt>Spacing</dt><dd class="recipe-scale-spacing"></dd></div></dl></section><section><h3>Components & visualization</h3><p class="recipe-components"></p></section><section><h3>Imagery & iconography</h3><p class="recipe-media"></p></section><section><h3>Data visualization</h3><p class="recipe-dataviz"></p></section><section><h3>Motion choreography</h3><p class="recipe-motion"></p></section><section><h3>Writing voice</h3><p class="recipe-voice"></p></section><section><h3>Governance & release gates</h3><p class="recipe-governance"></p></section><section><h3>Avoid</h3><p class="recipe-avoid"></p></section></div><section class="recipe-skill-panel"><div><div class="micro">COMPANY DESIGN-SYSTEM SKILL</div><h3>Copy the complete production specification or its machine-readable tokens.</h3></div><div class="recipe-copy-actions"><button class="recipe-copy" type="button" data-copy="skill">Copy full system skill</button><button class="recipe-copy secondary" type="button" data-copy="tokens">Copy tokens (JSON)</button></div><pre class="recipe-skill" tabindex="0"></pre><div class="recipe-copy-status" aria-live="polite"></div></section></div></div>';
     document.body.appendChild(recipeDialog);
+    recipeDialog.querySelector('.recipe-header>div')?.insertAdjacentHTML('beforeend','<a class="recipe-room-link" href="system.html">View dedicated exhibition room →</a>');
     bar.querySelectorAll('.theme-recipe-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();renderRecipe(theme);if(typeof recipeDialog.showModal==='function')recipeDialog.showModal();else recipeDialog.setAttribute('open','');requestAnimationFrame(()=>recipeDialog.querySelector('.recipe-header').focus({preventScroll:true}));}));
     recipeDialog.addEventListener('click',event=>{if(event.target===recipeDialog)recipeDialog.close();});
     recipeDialog.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const kind=button.dataset.copy,status=recipeDialog.querySelector('.recipe-copy-status'),payload=kind==='tokens'?recipeTokenJSON(theme):recipeSkill(theme);try{await navigator.clipboard.writeText(payload);status.textContent=kind==='tokens'?'Token JSON copied.':'System skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the content manually.';}}));
@@ -2643,6 +2696,7 @@ html[data-theme="manga"] .sf-edit-panel{border:3px solid #111!important;border-r
   }
 
   initSystemsLab();
+  initSystemsCatalog();
   initCompare();
 
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
