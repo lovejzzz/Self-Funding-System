@@ -1,0 +1,30 @@
+{
+  "run_at": "2026-08-26T15:27:40Z",
+  "scope": "NO_NETWORK_SYNTHETIC_CAPTURE_SCHEMA_ONLY",
+  "evidence_ceiling": "LOCAL_CONTROL_PLANE_ONLY",
+  "commands": [
+    "node --check research/experiments/fixture-runner-v0.1/replay-capture-bundle.mjs",
+    "node research/experiments/fixture-runner-v0.1/replay-capture-bundle.mjs --self-test",
+    "node research/experiments/fixture-runner-v0.1/runner.mjs research/experiments/fixture-runner-v0.1/manifest.json"
+  ],
+  "result": {
+    "synthetic_bundle_replays": 2,
+    "raw_hashes_verified": 4,
+    "posted_transactions_per_replay": 1,
+    "duplicate_bookings_per_replay": 1,
+    "balanced_booking": true,
+    "freeze_tier": "NONE",
+    "maximum_imported_evidence_state": "CONTROL_PLANE_PASSED",
+    "tamper_guards_rejected": 4,
+    "existing_fixture_runner_passed": 3,
+    "existing_fixture_runner_blocked": 1,
+    "complete_prelive_suite": false
+  },
+  "rejected": [
+    "raw response hash mismatch",
+    "evidence-class upgrade",
+    "canonical object mismatch",
+    "missing raw provenance"
+  ],
+  "external_blocker": "No authorized Stripe sandbox capture was available; RAIL_SANDBOX_CAPTURE_REQUIRED remains"
+}

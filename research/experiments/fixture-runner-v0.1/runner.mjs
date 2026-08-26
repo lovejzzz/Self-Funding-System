@@ -2,6 +2,8 @@
 
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const PRELIVE_CLASSES = new Set([
   'RAIL_SANDBOX',
@@ -34,7 +36,7 @@ function canonical(value) {
   return JSON.stringify(value);
 }
 
-function sha256(value) {
+export function sha256(value) {
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
 
@@ -129,7 +131,7 @@ function compareExpected(fixture, actual) {
   }
 }
 
-function execute(fixture) {
+export function execute(fixture) {
   const boundary = validateEvidenceBoundary(fixture);
   if (boundary.blocked) {
     const actual = {
@@ -176,28 +178,34 @@ function runGuardTests(seed) {
   return guards;
 }
 
-const manifestPath = process.argv[2] || new URL('./manifest.json', import.meta.url);
-const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-assert(manifest.manifest_version === '0.1.0', 'unsupported manifest_version');
-assert(manifest.stripe_api_version, 'manifest stripe_api_version is required');
-for (const fixture of manifest.fixtures) {
-  assert(fixture.stripe_api_version === manifest.stripe_api_version, `${fixture.fixture_id}: fixture API version differs from manifest`);
+export async function runManifest(manifestPath = new URL('./manifest.json', import.meta.url)) {
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  assert(manifest.manifest_version === '0.1.0', 'unsupported manifest_version');
+  assert(manifest.stripe_api_version, 'manifest stripe_api_version is required');
+  for (const fixture of manifest.fixtures) {
+    assert(fixture.stripe_api_version === manifest.stripe_api_version, `${fixture.fixture_id}: fixture API version differs from manifest`);
+  }
+
+  const results = manifest.fixtures.map((fixture) => ({ fixture_id: fixture.fixture_id, ...execute(fixture) }));
+  const transportSeed = manifest.fixtures.find((fixture) => fixture.evidence_class === 'TRANSPORT_INJECTION');
+  assert(transportSeed, 'manifest requires a transport fixture for guard tests');
+  const guards = runGuardTests(transportSeed);
+  assert(guards.every((guard) => guard.passed), 'one or more evidence-boundary guard tests failed');
+
+  const summary = {
+    manifest_version: manifest.manifest_version,
+    stripe_api_version: manifest.stripe_api_version,
+    fixture_count: results.length,
+    passed: results.filter((result) => result.runner_status === 'PASS').length,
+    blocked: results.filter((result) => result.runner_status === 'BLOCKED').length,
+    guard_tests_passed: guards.filter((guard) => guard.passed).length,
+    complete_prelive_suite: results.every((result) => result.runner_status === 'PASS') && PRELIVE_CLASSES.size === new Set(results.map((result) => manifest.fixtures.find((fixture) => fixture.fixture_id === result.fixture_id).evidence_class)).size,
+  };
+  return { summary, results, guards };
 }
 
-const results = manifest.fixtures.map((fixture) => ({ fixture_id: fixture.fixture_id, ...execute(fixture) }));
-const transportSeed = manifest.fixtures.find((fixture) => fixture.evidence_class === 'TRANSPORT_INJECTION');
-assert(transportSeed, 'manifest requires a transport fixture for guard tests');
-const guards = runGuardTests(transportSeed);
-assert(guards.every((guard) => guard.passed), 'one or more evidence-boundary guard tests failed');
-
-const summary = {
-  manifest_version: manifest.manifest_version,
-  stripe_api_version: manifest.stripe_api_version,
-  fixture_count: results.length,
-  passed: results.filter((result) => result.runner_status === 'PASS').length,
-  blocked: results.filter((result) => result.runner_status === 'BLOCKED').length,
-  guard_tests_passed: guards.filter((guard) => guard.passed).length,
-  complete_prelive_suite: results.every((result) => result.runner_status === 'PASS') && PRELIVE_CLASSES.size === new Set(results.map((result) => manifest.fixtures.find((fixture) => fixture.fixture_id === result.fixture_id).evidence_class)).size,
-};
-
-console.log(JSON.stringify({ summary, results, guards }, null, 2));
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  const result = await runManifest(process.argv[2] || new URL('./manifest.json', import.meta.url));
+  console.log(JSON.stringify(result, null, 2));
+}

@@ -40,3 +40,24 @@ unset SELF_FUNDING_STRIPE_SANDBOX_KEY
 ```
 
 Do not put a key literal in the command line, chat, a command transcript, or a tracked file. Prefer a managed secret injection when available. The harness rejects `sk_live_` and `rk_live_` credentials, applies a private process umask, and validates the complete PaymentIntent → Charge → Balance Transaction → Event chain before writing a bundle. Raw responses can contain a PaymentIntent client secret, so the default location is the git-ignored `capture-private/` directory. A custom `SELF_FUNDING_CAPTURE_DIR` is allowed only when the operator has separately verified its permissions and retention. A sibling `capture-bundle.json` contains allowlisted object fields and raw-response hashes for review and later replay. The harness does not prove real money, settlement timing, payout membership, or a bank posting; every output remains `RAIL_SANDBOX` with an evidence ceiling of `CONTROL_PLANE_PASSED`.
+
+## Review and replay gate
+
+The replay gate reads the allowlisted bundle and all four private raw bodies from one capture directory. It recomputes every raw hash, rebuilds the safe PaymentIntent, Charge, Balance Transaction, and Event views, rechecks the complete object chain, and then sends two copies of the same event and booking through the reducer. A valid result has one unique event, one posted balanced transaction, one duplicate delivery, one duplicate booking, no freeze, and no evidence state above `CONTROL_PLANE_PASSED`.
+
+Run the no-network schema test first:
+
+```sh
+node research/experiments/fixture-runner-v0.1/replay-capture-bundle.mjs --self-test
+```
+
+That self-test is explicitly synthetic and has an evidence ceiling of `LOCAL_CONTROL_PLANE_ONLY`. It cannot clear `RAIL_SANDBOX_CAPTURE_REQUIRED`.
+
+After an authorized operator capture and an independent privacy/provenance review, replay the private capture directory:
+
+```sh
+node research/experiments/fixture-runner-v0.1/replay-capture-bundle.mjs \
+  research/experiments/fixture-runner-v0.1/capture-private/stripe-sandbox-UTC-TIMESTAMP
+```
+
+The directory argument—not a credential—is safe to enter in shell history. Keep the raw directory private. A passing replay proves deterministic ingestion of the reviewed sandbox objects; it still does not prove real funds, card-network processing, live settlement timing, automatic-payout membership, or a bank posting.

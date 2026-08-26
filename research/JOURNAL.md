@@ -488,3 +488,35 @@ The homepage, Thesis, Economics, Architecture, and public Research Journal are u
 ### Next question
 
 Can one simulated edge be replaced with a live, operator-owned, revocable compute allowance whose issuance, scope, expiry, redemption, provider usage, remaining capacity, and revocation all reconcile without broadening agent authority?
+
+## 2026-08-26 — Capture-bundle importer passes locally; Stripe rail evidence remains blocked
+
+### Research question
+
+Can the reviewed V0.1 Stripe capture-bundle schema be imported and replayed twice through the existing close reducer with exactly one balanced booking, while rejecting raw-data tampering, broken object links, missing provenance, and any upgrade beyond the sandbox evidence ceiling?
+
+### Result
+
+- Direct fact: Stripe's current Versioning page and changelog both identify `2026-07-29.dahlia`; the documentation conflict recorded on 2026-08-24 was not present in the pages rechecked on 2026-08-26.
+- Direct fact: Stripe sandboxes return simulated objects without card-network, payment-provider, bank, or real-money processing. Charge, Balance Transaction, and Event fields still provide the documented PaymentIntent link, amount/fee/net/source chain, test/live flag, API version, request ID, and idempotency metadata used by the importer.
+- Direct measured result: the no-network synthetic schema test verified four private raw hashes, rebuilt all safe views, replayed the duplicate event and booking twice with one balanced posted transaction per run, returned identical results, and rejected four raw/provenance/evidence mutations.
+- Bounded inference / buildable decision: the operator capture can now proceed through a fixed `capture → independent privacy/provenance review → raw-hash verification → canonical-chain validation → duplicate replay` gate without implementing missing import logic during the credentialed run.
+- Counterevidence: all objects in this round were local synthetic fixtures. Hash consistency does not independently prove Stripe origin, response headers are not reconstructible from JSON bodies, and the in-memory reducer does not prove database uniqueness under concurrency or crash recovery.
+- Exact blocker: no authorized Stripe sandbox credential or Stripe-created object was available. `RAIL_SANDBOX_CAPTURE_REQUIRED` and the existing 3-pass / 1-blocked fixture result remain unchanged; NOW 0 is still false.
+- Evidence ceiling: this round is `LOCAL_CONTROL_PLANE_ONLY`; an accepted future sandbox bundle can reach at most `CONTROL_PLANE_PASSED`, never `REVIEWED_CLOSED_LIVE`.
+
+### Detailed evidence and measured artifact
+
+See [the capture-bundle replay gate note](notes/2026-08-26T15-27-40Z-capture-bundle-replay-gate.md), [the machine-readable self-test](experiments/fixture-runner-v0.1/capture-replay-self-test-result.json), and [the operator capture/replay instructions](experiments/fixture-runner-v0.1/README.md).
+
+### Foundations update
+
+No update. This round implements and measures the existing evidence boundary; it does not change the standing money, custody, reconciliation, or sandbox/live model.
+
+### Website status
+
+The public Research Journal records the local importer result, current primary-source recheck, counterevidence, unchanged external blocker, and next test. No standing site claim, evidence graphic, shared component, theme, motion, or standalone artifact changed.
+
+### Next question
+
+When an authorized operator runs the hardened capture harness with a sandbox-only restricted key, do the actual `2026-07-29.dahlia` response shapes and request logs pass privacy/provenance review and the new replay gate twice with exactly one balanced booking and no evidence-class upgrade?

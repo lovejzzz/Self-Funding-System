@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const API_VERSION = '2026-07-29.dahlia';
+export const API_VERSION = '2026-07-29.dahlia';
 const API_ROOT = 'https://api.stripe.com';
 const KEY_ENV = 'SELF_FUNDING_STRIPE_SANDBOX_KEY';
 const OUTPUT_ENV = 'SELF_FUNDING_CAPTURE_DIR';
@@ -25,7 +25,7 @@ function requireSandboxKey(value) {
   return value;
 }
 
-function paymentIntentView(value) {
+export function paymentIntentView(value) {
   return {
     id: value.id,
     object: value.object,
@@ -40,7 +40,7 @@ function paymentIntentView(value) {
   };
 }
 
-function balanceTransactionView(value) {
+export function balanceTransactionView(value) {
   return {
     id: value.id,
     object: value.object,
@@ -57,7 +57,7 @@ function balanceTransactionView(value) {
   };
 }
 
-function chargeView(value) {
+export function chargeView(value) {
   const balanceTransaction = typeof value.balance_transaction === 'object'
     ? balanceTransactionView(value.balance_transaction)
     : value.balance_transaction;
@@ -77,7 +77,7 @@ function chargeView(value) {
   };
 }
 
-function eventView(value) {
+export function eventView(value) {
   return {
     id: value.id,
     object: value.object,
@@ -97,7 +97,7 @@ function objectId(value) {
   return typeof value === 'object' ? value?.id : value;
 }
 
-function validateCaptureChain({ paymentIntent, charge, event, creationRequestId, idempotencyKey }) {
+export function validateCaptureChain({ paymentIntent, charge, event, creationRequestId, idempotencyKey }) {
   const balanceTransaction = charge.balance_transaction;
   assert(paymentIntent.object === 'payment_intent', 'PAYMENT_INTENT_OBJECT_INVALID');
   assert(charge.object === 'charge', 'CHARGE_OBJECT_INVALID');
@@ -121,7 +121,7 @@ function validateCaptureChain({ paymentIntent, charge, event, creationRequestId,
   assert(event.request?.idempotency_key === idempotencyKey, 'EVENT_IDEMPOTENCY_KEY_MISMATCH');
 }
 
-function validateReviewBundle(bundle) {
+export function validateReviewBundle(bundle) {
   const serialized = JSON.stringify(bundle);
   for (const forbidden of [
     'client_secret', 'billing_details', 'payment_method_details', 'receipt_url',
@@ -335,7 +335,10 @@ async function main() {
   }, null, 2));
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
