@@ -6,7 +6,7 @@ const root=dirname(dirname(fileURLToPath(import.meta.url)));
 const check=process.argv.includes('--check');
 const encodeFile=(path,mime)=>`data:${mime};base64,${readFileSync(path).toString('base64')}`;
 
-let css=[readFileSync(join(root,'shared/styles.css'),'utf8'),readFileSync(join(root,'shared/studio.css'),'utf8')].join('\n');
+let css=readFileSync(join(root,'shared/styles.css'),'utf8');
 for(const [file,mime] of [
   ['archivo-latin-variable.woff2','font/woff2'],
   ['space-grotesk-latin-variable.woff2','font/woff2'],
@@ -18,7 +18,7 @@ for(const [file,mime] of [
 ])css=css.replaceAll(`fonts/${file}`,encodeFile(join(root,'shared/fonts',file),mime));
 
 css=css.replaceAll('</style','<\\/style');
-const js=[readFileSync(join(root,'shared/site.js'),'utf8'),readFileSync(join(root,'shared/studio.js'),'utf8')].join('\n').replaceAll('</script','<\\/script');
+const js=readFileSync(join(root,'shared/site.js'),'utf8').replaceAll('</script','<\\/script');
 const favicon=encodeFile(join(root,'favicon.png'),'image/png');
 
 function render(source){
