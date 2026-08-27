@@ -26,7 +26,9 @@ SYSTEMS/38 is a reference instrument, not a website builder. Its purpose is to s
 
 Each recipe is intended to be specific enough for a company to recreate the system in its own stack. It covers the design thesis, semantic tokens, typography roles, spacing and grid, composition rules, component anatomy and states, responsive behavior, motion grammar, data visualization, accessibility gates, anti-patterns, adoption, and release governance.
 
-Every system also has a stable exhibition-room URL such as `system.html?theme=retroos`. The room brings its thesis, foundations, component states, patterns, motion, accessibility evidence, release status, tokens, recipe, full-page specimen, and prefilled three-way comparison into one shareable route.
+Every system also has a stable exhibition-room URL such as `system.html?theme=retroos`. Each of the 38 rooms now has a system-specific curatorial thesis, opening composition, spatial archetype, signature specimens, best-fit and wrong-fit boundaries, curator annotations, adjacent systems, and recommended viewing order. Thirteen room archetypes—from desktop suite and instrument bay to evidence archive, field station, poster gallery, and civic hall—keep the systems structurally distinct. A comparable technical archive follows the curated opening with foundations, component states, patterns, motion, accessibility evidence, release status, tokens, recipe, full-page specimen, and prefilled three-way comparison.
+
+The complete recipe and downloaded token JSON carry the same curatorial constraints, so the exhibition interpretation remains connected to company-scale implementation guidance rather than becoming a one-off decorative installation.
 
 The earlier Projects and Studio prototypes are preserved in the repository as unlinked, `noindex` internal experiment archives. They are not part of the public product or navigation.
 
