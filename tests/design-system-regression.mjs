@@ -6,15 +6,16 @@ import { fileURLToPath } from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const allThemes=['institution','terminal','whitepaper','brutalist','command','protocol','calm','archive','swiss','bauhaus','glass','solarpunk','mono','cyber','space','zen','retroos','datascape','blueprint','newspaper','memphis','noir','biotech','clay','museum','industrial','hologram','cartographic','bento','riso','kinetic','spatialos','quietlux','civic','parametric','vernacular','aero','manga'];
-const allPages=['index.html','case-study.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','systems.html','system.html','compare.html','projects.html','studio.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
+const allPages=['index.html','case-study.html','thesis.html','architecture.html','economics.html','build.html','mvp.html','journal.html','systems.html','system.html','atlas.html','compare.html','projects.html','studio.html','visual-review-2045.html','homepage-standalone.html','build-standalone.html'];
 const themes=process.env.TEST_THEMES?allThemes.filter(theme=>process.env.TEST_THEMES.split(',').includes(theme)):allThemes;
 const pages=process.env.TEST_PAGES?allPages.filter(page=>process.env.TEST_PAGES.split(',').includes(page)):allPages;
 const viewports=[{name:'desktop',width:1440,height:900},{name:'laptop',width:1280,height:800}];
 const probes=['.theme-option','.hero-lede','.hero h1 .soft','.nav-status','.eyebrow','.section-head .kicker','.status-cell .v','.status-cell .l','.metric-label','.metric-sub','.flow-center span','.schem-core span','th','.cite','.figure-no','.claim-badge','.callout h3','.callout p','.callout .micro','.btn.primary','.btn:not(.primary)','.page-hero .crumb','.data-tag span','.data-tag strong','.service-card .price','.time-row .state','.journal-meta span','.research-time span','.lab-panel p','.lab-swatch strong','.lab-type-row span','.lab-alert span','.compare-toolbar p','.footer-copy','.footer-bottom','.sf-edit-toggle','.sf-edit-panel>header span','.sf-edit-panel>header strong','.sf-edit-panel>header button','.sf-edit-actions button:not([disabled])','.sf-edit-actions label','.sf-edit-scope>span','.sf-edit-scope button','.sf-edit-scope p','.sf-edit-navigator label','.sf-edit-navigator input','.sf-edit-navigator button','.sf-edit-selected span','.sf-edit-selected strong','.sf-edit-group h3','.sf-edit-group label','.sf-edit-group input:not([type="color"]):not([type="range"])','.sf-edit-group select','.sf-edit-group textarea','.sf-edit-help','.sf-edit-reset button','.sf-edit-reset p','.studio-toolbar span','.studio-toolbar button','.studio-theme-control','.studio-sidebar .studio-panel-title strong','.studio-pages button','.studio-library button','.studio-outline-item','.studio-stage-meta','.studio-device-bar span','.studio-output-nav strong','.studio-output-nav a','.studio-inspector>header span','.studio-inspector>header h2','.studio-inspector>header button','.studio-inspector form label','.studio-inspector form input','.studio-inspector form textarea','.studio-version-empty','.project-summary span','.project-summary strong','.project-summary p','.project-card-body p','.project-card-meta span'];
 probes.push('.exhibition-sequence-title','.exhibition-sequence li>span','.exhibition-sequence li small');
-probes.push('.collection-hero p','.collection-tally span','.collection-controls label','.system-card-copy p','.system-card-tags span','.system-card-actions a','.collection-index-head p','.system-room-bar a','.system-room-bar span','.compare-room-link','.recipe-room-link');
+probes.push('.collection-hero p','.collection-tally span','.collection-controls label','.system-card-copy p','.system-card-tags span','.system-card-actions a','.collection-index-head p','.system-room-bar a','.system-room-bar span','.compare-room-link','.recipe-room-link','.recipe-atlas-link');
 probes.push('.system-card-preview b','.system-card-preview small','.system-card-no');
 probes.push('.curated-room-meta span','.curated-room-intro>p','.curated-room-art figcaption','.room-specimen-primary li strong','.room-specimen-primary li p','.room-fit span','.room-fit strong','.room-curator-note blockquote','.room-annotations span','.room-route>span','.room-route a','.room-neighbors>span','.room-neighbors a span','.room-neighbors a strong');
+probes.push('.atlas-hero p','.atlas-hero-index>span','.atlas-hero-index small','.atlas-component-nav button','.atlas-guide-copy p','.atlas-guide-prompts p','.atlas-controls label','.atlas-index-head [data-atlas-status]','.atlas-card>header span','.atlas-card>footer p','.atlas-card>footer a');
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.woff2':'font/woff2','.png':'image/png','.svg':'image/svg+xml'};
 
 function startServer(){
@@ -33,6 +34,7 @@ function startServer(){
 function assertStaticContracts(){
   const css=readFileSync(join(root,'shared/styles.css'),'utf8');
   const js=readFileSync(join(root,'shared/site.js'),'utf8');
+  const atlasJS=readFileSync(join(root,'shared/atlas.js'),'utf8');
   const studioJS=readFileSync(join(root,'shared/studio.js'),'utf8');
   const studioCSS=readFileSync(join(root,'shared/studio.css'),'utf8');
   const failures=[];
@@ -50,6 +52,7 @@ function assertStaticContracts(){
   if((gateBlock.match(/^    [a-z]+:'/gm)||[]).length!==38)failures.push('Theme-specific governance gates are incomplete');
   for(const marker of ['Copy tokens (JSON)','renderTokenPair','recipe-scale-type',"recipe-header').focus({preventScroll:true})",'self-funding.design-system.tokens/v1'])if(!js.includes(marker))failures.push(`Recipe contract missing: ${marker}`);
   for(const marker of ['LAB_SYSTEMS','ROOM_CURATION','renderCuratedRoom','data-room-signatures','data-room-archetype','initSystemsLab','initSystemsCatalog','data-system-card','initCompare','compare-room-link','data-compare-viewport'])if(!js.includes(marker))failures.push(`Systems exhibition contract missing: ${marker}`);
+  for(const marker of ['COMPONENTS','systems38.atlas.favorites.v1','data-atlas-component','data-atlas-frame','specimenDocument','Shareable atlas link copied'])if(!atlasJS.includes(marker))failures.push(`Component Atlas contract missing: ${marker}`);
   const curationBlock=js.slice(js.indexOf('const ROOM_CURATION={'),js.indexOf('const ROOM_ARCHETYPE_LABELS='));
   if((curationBlock.match(/^    [a-z]+:RC/gm)||[]).length!==38)failures.push('Per-system room curation is incomplete');
   if(new Set([...curationBlock.matchAll(/:RC\('([^']+)'/g)].map(match=>match[1])).size<10)failures.push('Room curation does not provide enough distinct spatial archetypes');
@@ -57,7 +60,7 @@ function assertStaticContracts(){
   if(js.includes("{href:'studio.html',label:'Studio'")||js.includes("{href:'projects.html',label:'Projects'"))failures.push('Archived builder routes are still exposed in public navigation');
   for(const marker of ['systems38.projects.v1','systems38.project/v1','systems38.production-site/v1','SECTION_LIBRARY','data-save-version','data-export-site','buildSiteZip','zipStore','LIVE EDIT MODE'])if(!studioJS.includes(marker))failures.push(`Project Studio contract missing: ${marker}`);
   for(const marker of ['.studio-workspace','.studio-preview','.studio-inspector','.project-grid','data-theme="retroos"','data-theme="swiss"'])if(!studioCSS.includes(marker))failures.push(`Project Studio style contract missing: ${marker}`);
-  for(const file of ['index.html','case-study.html','systems.html','system.html','projects.html','studio.html'])if(!statSync(join(root,file)).isFile())failures.push(`Product route missing: ${file}`);
+  for(const file of ['index.html','case-study.html','systems.html','system.html','atlas.html','projects.html','studio.html'])if(!statSync(join(root,file)).isFile())failures.push(`Product route missing: ${file}`);
   if(failures.length)throw new Error(failures.join('\n'));
 }
 
@@ -145,9 +148,27 @@ try{
           const dialogOpen=await page.locator('.lab-dialog').evaluate(element=>element.open);
           await page.locator('[data-close-dialog]').click();
           await page.locator('[data-open-recipe]').last().click();
-          const handoffOpen=await page.locator('.theme-recipe-dialog').evaluate(element=>({open:element.open,room:element.querySelector('.recipe-room-link')?.getAttribute('href')}));
+          const handoffOpen=await page.locator('.theme-recipe-dialog').evaluate(element=>({open:element.open,room:element.querySelector('.recipe-room-link')?.getAttribute('href'),atlas:element.querySelector('.recipe-atlas-link')?.getAttribute('href')}));
           await page.locator('.recipe-close').click();
-          if(!tabText.includes('bounded compute reserves')||!dialogOpen||!handoffOpen.open||!handoffOpen.room?.includes(`theme=${theme}`))failures.push({theme,file:fixture,selector:'system-room-interaction',text:JSON.stringify({tabText,dialogOpen,handoffOpen}),ratio:0,minimum:0});
+          if(!tabText.includes('bounded compute reserves')||!dialogOpen||!handoffOpen.open||!handoffOpen.room?.includes(`theme=${theme}`)||!handoffOpen.atlas?.includes('q='))failures.push({theme,file:fixture,selector:'system-room-interaction',text:JSON.stringify({tabText,dialogOpen,handoffOpen}),ratio:0,minimum:0});
+        }
+        if(file==='atlas.html'&&viewport.name==='desktop'){
+          await page.waitForFunction(()=>document.querySelector('[data-atlas-frame]')?.contentDocument?.querySelector('.atlas-specimen-stage'));
+          const atlasState=await page.evaluate(()=>({cards:document.querySelectorAll('[data-atlas-card]').length,visible:document.querySelectorAll('[data-atlas-card]:not([hidden])').length,components:document.querySelectorAll('[data-atlas-component]').length,frames:document.querySelectorAll('[data-atlas-frame]').length,logicOptions:document.querySelectorAll('[data-atlas-logic] option').length,active:!!document.querySelector('.nav-links a[href="atlas.html"].active'),frameTheme:document.querySelector('[data-atlas-frame]')?.contentDocument?.documentElement.dataset.theme,frameOverflow:Math.max(0,...[...document.querySelectorAll('[data-atlas-frame]')].slice(0,4).map(frame=>(frame.contentDocument?.documentElement.scrollWidth||0)-(frame.contentDocument?.documentElement.clientWidth||0)))}));
+          if(atlasState.cards!==38||atlasState.visible!==38||atlasState.components!==10||atlasState.frames!==38||atlasState.logicOptions<8||!atlasState.active||atlasState.frameTheme!=='institution'||atlasState.frameOverflow>1)failures.push({theme,file:fixture,selector:'component-atlas',text:JSON.stringify(atlasState),ratio:0,minimum:0});
+          await page.locator('[data-atlas-component="metrics"]').click();
+          await page.waitForFunction(()=>document.querySelector('[data-atlas-frame]')?.contentDocument?.body.textContent.includes('TREASURY SNAPSHOT'));
+          await page.locator('[data-atlas-search]').fill('Retro OS');
+          const searched=await page.locator('[data-atlas-card]:not([hidden])').count();
+          await page.locator('[data-atlas-favorite="retroos"]').click();
+          await page.locator('[data-atlas-search]').fill('');
+          await page.locator('[data-atlas-favorites]').click();
+          const interaction=await page.evaluate(()=>({visible:document.querySelectorAll('[data-atlas-card]:not([hidden])').length,component:document.querySelector('[data-atlas-current]')?.textContent,url:location.search,favorite:document.querySelector('[data-atlas-favorite="retroos"]')?.getAttribute('aria-pressed'),stored:localStorage.getItem('systems38.atlas.favorites.v1'),frameText:document.querySelector('[data-atlas-frame="retroos"]')?.contentDocument?.body.textContent}));
+          if(searched!==1||interaction.visible!==1||interaction.component!=='Metrics'||!interaction.url.includes('component=metrics')||!interaction.url.includes('favorites=1')||interaction.favorite!=='true'||!interaction.stored?.includes('retroos')||!interaction.frameText?.includes('$12,480.22'))failures.push({theme,file:fixture,selector:'component-atlas-interaction',text:JSON.stringify({searched,interaction}),ratio:0,minimum:0});
+          await page.locator('[data-atlas-reset]').first().click();await page.setViewportSize({width:390,height:844});
+          const mobileAtlas=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,columns:getComputedStyle(document.querySelector('[data-atlas-grid]')).gridTemplateColumns.split(' ').length,componentScroll:document.querySelector('.atlas-component-nav').scrollWidth>document.querySelector('.atlas-component-nav').clientWidth,visible:document.querySelectorAll('[data-atlas-card]:not([hidden])').length}));
+          if(mobileAtlas.overflow>1||mobileAtlas.columns!==1||!mobileAtlas.componentScroll||mobileAtlas.visible!==38)failures.push({theme,file:'atlas.html@mobile',selector:'component-atlas-mobile',text:JSON.stringify(mobileAtlas),ratio:0,minimum:0});
+          await page.setViewportSize({width:viewport.width,height:viewport.height});
         }
         if(file==='compare.html'&&viewport.name==='desktop'){
           const compare=await page.evaluate(()=>({selectors:document.querySelectorAll('[data-compare-theme] option').length,frames:[...document.querySelectorAll('.compare-frame iframe')].map(frame=>frame.getAttribute('src')),embeddedEditors:[...document.querySelectorAll('.compare-frame iframe')].filter(frame=>frame.contentDocument?.querySelector('.sf-edit-toggle')).length,nav:!!document.querySelector('.nav-links a[href="systems.html"]'),rooms:[...document.querySelectorAll('.compare-room-link')].map(link=>link.getAttribute('href')),url:location.search}));

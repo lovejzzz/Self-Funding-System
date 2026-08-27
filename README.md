@@ -14,6 +14,7 @@ The website is published from the root of the `main` branch. Updates pushed to `
 
 - [Visual Review](https://lovejzzz.github.io/Self-Funding-System/visual-review-2045.html) — move the complete specimen through all 38 systems; Retro OS is the default.
 - [Systems Collection](https://lovejzzz.github.io/Self-Funding-System/systems.html) — search and filter all 38 systems by visual logic, density, and maturity, then enter a dedicated exhibition room.
+- [Component Atlas](https://lovejzzz.github.io/Self-Funding-System/atlas.html) — hold one component brief constant and compare actions, inputs, status, metrics, tables, navigation, cards, charts, tabs, and dialogs across all 38 systems. Filters, local favorites, and shareable URL state support focused study.
 - [Compare](https://lovejzzz.github.io/Self-Funding-System/compare.html) — hold one real page and viewport constant while comparing three systems side by side.
 - [SELF/FUNDING case study](https://lovejzzz.github.io/Self-Funding-System/case-study.html) — read the original research project as a coherent multi-page website.
 - [Research Journal](https://lovejzzz.github.io/Self-Funding-System/journal.html) — follow the evidence, experiments, citations, and open questions behind the case study.
@@ -29,6 +30,8 @@ Each recipe is intended to be specific enough for a company to recreate the syst
 Every system also has a stable exhibition-room URL such as `system.html?theme=retroos`. Each of the 38 rooms now has a system-specific curatorial thesis, opening composition, spatial archetype, signature specimens, best-fit and wrong-fit boundaries, curator annotations, adjacent systems, and recommended viewing order. Thirteen room archetypes—from desktop suite and instrument bay to evidence archive, field station, poster gallery, and civic hall—keep the systems structurally distinct. A comparable technical archive follows the curated opening with foundations, component states, patterns, motion, accessibility evidence, release status, tokens, recipe, full-page specimen, and prefilled three-way comparison.
 
 The complete recipe and downloaded token JSON carry the same curatorial constraints, so the exhibition interpretation remains connected to company-scale implementation guidance rather than becoming a one-off decorative installation.
+
+The Component Atlas uses isolated, theme-accurate specimen documents rather than approximated thumbnails. Content, function, data, and viewport stay fixed while the active design system supplies the actual typography, color, shape, component, and state rules. Atlas favorites are device-local reference notes; they do not create projects or generate production code.
 
 The earlier Projects and Studio prototypes are preserved in the repository as unlinked, `noindex` internal experiment archives. They are not part of the public product or navigation.
 

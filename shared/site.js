@@ -331,6 +331,7 @@
       {href:'index.html',label:'Home',page:'index'},
       {href:'visual-review-2045.html',label:'Visual Review',page:'visual-review-2045'},
       {href:'systems.html',label:'Systems',page:'systems'},
+      {href:'atlas.html',label:'Atlas',page:'atlas'},
       {href:'compare.html',label:'Compare',page:'compare'},
       {href:'case-study.html',label:'SELF/FUNDING',page:'case-study'},
       {href:'journal.html',label:'Research',page:'journal'}
@@ -401,6 +402,7 @@
     ].join('');
     recipeDialog.dataset.recipe=id;
     const roomLink=recipeDialog.querySelector('.recipe-room-link');if(roomLink)roomLink.href=`system.html?theme=${encodeURIComponent(id)}`;
+    const atlasLink=recipeDialog.querySelector('.recipe-atlas-link');if(atlasLink)atlasLink.href=`atlas.html?q=${encodeURIComponent(p.label)}`;
   }
 
   const LAB_SYSTEMS={
@@ -503,6 +505,7 @@
       const compare=lab.querySelector('.hero-actions a[href^="compare.html"]');if(compare)compare.href=`compare.html?a=${encodeURIComponent(id)}&b=${encodeURIComponent(next)}&c=${encodeURIComponent(previous)}`;
       const actions=lab.querySelector('.hero-actions');if(actions&&!actions.querySelector('[data-room-visual]'))actions.insertAdjacentHTML('beforeend',`<a class="btn" data-room-visual href="visual-review-2045.html?theme=${encodeURIComponent(id)}">View full-page specimen</a>`);
       const visual=actions?.querySelector('[data-room-visual]');if(visual)visual.href=`visual-review-2045.html?theme=${encodeURIComponent(id)}`;
+      const atlasLink=actions?.querySelector('[data-room-atlas]');if(atlasLink)atlasLink.href=`atlas.html?q=${encodeURIComponent(p.label)}`;
       document.title=`${p.label} — SYSTEMS/38 Exhibition Room`;
       const description=document.querySelector('meta[name="description"]');if(description)description.content=`Explore ${p.label}: ${p.description}, with foundations, components, patterns, motion, accessibility, release evidence, and a company-scale recipe.`;
       const url=new URL(location.href);url.searchParams.set('theme',id);history.replaceState(null,'',url);
@@ -559,7 +562,7 @@
 
   function applyPersona(p){
     const stableProjectCopy=document.body.dataset.projectCopy==='stable';
-    const exhibitionSurface=['index','systems','system','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
+    const exhibitionSurface=['index','systems','system','atlas','compare'].includes(pageName),archiveSurface=['studio','projects'].includes(pageName);
     document.documentElement.dataset.logic=p.logic;
     document.documentElement.dataset.density=p.density;
     if(exhibitionSurface){setText('.brand-copy strong','SYSTEMS/38');setText('.brand-copy span','LIVING EXHIBITION');}
@@ -660,7 +663,7 @@
     recipeDialog.setAttribute('aria-labelledby','recipe-title');
     recipeDialog.innerHTML='<div class="recipe-shell"><header class="recipe-header" tabindex="-1"><div><div class="recipe-kicker"></div><h2 class="recipe-title" id="recipe-title"></h2><p class="recipe-summary"></p></div><form method="dialog"><button class="recipe-close" type="submit" aria-label="Close style recipe">×</button></form></header><div class="recipe-body"><section class="recipe-principle-panel"><div><h3>Design principles</h3><ul class="recipe-principles"></ul></div><div class="recipe-swatches" aria-label="Measured theme color pairs"></div></section><div class="recipe-grid"><section><h3>Typography</h3><p class="recipe-type"></p></section><section><h3>Layout system</h3><p class="recipe-layout"></p></section><section><h3>Foundations & scale</h3><dl class="recipe-scale"><div><dt>Type</dt><dd class="recipe-scale-type"></dd></div><div><dt>Grid</dt><dd class="recipe-scale-grid"></dd></div><div><dt>Spacing</dt><dd class="recipe-scale-spacing"></dd></div></dl></section><section><h3>Components & visualization</h3><p class="recipe-components"></p></section><section><h3>Imagery & iconography</h3><p class="recipe-media"></p></section><section><h3>Data visualization</h3><p class="recipe-dataviz"></p></section><section><h3>Motion choreography</h3><p class="recipe-motion"></p></section><section><h3>Writing voice</h3><p class="recipe-voice"></p></section><section><h3>Governance & release gates</h3><p class="recipe-governance"></p></section><section><h3>Avoid</h3><p class="recipe-avoid"></p></section></div><section class="recipe-skill-panel"><div><div class="micro">COMPANY DESIGN-SYSTEM SKILL</div><h3>Copy the complete production specification or its machine-readable tokens.</h3></div><div class="recipe-copy-actions"><button class="recipe-copy" type="button" data-copy="skill">Copy full system skill</button><button class="recipe-copy secondary" type="button" data-copy="tokens">Copy tokens (JSON)</button></div><pre class="recipe-skill" tabindex="0"></pre><div class="recipe-copy-status" aria-live="polite"></div></section></div></div>';
     document.body.appendChild(recipeDialog);
-    recipeDialog.querySelector('.recipe-header>div')?.insertAdjacentHTML('beforeend','<a class="recipe-room-link" href="system.html">View dedicated exhibition room →</a>');
+    recipeDialog.querySelector('.recipe-header>div')?.insertAdjacentHTML('beforeend','<div class="recipe-context-links"><a class="recipe-room-link" href="system.html">View dedicated exhibition room →</a><a class="recipe-atlas-link" href="atlas.html">Compare its components →</a></div>');
     bar.querySelectorAll('.theme-recipe-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();renderRecipe(theme);if(typeof recipeDialog.showModal==='function')recipeDialog.showModal();else recipeDialog.setAttribute('open','');requestAnimationFrame(()=>recipeDialog.querySelector('.recipe-header').focus({preventScroll:true}));}));
     recipeDialog.addEventListener('click',event=>{if(event.target===recipeDialog)recipeDialog.close();});
     recipeDialog.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const kind=button.dataset.copy,status=recipeDialog.querySelector('.recipe-copy-status'),payload=kind==='tokens'?recipeTokenJSON(theme):recipeSkill(theme);try{await navigator.clipboard.writeText(payload);status.textContent=kind==='tokens'?'Token JSON copied.':'System skill copied.';}catch(e){status.textContent='Copy is unavailable here. Select the content manually.';}}));
